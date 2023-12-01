@@ -67,7 +67,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
-                        onPressed: () => Get.to(() => const LoginView()),
+                        onPressed: () => Get.off(() => const LoginView()),
                         child: const Text(
                           'Login',
                         )),

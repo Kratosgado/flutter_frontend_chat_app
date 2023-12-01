@@ -12,7 +12,6 @@ class LoginView extends StatefulWidget {
 
 class LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -56,7 +55,7 @@ class LoginViewState extends State<LoginView> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     TextButton(onPressed: () {}, child: const Text('forgot Password')),
-                    TextButton(onPressed: () => Get.to(()=> const SignUpScreen()), child: const Text('Sign Up'))
+                    TextButton(onPressed: () => Get.off(()=> const SignUpScreen()), child: const Text('Sign Up'))
                   ],
                 ),
                 ElevatedButton(
