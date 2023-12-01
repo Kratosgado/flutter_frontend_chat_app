@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
+import 'package:flutter_frontend_chat_app/views/auth/signup.dart';
+import 'package:get/get.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class LoginView extends StatefulWidget {
+  const LoginView({super.key});
 
   @override
-  SignUpScreenState createState() => SignUpScreenState();
+  LoginViewState createState() => LoginViewState();
 }
 
-class SignUpScreenState extends State<SignUpScreen> {
+class LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -26,16 +28,6 @@ class SignUpScreenState extends State<SignUpScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                TextFormField(
-                  controller: _usernameController,
-                  decoration: const InputDecoration(labelText: 'Username'),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter your username';
-                    }
-                    return null;
-                  },
-                ),
                 const Spacer(),
                 TextFormField(
                   controller: _emailController,
@@ -60,11 +52,18 @@ class SignUpScreenState extends State<SignUpScreen> {
                   },
                 ),
                 const Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(onPressed: () {}, child: const Text('forgot Password')),
+                    TextButton(onPressed: () => Get.to(()=> const SignUpScreen()), child: const Text('Sign Up'))
+                  ],
+                ),
                 ElevatedButton(
                   child: const Text('Sign Up'),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      debugPrint('Username: ${_usernameController.text}');
+                      
                       debugPrint('Email: ${_emailController.text}');
                       debugPrint('Password: ${_passwordController.text}');
                     }

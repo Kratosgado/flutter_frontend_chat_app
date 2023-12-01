@@ -25,6 +25,7 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
+      defaultTransition: Transition.downToUp,
       theme: getApplicationTheme(),
       home: const SplashView(),
     );
