@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/app/app_refs.dart';
 import 'package:flutter_frontend_chat_app/app/di.dart';
+import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/views/splash/splash.dart';
 import 'package:get/get.dart';
 
@@ -27,7 +28,8 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       defaultTransition: Transition.downToUp,
       theme: getApplicationTheme(),
-      home: const SplashView(),
+      initialRoute: Routes.splashRoute,
+      getPages: getRoutes(),
     );
   }
 }
