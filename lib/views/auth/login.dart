@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/server.dart';
+import 'package:flutter_frontend_chat_app/resources/components/action_button.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 import 'package:flutter_frontend_chat_app/views/auth/signup.dart';
 import 'package:get/get.dart';
@@ -63,16 +64,13 @@ class LoginViewState extends State<LoginView> {
                         child: const Text('Sign Up'))
                   ],
                 ),
-                ElevatedButton(
-                  child: const Text('Sign Up'),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      debugPrint('Email: ${_emailController.text}');
-                      debugPrint('Password: ${_passwordController.text}');
-                      serverService.signIn(_emailController.text, _passwordController.text);
-                    }
-                  },
-                ),
+                actionButton(() {
+                  if (_formKey.currentState!.validate()) {
+                    debugPrint('Email: ${_emailController.text}');
+                    debugPrint('Password: ${_passwordController.text}');
+                    serverService.signIn(_emailController.text, _passwordController.text);
+                  }
+                })
               ],
             ),
           ),

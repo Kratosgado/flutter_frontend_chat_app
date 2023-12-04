@@ -16,7 +16,9 @@ class ServerService extends GetConnect {
       ServerStrings.signup,
       {"username": username, "email": email, "password": password},
     ).then((value) async => await signIn(email, password)).catchError((err) {
-      Get.dialog(Text(err), barrierColor: ColorManager.error);
+      Get.dialog(Text(err.toString()), barrierColor: ColorManager.error);
+    }).catchError((onError) {
+      Get.dialog(Text(onError.toString()), barrierColor: ColorManager.error);
     });
   }
 

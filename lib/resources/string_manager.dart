@@ -11,7 +11,7 @@ class AppStrings {
   static const String usernameError = "invalid_user_name";
   static const String passwordError = "invalid_password";
   static const String password = "password_hint";
-  static const String login = "login_button";
+  static const String signin = "Sign In";
   static const String forgetPassword = "forgot_password_text";
   static const String registerText = "register_text";
   static const String loading = "loading";
@@ -24,7 +24,7 @@ class AppStrings {
   static const String profilePicture = "upload_profile_picture";
   static const String photoGalley = "photo_gallery";
   static const String photoCamera = "camera";
-  static const String register = "register";
+  static const String signup = "Sign Up";
   static const String haveAccount = "already_have_account";
   static const String home = "home";
   static const String notifications = "notification";
@@ -60,5 +60,13 @@ class ServerStrings {
   static const String signup = '$BASEURL/user/signup';
   static const String signin = '$BASEURL/user/signin';
   static const String getUsers = '$BASEURL/user/findall';
-  static const String getUser = '$BASEURL/user';
+  static const String getUser = '$BASEURL/user/find';
+  static const String updateUser = '$BASEURL/user/update';
+  static const String updateProfilePicture = '$BASEURL/user/updateProfilePic';
+  static const String getProfilePic = '$BASEURL/user/getProfilePic';
+  static const String deleteUser = '$BASEURL/user/delete';
+  // static const String getUser = '$BASEURL/user';
+  // static const String getUser = '$BASEURL/user';
+  // static const String getUser = '$BASEURL/user';
+
 }
