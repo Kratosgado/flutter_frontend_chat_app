@@ -25,7 +25,7 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      defaultTransition: Transition.circularReveal,
+      defaultTransition: Transition.zoom,
       useInheritedMediaQuery: true,
       theme: getApplicationTheme(),
       initialRoute: Routes.splashRoute,

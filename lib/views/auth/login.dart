@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/models/signup_data.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/server.dart';
+import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
+import 'package:flutter_frontend_chat_app/resources/string_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 import 'package:flutter_frontend_chat_app/views/auth/signup.dart';
 import 'package:get/get.dart';
@@ -17,68 +19,66 @@ class LoginViewState extends State<LoginView> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  final serverService = ServerService();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign Up')),
-      body: Form(
-        key: _formKey,
-        child: Center(
-          child: SizedBox(
-            height: Spacing.s100 * 2.4,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Spacer(),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(labelText: 'Email'),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter your email';
-                    }
-                    return null;
-                  },
-                ),
-                const Spacer(),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: const InputDecoration(labelText: 'Password'),
-                  obscureText: true,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter your password';
-                    }
-                    return null;
-                  },
-                ),
-                const Spacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextButton(onPressed: () {}, child: const Text('forgot Password')),
-                    TextButton(
-                        onPressed: () => Get.off(() => const SignUpScreen()),
-                        child: const Text('Sign Up'))
-                  ],
-                ),
-                ElevatedButton(
-                  child: const Text(
-                    'Sign Up',
+      appBar: AppBar(title: const Text(AppStrings.signin)),
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Form(
+          key: _formKey,
+          child: Center(
+            child: SizedBox(
+              height: Spacing.s100 * 2.4,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Spacer(),
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: const InputDecoration(labelText: 'Email'),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      return null;
+                    },
                   ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      debugPrint('Email: ${_emailController.text}');
-                      debugPrint('Password: ${_passwordController.text}');
-                      final signInData = SignUpData(
-                          email: _emailController.text, password: _passwordController.text);
-                      ServerService().signIn(signInData);
-                    }
-                  },
-                ),
-              ],
+                  const Spacer(),
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: const InputDecoration(labelText: 'Password'),
+                    obscureText: true,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      return null;
+                    },
+                  ),
+                  const Spacer(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(onPressed: () {}, child: const Text('forgot Password')),
+                      TextButton(
+                        onPressed: () => Get.offNamed(Routes.signupRoute),
+                        child: const Text(AppStrings.signup),
+                      )
+                    ],
+                  ),
+                  ElevatedButton(
+                    child: const Text(AppStrings.signin),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        final signInData = SignUpData(
+                            email: _emailController.text, password: _passwordController.text);
+                        ServerController().signIn(signInData);
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),

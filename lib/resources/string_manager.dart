@@ -65,8 +65,8 @@ class ServerStrings {
   static const String updateProfilePicture = '$BASEURL/user/updateProfilePic';
   static const String getProfilePic = '$BASEURL/user/getProfilePic';
   static const String deleteUser = '$BASEURL/user/delete';
+  static const String getChats = '$BASEURL/chat/findall';
+  static const String getChat = '$BASEURL/chat';
+  static const String createChat = '$BASEURL/chat/create';
   // static const String getUser = '$BASEURL/user';
-  // static const String getUser = '$BASEURL/user';
-  // static const String getUser = '$BASEURL/user';
-
 }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/app/app_refs.dart';
 import 'package:flutter_frontend_chat_app/app/di.dart';
+import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 import 'package:flutter_frontend_chat_app/views/auth/signup.dart';
 import 'package:get/get.dart';
@@ -29,10 +30,10 @@ class _SplashViewState extends State<SplashView> {
     appPreference.isUserLoggedIn().then((isUserLoggedIn) => {
           if (isUserLoggedIn)
             {
-              //TODO: navigate to main screen
+              Get.offNamed(Routes.chatList)
             }
           else
-            {Get.offAll(() => const SignUpScreen())}
+            {Get.offNamed(Routes.loginRoute)}
         });
   }
 

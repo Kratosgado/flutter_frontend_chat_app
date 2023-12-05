@@ -6,14 +6,14 @@ import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 import 'package:flutter_frontend_chat_app/views/auth/login.dart';
 import 'package:get/get.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class SignUpView extends StatefulWidget {
+  const SignUpView({super.key});
 
   @override
-  SignUpScreenState createState() => SignUpScreenState();
+  SignUpViewState createState() => SignUpViewState();
 }
 
-class SignUpScreenState extends State<SignUpScreen> {
+class SignUpViewState extends State<SignUpView> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -95,7 +95,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                             email: _emailController.text,
                             username: _usernameController.text,
                             password: _passwordController.text);
-                        ServerService().signUp(signUpData: signUpData);
+                        ServerController().signUp(signUpData: signUpData);
                       }
                     },
                   ),

@@ -22,7 +22,7 @@ class AppPreferences {
     localStorage.write(PREFS_KEY_IS_USER_LOGGED_IN, true);
   }
 
-Future<bool> isUserLoggedIn() async {
+  Future<bool> isUserLoggedIn() async {
     return localStorage.read(PREFS_KEY_IS_USER_LOGGED_IN) ?? false;
   }
 
