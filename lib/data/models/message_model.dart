@@ -1,3 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+
+import 'dart:convert';
 
 import 'chat_model.dart';
 import 'picture_model.dart';
@@ -10,9 +13,7 @@ class Message {
   final String content;
   final Picture? picture;
   final String? pictureId;
-  final Chat? conversation;
   final String? conversationId;
-  final User? sender;
   final String? senderId;
 
   Message({
@@ -22,9 +23,90 @@ class Message {
     required this.content,
     this.picture,
     this.pictureId,
-    this.conversation,
     this.conversationId,
-    this.sender,
     this.senderId,
   });
+
+
+
+  Message copyWith({
+    String? id,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? content,
+    Picture? picture,
+    String? pictureId,
+    Chat? conversation,
+    String? conversationId,
+    User? sender,
+    String? senderId,
+  }) {
+    return Message(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      content: content ?? this.content,
+      picture: picture ?? this.picture,
+      pictureId: pictureId ?? this.pictureId,
+      conversationId: conversationId ?? this.conversationId,
+      senderId: senderId ?? this.senderId,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'createdAt': createdAt.millisecondsSinceEpoch,
+      'updatedAt': updatedAt.millisecondsSinceEpoch,
+      'content': content,
+      'picture': picture?.toMap(),
+      'pictureId': pictureId,
+      'conversationId': conversationId,
+      'senderId': senderId,
+    };
+  }
+
+  factory Message.fromMap(Map<String, dynamic> map) {
+    return Message(
+      id: map['id'] as String,
+      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
+      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int),
+      content: map['content'] as String,
+      picture: map['picture'] != null ? Picture.fromMap(map['picture'] as Map<String,dynamic>) : null,
+      pictureId: map['pictureId'] != null ? map['pictureId'] as String : null,
+      conversationId: map['conversationId'] != null ? map['conversationId'] as String : null,
+      senderId: map['senderId'] != null ? map['senderId'] as String : null,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Message.fromJson(String source) => Message.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  bool operator ==(covariant Message other) {
+    if (identical(this, other)) return true;
+  
+    return 
+      other.id == id &&
+      other.createdAt == createdAt &&
+      other.updatedAt == updatedAt &&
+      other.content == content &&
+      other.picture == picture &&
+      other.pictureId == pictureId &&
+      other.conversationId == conversationId &&
+      other.senderId == senderId;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+      createdAt.hashCode ^
+      updatedAt.hashCode ^
+      content.hashCode ^
+      picture.hashCode ^
+      pictureId.hashCode ^
+      conversationId.hashCode ^
+      senderId.hashCode;
+  }
 }

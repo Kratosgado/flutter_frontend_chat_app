@@ -1,32 +1,32 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get_storage/get_storage.dart';
 
 const String PREFS_KEY_IS_USER_LOGGED_IN = "PREFS_KEY_IS_USER_LOGGED_IN";
 const String PREFS_KEY_TOKEN = "PREFS_KEY_TOKEN";
 
 class AppPreferences {
-  SharedPreferences sharedPreferences;
+  GetStorage localStorage;
 
-  AppPreferences(this.sharedPreferences);
+  AppPreferences(this.localStorage);
 
   Future<void> setUserTokenn(String token) async {
-    sharedPreferences.setString(PREFS_KEY_TOKEN, token);
+    localStorage.write(PREFS_KEY_TOKEN, token);
   }
 
   Future<String> getUserToken() async {
-    return sharedPreferences.getString(PREFS_KEY_TOKEN) ?? "";
+    return localStorage.read(PREFS_KEY_TOKEN) ?? "";
   }
 
   Future<void> setIsUserLoggedIn() async {
-    sharedPreferences.setBool(PREFS_KEY_IS_USER_LOGGED_IN, true);
+    localStorage.write(PREFS_KEY_IS_USER_LOGGED_IN, true);
   }
 
 Future<bool> isUserLoggedIn() async {
-    return sharedPreferences.getBool(PREFS_KEY_IS_USER_LOGGED_IN) ?? false;
+    return localStorage.read(PREFS_KEY_IS_USER_LOGGED_IN) ?? false;
   }
 
   Future<void> logout() async {
-    sharedPreferences.remove(PREFS_KEY_IS_USER_LOGGED_IN);
+    localStorage.remove(PREFS_KEY_IS_USER_LOGGED_IN);
   }
 }

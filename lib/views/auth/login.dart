@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend_chat_app/data/models/signup_data.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/server.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 import 'package:flutter_frontend_chat_app/views/auth/signup.dart';
@@ -71,6 +72,9 @@ class LoginViewState extends State<LoginView> {
                     if (_formKey.currentState!.validate()) {
                       debugPrint('Email: ${_emailController.text}');
                       debugPrint('Password: ${_passwordController.text}');
+                      final signInData = SignUpData(
+                          email: _emailController.text, password: _passwordController.text);
+                      ServerService().signIn(signInData);
                     }
                   },
                 ),

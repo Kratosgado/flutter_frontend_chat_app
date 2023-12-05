@@ -1,11 +1,12 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 
 class User {
   final String id;
   final String email;
   final String? username;
   final String? profilePic;
-  final String password;
-  final String salt;
   final DateTime createdAt;
   final DateTime updatedAt;
   // final List<Chat> conversations;
@@ -17,38 +18,54 @@ class User {
     required this.email,
     this.username,
     this.profilePic,
-    required this.password,
-    required this.salt,
     required this.createdAt,
     required this.updatedAt,
-    // required this.conversations,
-    // required this.messages,
-    // required this.pictures,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) {
+  User copyWith({
+    String? id,
+    String? email,
+    String? username,
+    String? profilePic,
+    String? password,
+    String? salt,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
     return User(
-      id: json['id'],
-      email: json['email'],
-      username: json['username'],
-      profilePic: json['profilePic'],
-      password: json['password'],
-      salt: json['salt'],
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      id: id ?? this.id,
+      email: email ?? this.email,
+      username: username ?? this.username,
+      profilePic: profilePic ?? this.profilePic,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
       'id': id,
       'email': email,
       'username': username,
       'profilePic': profilePic,
-      'password': password,
-      'salt': salt,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'createdAt': createdAt.millisecondsSinceEpoch,
+      'updatedAt': updatedAt.millisecondsSinceEpoch,
     };
   }
+
+  factory User.fromMap(Map<String, dynamic> map) {
+    return User(
+      id: map['id'] as String,
+      email: map['email'] as String,
+      username: map['username'] != null ? map['username'] as String : null,
+      profilePic: map['profilePic'] != null ? map['profilePic'] as String : null,
+      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
+      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory User.fromJson(String source) => User.fromMap(json.decode(source) as Map<String, dynamic>);
+
 }
