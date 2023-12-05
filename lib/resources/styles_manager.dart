@@ -2,50 +2,53 @@ import 'package:flutter/material.dart';
 
 import 'font_manager.dart';
 
-TextStyle _getTextStyle(
-    double fontSize, String fontFamily, FontWeight fontWeight, Color color) {
+TextStyle _getTextStyle(double fontSize, String fontFamily, FontWeight fontWeight, Color color) {
   return TextStyle(
-      fontSize: fontSize,
-      fontFamily: fontFamily,
-      color: color,
-      fontWeight: fontWeight);
+      fontSize: fontSize, fontFamily: fontFamily, color: color, fontWeight: fontWeight);
 }
 
 // regular style
 
-TextStyle getRegularStyle(
-    {double fontSize = FontSize.s12, required Color color}) {
-  return _getTextStyle(
-      fontSize, FontConstants.fontFamily, FontWeightManager.regular, color);
+TextStyle getRegularStyle({double fontSize = FontSize.s12, required Color color}) {
+  return _getTextStyle(fontSize, FontConstants.fontFamily, FontWeightManager.regular, color);
 }
 // light text style
 
-TextStyle getLightStyle(
-    {double fontSize = FontSize.s12, required Color color}) {
-  return _getTextStyle(
-      fontSize, FontConstants.fontFamily, FontWeightManager.light, color);
+TextStyle getLightStyle({double fontSize = FontSize.s12, required Color color}) {
+  return _getTextStyle(fontSize, FontConstants.fontFamily, FontWeightManager.light, color);
 }
 // bold text style
 
-TextStyle getBoldStyle(
-    {double fontSize = FontSize.s12, required Color color}) {
-  return _getTextStyle(
-      fontSize, FontConstants.fontFamily, FontWeightManager.bold, color);
+TextStyle getBoldStyle({double fontSize = FontSize.s12, required Color color}) {
+  return _getTextStyle(fontSize, FontConstants.fontFamily, FontWeightManager.bold, color);
 }
 
 // semi bold text style
 
-TextStyle getSemiBoldStyle(
-    {double fontSize = FontSize.s12, required Color color}) {
-  return _getTextStyle(
-      fontSize, FontConstants.fontFamily, FontWeightManager.semiBold, color);
+TextStyle getSemiBoldStyle({double fontSize = FontSize.s12, required Color color}) {
+  return _getTextStyle(fontSize, FontConstants.fontFamily, FontWeightManager.semiBold, color);
 }
-
 
 // medium text style
 
-TextStyle getMediumStyle(
-    {double fontSize = FontSize.s12, required Color color}) {
-  return _getTextStyle(
-      fontSize, FontConstants.fontFamily, FontWeightManager.medium, color);
+TextStyle getMediumStyle({double fontSize = FontSize.s12, required Color color}) {
+  return _getTextStyle(fontSize, FontConstants.fontFamily, FontWeightManager.medium, color);
+}
+
+class StyleManager {
+  static final boxDecoration = BoxDecoration(
+    borderRadius: BorderRadius.circular(20),
+    boxShadow: const [
+      BoxShadow(color: Colors.blue, offset: Offset(0, -1), blurRadius: 5),
+      BoxShadow(color: Colors.red, offset: Offset(0, 1), blurRadius: 5),
+    ],
+    gradient: LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [
+        Colors.pink,
+        Colors.blue.shade900,
+      ],
+    ),
+  );
 }

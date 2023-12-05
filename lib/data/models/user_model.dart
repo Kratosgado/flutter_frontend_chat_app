@@ -1,6 +1,3 @@
-import 'chat_model.dart';
-import 'message_model.dart';
-import 'picture_model.dart';
 
 class User {
   final String id;

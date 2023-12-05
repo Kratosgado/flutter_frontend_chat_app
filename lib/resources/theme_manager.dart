@@ -7,13 +7,13 @@ import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 ThemeData getApplicationTheme() {
   return ThemeData(
       // main colors of the app
-      primaryColor: ColorManager.primary,
-      primaryColorLight: ColorManager.primaryOpacity70,
-      primaryColorDark: ColorManager.darkPrimary,
+      // primaryColor: ColorManager.primary,
+      // primaryColorLight: ColorManager.primaryOpacity70,
+      // primaryColorDark: ColorManager.darkPrimary,
       disabledColor: ColorManager.grey1,
       colorScheme: ColorScheme.dark(
         background: ColorManager.bgColor,
-        primary: ColorManager.primary,
+        primary: Colors.blue.shade700,
         onPrimary: ColorManager.lightGrey,
         secondary: ColorManager.secondaryColor,
         onSecondary: ColorManager.grey2,
@@ -28,23 +28,27 @@ ThemeData getApplicationTheme() {
       // App bar theme
       appBarTheme: AppBarTheme(
           centerTitle: true,
-          color: ColorManager.primary,
-          elevation: Spacing.s4,
-          shadowColor: ColorManager.primaryOpacity70,
+          color: Colors.blue.shade700,
+          shape: const StadiumBorder(),
+          elevation: Spacing.s8,
+          shadowColor: Colors.blue.shade400,
           titleTextStyle: getRegularStyle(color: ColorManager.white, fontSize: FontSize.s16)),
       // Button theme
       buttonTheme: ButtonThemeData(
           shape: const StadiumBorder(),
           disabledColor: ColorManager.grey1,
-          buttonColor: ColorManager.primary,
-          splashColor: ColorManager.primaryOpacity70),
+          buttonColor: Colors.blue.shade700,
+          splashColor: ColorManager.bgColor),
 
       // elevated button theme
       elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-              textStyle: getRegularStyle(color: ColorManager.white),
-              backgroundColor: ColorManager.primary,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Spacing.s12)))),
+        style: ElevatedButton.styleFrom(
+            textStyle: getRegularStyle(color: Colors.white),
+            backgroundColor: Colors.blue.shade700,
+            foregroundColor: Colors.white,
+            shape: const StadiumBorder(),
+            splashFactory: InkSparkle.splashFactory),
+      ),
 
       // Text theme
       textTheme: TextTheme(
@@ -60,12 +64,15 @@ ThemeData getApplicationTheme() {
       // input decoration theme (text form field)
 
       inputDecorationTheme: InputDecorationTheme(
+        isDense: true,
+
         contentPadding: const EdgeInsets.all(Spacing.s20),
         // hint style
-        hintStyle: getRegularStyle(color: ColorManager.grey1),
+        hintStyle: getRegularStyle(color: Colors.blueAccent),
+        iconColor: Colors.blue.shade200,
 
         // label style
-        labelStyle: getMediumStyle(color: ColorManager.darkGrey),
+        labelStyle: getMediumStyle(color: Colors.blue.shade200),
         // error style
         errorStyle: getRegularStyle(color: ColorManager.error),
 
@@ -76,13 +83,16 @@ ThemeData getApplicationTheme() {
 
         // focused border
         focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: ColorManager.primary, width: Spacing.s1_5),
+            borderSide: BorderSide(color: Colors.blue.shade500, width: Spacing.s1_5),
             borderRadius: const BorderRadius.all(Radius.circular(Spacing.s8))),
 
         // error border
         errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: ColorManager.error, width: Spacing.s1_5),
-            borderRadius: const BorderRadius.all(Radius.circular(Spacing.s8))),
+          borderSide: BorderSide(color: ColorManager.error, width: Spacing.s1_5),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(Spacing.s8),
+          ),
+        ),
         // focused error border
         focusedErrorBorder: OutlineInputBorder(
             borderSide: BorderSide(color: ColorManager.primary, width: Spacing.s1_5),
