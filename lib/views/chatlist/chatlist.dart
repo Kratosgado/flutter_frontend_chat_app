@@ -9,30 +9,34 @@ class ChatListView extends GetView<ServerController> {
   @override
   Widget build(BuildContext context) {
     Get.lazyPut(() => ServerController());
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Hello User"),
+        actions: [
+          IconButton(
+            onPressed: () => ServerController().logout(),
+            icon: const Icon(Icons.logout_outlined),
+          ),
+        ],
       ),
       body: GetBuilder<ServerController>(
-        init: controller,
         initState: (state) => controller.fetchChats(),
         builder: (controller) {
-          controller.fetchChats();
-
-          return ListView.builder(
-            itemCount: controller.chatList.length,
-            itemBuilder: (context, index) {
-              var chat = controller.chatList[index];
-              return ListTile(
-                title: Text(chat.convoName ?? "No name"),
-              );
-            },
+          return Obx(
+            () => ListView.builder(
+              itemCount: controller.chatList.length,
+              itemBuilder: (context, index) {
+                var chat = controller.chatList[index];
+                return ListTile(
+                  title: Text(chat.convoName),
+                );
+              },
+            ),
           );
         },
       ),
-      floatingActionButton: IconButton(  
-        icon: Icon(Icons.message),
+      floatingActionButton: IconButton(
+        icon: const Icon(Icons.message_rounded),
         onPressed: () => Get.toNamed(Routes.userList),
       ),
     );

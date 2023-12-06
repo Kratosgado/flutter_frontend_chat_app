@@ -63,20 +63,4 @@ class Picture {
 
   factory Picture.fromJson(String source) =>
       Picture.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  @override
-  bool operator ==(covariant Picture other) {
-    if (identical(this, other)) return true;
-
-    return other.id == id &&
-        other.url == url &&
-        other.userId == userId &&
-        other.chatId == chatId &&
-        other.messageId == messageId;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^ url.hashCode ^ userId.hashCode ^ chatId.hashCode ^ messageId.hashCode;
-  }
 }

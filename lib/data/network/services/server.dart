@@ -9,6 +9,7 @@ import 'package:flutter_frontend_chat_app/data/models/user_model.dart';
 import 'package:flutter_frontend_chat_app/resources/color_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/string_manager.dart';
+import 'package:flutter_frontend_chat_app/resources/utils.dart';
 import 'package:get/get.dart';
 
 import '../../../app/app_refs.dart';
@@ -16,8 +17,16 @@ import '../../../app/di.dart';
 
 class ServerController extends GetxController {
   final _appPreference = instance<AppPreferences>();
+  final chatList = RxList<Chat>();
+  var usersList = <User>[].obs;
 
   final connect = GetConnect();
+
+  // @override
+  // void onInit() async {
+  //   await fetchChats();
+  //   super.onInit();
+  // }
 
   Future<void> signUp({required SignUpData signUpData}) async {
     try {
@@ -65,31 +74,49 @@ class ServerController extends GetxController {
     }
   }
 
-  final chatList = RxList<Chat>();
+  Future<void> logout() async {
+    await _appPreference.logout();
+    Get.offNamed(Routes.loginRoute);
+  }
 
-  void fetchChats() async {
+  Future<void> fetchChats() async {
     try {
       var response = await connect.get(
         ServerStrings.getChats,
-        headers: {"Authorization": await _appPreference.getUserToken()},
+        headers: {"Authorization": "Bearer ${await _appPreference.getUserToken()}"},
+        decoder: (data) => data.map((chat) => Chat.fromMap(chat)).toList(),
       );
       if (response.isOk) {
-        chatList.value = response.body.map((chat) => Chat.fromJson(chat)).toList();
+        debugPrint("chats ${response.body}");
+        chatList.value = TypeDecoder.fromMapList<Chat>(response.body);
+      }
+      if (response.hasError) {
+        debugPrint("server error: ${response.body}");
+
+        Get.snackbar(response.statusCode.toString(), response.statusText!);
       }
     } catch (err) {
+      debugPrint(err.toString());
       Get.snackbar("Error Fetching chats", err.toString());
     }
   }
 
-  final userList = RxList<User>();
-
   void fetchUsers() async {
     try {
-      var response = await connect.get(ServerStrings.getUsers);
+      var response = await connect.get(
+        ServerStrings.getUsers,
+        decoder: (data) => data.map((user) => User.fromMap(user)).toList(),
+      );
       if (response.isOk) {
-        userList.value = response.body.map((user) => User.fromJson(user)).toList();
+        usersList.value = TypeDecoder.fromMapList(response.body);
+        debugPrint("Users retrieved: ${usersList.length}");
+      }
+      if (response.hasError) {
+        debugPrint("server error: $response");
+        Get.snackbar(response.statusCode.toString(), response.statusText!);
       }
     } catch (err) {
+      debugPrint(err.toString());
       Get.snackbar(
         "Error Fetching chats",
         err.toString(),

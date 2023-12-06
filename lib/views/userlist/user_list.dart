@@ -7,16 +7,29 @@ class UserListView extends GetView<ServerController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut(() => ServerController());
-    return GetBuilder(
-      init: controller,
-      initState: (state) => controller.fetchUsers(),
-      builder: (context) => ListView.builder(
-        itemCount: controller.userList.length,
-        itemBuilder: (context, index) {
-          var user = controller.userList[index];
-          return ListTile(
-            title: Text(user.email),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Users"),
+        actions: [
+          IconButton(
+            onPressed: () => ServerController().logout(),
+            icon: const Icon(Icons.logout_outlined),
+          ),
+        ],
+      ),
+      body: GetBuilder<ServerController>(
+        initState: (state) => controller.fetchUsers(),
+        builder: (controller) {
+          return Obx(
+            () => ListView.builder(
+              itemCount: controller.usersList.length,
+              itemBuilder: (context, index) {
+                var user = controller.usersList[index];
+                return ListTile(
+                  title: Text(user.username ?? "No name"),
+                );
+              },
+            ),
           );
         },
       ),

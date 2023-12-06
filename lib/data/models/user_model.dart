@@ -1,14 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-
 class User {
   final String id;
   final String email;
   final String? username;
   final String? profilePic;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  // final DateTime createdAt;
+  // final DateTime updatedAt;
   // final List<Chat> conversations;
   // final List<Message> messages;
   // final List<Picture> pictures;
@@ -18,8 +17,8 @@ class User {
     required this.email,
     this.username,
     this.profilePic,
-    required this.createdAt,
-    required this.updatedAt,
+    // required this.createdAt,
+    // required this.updatedAt,
   });
 
   User copyWith({
@@ -37,8 +36,8 @@ class User {
       email: email ?? this.email,
       username: username ?? this.username,
       profilePic: profilePic ?? this.profilePic,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
+      // createdAt: createdAt ?? this.createdAt,
+      // updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
@@ -48,8 +47,8 @@ class User {
       'email': email,
       'username': username,
       'profilePic': profilePic,
-      'createdAt': createdAt.millisecondsSinceEpoch,
-      'updatedAt': updatedAt.millisecondsSinceEpoch,
+      // 'createdAt': createdAt.millisecondsSinceEpoch,
+      // 'updatedAt': updatedAt.millisecondsSinceEpoch,
     };
   }
 
@@ -59,13 +58,12 @@ class User {
       email: map['email'] as String,
       username: map['username'] != null ? map['username'] as String : null,
       profilePic: map['profilePic'] != null ? map['profilePic'] as String : null,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
-      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int),
+      // createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt']),
+      // updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updatedAt']),
     );
   }
 
   String toJson() => json.encode(toMap());
 
   factory User.fromJson(String source) => User.fromMap(json.decode(source) as Map<String, dynamic>);
-
 }

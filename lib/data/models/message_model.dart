@@ -8,26 +8,24 @@ import 'user_model.dart';
 
 class Message {
   final String id;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  // final DateTime createdAt;
+  // final DateTime updatedAt;
   final String content;
   final Picture? picture;
   final String? pictureId;
-  final String? conversationId;
-  final String? senderId;
+  final String conversationId;
+  final String senderId;
 
   Message({
     required this.id,
-    required this.createdAt,
-    required this.updatedAt,
+    // required this.createdAt,
+    // required this.updatedAt,
     required this.content,
     this.picture,
     this.pictureId,
-    this.conversationId,
-    this.senderId,
+    required this.conversationId,
+    required this.senderId,
   });
-
-
 
   Message copyWith({
     String? id,
@@ -43,8 +41,8 @@ class Message {
   }) {
     return Message(
       id: id ?? this.id,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
+      // createdAt: createdAt ?? this.createdAt,
+      // updatedAt: updatedAt ?? this.updatedAt,
       content: content ?? this.content,
       picture: picture ?? this.picture,
       pictureId: pictureId ?? this.pictureId,
@@ -56,8 +54,8 @@ class Message {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'createdAt': createdAt.millisecondsSinceEpoch,
-      'updatedAt': updatedAt.millisecondsSinceEpoch,
+      // 'createdAt': createdAt.millisecondsSinceEpoch,
+      // 'updatedAt': updatedAt.millisecondsSinceEpoch,
       'content': content,
       'picture': picture?.toMap(),
       'pictureId': pictureId,
@@ -69,44 +67,19 @@ class Message {
   factory Message.fromMap(Map<String, dynamic> map) {
     return Message(
       id: map['id'] as String,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
-      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int),
+      // createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
+      // updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int),
       content: map['content'] as String,
-      picture: map['picture'] != null ? Picture.fromMap(map['picture'] as Map<String,dynamic>) : null,
+      picture:
+          map['picture'] != null ? Picture.fromMap(map['picture'] as Map<String, dynamic>) : null,
       pictureId: map['pictureId'] != null ? map['pictureId'] as String : null,
-      conversationId: map['conversationId'] != null ? map['conversationId'] as String : null,
-      senderId: map['senderId'] != null ? map['senderId'] as String : null,
+      conversationId: map['conversationId'] as String,
+      senderId: map['senderId'] as String,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Message.fromJson(String source) => Message.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  @override
-  bool operator ==(covariant Message other) {
-    if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.createdAt == createdAt &&
-      other.updatedAt == updatedAt &&
-      other.content == content &&
-      other.picture == picture &&
-      other.pictureId == pictureId &&
-      other.conversationId == conversationId &&
-      other.senderId == senderId;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      content.hashCode ^
-      picture.hashCode ^
-      pictureId.hashCode ^
-      conversationId.hashCode ^
-      senderId.hashCode;
-  }
+  factory Message.fromJson(String source) =>
+      Message.fromMap(json.decode(source) as Map<String, dynamic>);
 }
