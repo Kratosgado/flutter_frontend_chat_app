@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,8 +12,7 @@ class ChatController extends GetxController {
   final chatList = RxList<Chat>();
   final connect = GetConnect();
 
-  
-Future<void> fetchChats() async {
+  Future<void> fetchChats() async {
     try {
       var response = await connect.get(
         ServerStrings.getChats,
@@ -37,7 +34,13 @@ Future<void> fetchChats() async {
     }
   }
 
-    Future<void> getChat(String id) async {
+  void listenToChat() {
+    connect.socket(BASEURL).on('newMessage', (val) {
+      Get.snackbar("chat app", val);
+    });
+  }
+
+  Future<void> getChat(String id) async {
     Response response = await connect.get("${ServerStrings.getChat}$id",
         headers: {"Authorization": "Bearer ${await _appPreference.getUserToken()}"});
     if (response.isOk) {
