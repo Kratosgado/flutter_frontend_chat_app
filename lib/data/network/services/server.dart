@@ -74,8 +74,7 @@ class ServerController extends GetxController {
         headers: {"Authorization": await _appPreference.getUserToken()},
       );
       if (response.isOk) {
-        var data = json.decode(response.body);
-        chatList.value = data.map((chat) => Chat.fromMap(chat)).toList();
+        chatList.value = response.body.map((chat) => Chat.fromJson(chat)).toList();
       }
     } catch (err) {
       Get.snackbar("Error Fetching chats", err.toString());
