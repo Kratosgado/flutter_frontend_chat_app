@@ -1,4 +1,5 @@
 import 'package:flutter_frontend_chat_app/views/auth/login.dart';
+import 'package:flutter_frontend_chat_app/views/chatlist/chat_view.dart';
 import 'package:flutter_frontend_chat_app/views/chatlist/chatlist.dart';
 import 'package:flutter_frontend_chat_app/views/splash/splash.dart';
 import 'package:flutter_frontend_chat_app/views/userlist/user_list.dart';
@@ -23,4 +24,5 @@ List<GetPage> getRoutes() => [
       GetPage(name: Routes.forgotPasswordRoute, page: () => const SplashView()),
       GetPage(name: Routes.chatList, page: () => const ChatListView()),
       GetPage(name: Routes.userList, page: () => const UserListView()),
+      GetPage(name: Routes.chat, page: ()=> const ChatView())
     ];

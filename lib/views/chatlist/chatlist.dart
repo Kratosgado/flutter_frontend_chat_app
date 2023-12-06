@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/server.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
+import 'package:flutter_frontend_chat_app/views/chatlist/chat_tile.dart';
 import 'package:get/get.dart';
 
 class ChatListView extends GetView<ServerController> {
@@ -27,9 +28,7 @@ class ChatListView extends GetView<ServerController> {
               itemCount: controller.chatList.length,
               itemBuilder: (context, index) {
                 var chat = controller.chatList[index];
-                return ListTile(
-                  title: Text(chat.convoName),
-                );
+                return Card(child: converationTile(chat));
               },
             ),
           );

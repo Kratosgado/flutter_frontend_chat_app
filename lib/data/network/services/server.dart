@@ -1,7 +1,3 @@
-// ignore_for_file: constant_identifier_names
-
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/models/chat_model.dart';
 import 'package:flutter_frontend_chat_app/data/models/signup_data.dart';
@@ -87,8 +83,8 @@ class ServerController extends GetxController {
         decoder: (data) => data.map((chat) => Chat.fromMap(chat)).toList(),
       );
       if (response.isOk) {
-        debugPrint("chats ${response.body}");
         chatList.value = TypeDecoder.fromMapList<Chat>(response.body);
+        debugPrint("chats retrieved: ${chatList.length}");
       }
       if (response.hasError) {
         debugPrint("server error: ${response.body}");

@@ -24,7 +24,10 @@ ThemeData getApplicationTheme() {
       secondaryHeaderColor: ColorManager.grey,
       // card view theme
       cardTheme: CardTheme(
-          color: ColorManager.white, shadowColor: ColorManager.grey, elevation: Spacing.s4),
+          color: Colors.blueAccent.shade100,
+          shadowColor: ColorManager.grey,
+          elevation: Spacing.s4,
+          shape: const StadiumBorder()),
       // App bar theme
       appBarTheme: AppBarTheme(
           centerTitle: true,

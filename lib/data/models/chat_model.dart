@@ -13,14 +13,14 @@ class Chat {
   final String convoName;
   // final DateTime createdAt;
   // final DateTime updatedAt;
-  final List<Message>? messages;
+  final List<Message> messages;
   final List<User> users;
   final List<Picture>? pictures;
 
   Chat({
     required this.id,
     required this.convoName,
-    this.messages,
+    required this.messages,
     required this.users,
     this.pictures,
   });
@@ -43,13 +43,11 @@ class Chat {
     return Chat(
       id: map['id'] as String,
       convoName: map['convoName'] as String,
-      messages: map['messages'].length != null
-          ? List<Message>.from(
-              (map['messages'] as List<dynamic>).map<Message?>(
-                (x) => Message.fromMap(x as Map<String, dynamic>),
-              ),
-            )
-          : null,
+      messages: List<Message>.from(
+        (map['messages'] as List<dynamic>).map<Message?>(
+          (x) => Message.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
       users: List<User>.from(
         (map['users'] as List<dynamic>).map<User>(
           (x) => User.fromMap(x as Map<String, dynamic>),
