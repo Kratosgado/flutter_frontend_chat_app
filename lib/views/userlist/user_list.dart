@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/server.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/user_controller.dart';
 import 'package:get/get.dart';
 
-class UserListView extends GetView<ServerController> {
+class UserListView extends GetView<UserController> {
   const UserListView({super.key});
 
   @override
@@ -17,7 +18,7 @@ class UserListView extends GetView<ServerController> {
           ),
         ],
       ),
-      body: GetBuilder<ServerController>(
+      body: GetBuilder<UserController>(
         initState: (state) => controller.fetchUsers(),
         builder: (controller) {
           return Obx(

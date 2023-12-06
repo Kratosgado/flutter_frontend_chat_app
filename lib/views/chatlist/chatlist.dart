@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/chat_controller.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/server.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/views/chatlist/chat_tile.dart';
 import 'package:get/get.dart';
 
-class ChatListView extends GetView<ServerController> {
+class ChatListView extends GetView<ChatController> {
   const ChatListView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut(() => ServerController());
+    Get.lazyPut(() => ChatController());
     return Scaffold(
       appBar: AppBar(
         title: const Text("Hello User"),
@@ -20,7 +21,7 @@ class ChatListView extends GetView<ServerController> {
           ),
         ],
       ),
-      body: GetBuilder<ServerController>(
+      body: GetBuilder<ChatController>(
         initState: (state) => controller.fetchChats(),
         builder: (controller) {
           return Obx(

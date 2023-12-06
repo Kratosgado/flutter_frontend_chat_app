@@ -68,5 +68,5 @@ class ServerStrings {
   static const String getChats = '$BASEURL/chat';
   static const String getChat = '$BASEURL/chat';
   static const String createChat = '$BASEURL/chat/create';
-  // static const String getUser = '$BASEURL/user';
+  static const String sendMessage = '$BASEURL/message/send';
 }
