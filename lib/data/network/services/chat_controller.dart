@@ -35,11 +35,21 @@ class ChatController extends GetxController {
   }
 
   void sendMessage(String content, String chatId) async {
-    Response res = await connect.post(
-        ServerStrings.sendMessage, {"content": content, "conversationId": chatId},
-        headers: {"Authorization": "Bearer ${await _appPreference.getUserToken()}"});
-    if (res.isOk) {
-      Get.snackbar("message sent", "lkfdj");
+    try {
+      Response res = await connect.post(
+          ServerStrings.sendMessage, {"content": content, "conversationId": chatId},
+          headers: {"Authorization": "Bearer ${await _appPreference.getUserToken()}"});
+      if (res.isOk) {
+        Get.snackbar("message sent", "lkfdj");
+      }
+      if (res.hasError) {
+        debugPrint("server error: ${res.body}");
+
+        Get.snackbar(res.statusCode.toString(), res.statusText!);
+      }
+    } catch (e) {
+      debugPrint(3.toString());
+      Get.snackbar("Error Fetching chats", e.toString());
     }
   }
 
