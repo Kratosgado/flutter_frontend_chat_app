@@ -4,11 +4,15 @@ import 'package:flutter_frontend_chat_app/data/models/chat_model.dart';
 
 import 'chat_view.dart';
 
-OpenContainer converationTile(Chat chat) {
+OpenContainer chatTile(Chat chat) {
   final profile = chat.users.first.profilePic != null;
   return OpenContainer(
     transitionDuration: const Duration(milliseconds: 500),
     closedBuilder: (ctx, action) => ListTile(
+      dense: true,
+      tileColor: Colors.blueAccent.shade200,
+      shape: const StadiumBorder(),
+      visualDensity: VisualDensity.adaptivePlatformDensity,
       leading: GestureDetector(
         onTap: () {},
         child: Hero(
@@ -34,6 +38,8 @@ OpenContainer converationTile(Chat chat) {
         },
       ),
     ),
-    openBuilder: (context, action) => const ChatView(),
+    openBuilder: (context, action) => ChatView(
+      chatId: chat.id,
+    ),
   );
 }

@@ -34,6 +34,15 @@ class ChatController extends GetxController {
     }
   }
 
+  void sendMessage(String content, String chatId) async {
+    Response res = await connect.post(
+        ServerStrings.sendMessage, {"content": content, "conversationId": chatId},
+        headers: {"Authorization": "Bearer ${await _appPreference.getUserToken()}"});
+    if (res.isOk) {
+      Get.snackbar("message sent", "lkfdj");
+    }
+  }
+
   void listenToChat() {
     connect.socket(BASEURL).on('newMessage', (val) {
       Get.snackbar("chat app", val);

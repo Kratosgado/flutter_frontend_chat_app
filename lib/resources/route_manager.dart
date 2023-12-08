@@ -24,5 +24,5 @@ List<GetPage> getRoutes() => [
       GetPage(name: Routes.forgotPasswordRoute, page: () => const SplashView()),
       GetPage(name: Routes.chatList, page: () => const ChatListView()),
       GetPage(name: Routes.userList, page: () => const UserListView()),
-      GetPage(name: Routes.chat, page: ()=> const ChatView())
+      GetPage(name: Routes.chat, page: () => const ChatView(chatId: '',))
     ];

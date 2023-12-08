@@ -29,7 +29,7 @@ class ChatListView extends GetView<ChatController> {
               itemCount: controller.chatList.length,
               itemBuilder: (context, index) {
                 var chat = controller.chatList[index];
-                return Card(child: converationTile(chat));
+                return chatTile(chat);
               },
             ),
           );
