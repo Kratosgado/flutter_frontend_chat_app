@@ -35,5 +35,5 @@ class ChatView extends StatelessWidget {
 }
 
 List<Message> messages = [
-  Message(id: "sljfoi", content: "hello", conversationId: "lksf", senderId: "ldfsj"),
+  Message(id: "sljfoi", content: "hello", chatId: "lksf", senderId: "ldfsj"),
 ];

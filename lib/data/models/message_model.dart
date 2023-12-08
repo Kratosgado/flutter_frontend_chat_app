@@ -7,14 +7,14 @@ import 'picture_model.dart';
 import 'user_model.dart';
 
 class Message {
-  final String id;
+  final String? id;
   // final DateTime createdAt;
   // final DateTime updatedAt;
   final String content;
   final Picture? picture;
   final String? pictureId;
-  final String conversationId;
-  final String senderId;
+  final String? chatId;
+  final String? senderId;
 
   Message({
     required this.id,
@@ -23,7 +23,7 @@ class Message {
     required this.content,
     this.picture,
     this.pictureId,
-    required this.conversationId,
+    required this.chatId,
     required this.senderId,
   });
 
@@ -34,8 +34,8 @@ class Message {
     String? content,
     Picture? picture,
     String? pictureId,
-    Chat? conversation,
-    String? conversationId,
+    Chat? chat,
+    String? chatId,
     User? sender,
     String? senderId,
   }) {
@@ -46,7 +46,7 @@ class Message {
       content: content ?? this.content,
       picture: picture ?? this.picture,
       pictureId: pictureId ?? this.pictureId,
-      conversationId: conversationId ?? this.conversationId,
+      chatId: chatId ?? this.chatId,
       senderId: senderId ?? this.senderId,
     );
   }
@@ -59,22 +59,22 @@ class Message {
       'content': content,
       'picture': picture?.toMap(),
       'pictureId': pictureId,
-      'conversationId': conversationId,
+      'chatId': chatId,
       'senderId': senderId,
     };
   }
 
   factory Message.fromMap(Map<String, dynamic> map) {
     return Message(
-      id: map['id'] as String,
+      id: map['id'] != null ? map['id'] as String : null,
       // createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
       // updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int),
       content: map['content'] as String,
       picture:
           map['picture'] != null ? Picture.fromMap(map['picture'] as Map<String, dynamic>) : null,
       pictureId: map['pictureId'] != null ? map['pictureId'] as String : null,
-      conversationId: map['conversationId'] as String,
-      senderId: map['senderId'] as String,
+      chatId: map['chatId'] != null ? map['chatId'] as String : null,
+      senderId: map['senderId'] != null ? map['senderId'] as String : null,
     );
   }
 

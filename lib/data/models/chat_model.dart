@@ -29,7 +29,7 @@ class Chat {
     return <String, dynamic>{
       'id': id,
       'convoName': convoName,
-      'messages': messages?.map((x) => x.toMap()).toList(),
+      'messages': messages.map((x) => x.toMap()).toList(),
       'users': users.map((x) => x.toMap()).toList(),
       'pictures': pictures?.map((x) => x.toMap()).toList(),
     };
