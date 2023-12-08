@@ -56,17 +56,22 @@ class AppStrings {
 }
 
 class ServerStrings {
-  // Server Routes
-  static const String signup = '$BASEURL/user/signup';
-  static const String signin = '$BASEURL/user/signin';
+  // Auth
+  static const String signup = '$BASEURL/auth/signup';
+  static const String login = '$BASEURL/auth/login';
+
+  // User
   static const String getUsers = '$BASEURL/user/findall';
   static const String getUser = '$BASEURL/user/find';
   static const String updateUser = '$BASEURL/user/update';
   static const String updateProfilePicture = '$BASEURL/user/updateProfilePic';
   static const String getProfilePic = '$BASEURL/user/getProfilePic';
   static const String deleteUser = '$BASEURL/user/delete';
-  static const String getChats = '$BASEURL/chat';
+
+  // Chat
+  static const String getChats = '$BASEURL/chat/';
   static const String getChat = '$BASEURL/chat';
   static const String createChat = '$BASEURL/chat/create';
-  static const String sendMessage = '$BASEURL/message/send';
+
+  static const String sendMessage = '$BASEURL/chat/sendMessage';
 }

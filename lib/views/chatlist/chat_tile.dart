@@ -28,7 +28,6 @@ OpenContainer chatTile(Chat chat) {
         chat.users.first.username!,
       ),
       subtitle: Text(chat.messages.isEmpty ? "No message" : chat.messages.first.content),
-      isThreeLine: true,
       // onTap: () => Navigator.of(context).pushNamed(ChatView.routename, arguments: chat),
       trailing: IconButton(
         icon: const Icon(Icons.delete),

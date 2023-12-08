@@ -43,7 +43,7 @@ class ServerController extends GetxController {
   Future<void> signIn(SignUpData signUpData) async {
     try {
       Response response = await connect.post(
-        ServerStrings.signin,
+        ServerStrings.login,
         {"email": signUpData.email, "password": signUpData.password},
       );
       await _appPreference.setUserTokenn(response.body);
@@ -62,5 +62,4 @@ class ServerController extends GetxController {
     await _appPreference.logout();
     Get.offNamed(Routes.loginRoute);
   }
-
 }

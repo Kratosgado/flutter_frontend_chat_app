@@ -21,7 +21,7 @@ class ChatController extends GetxController {
       );
       if (response.isOk) {
         chatList.value = TypeDecoder.fromMapList<Chat>(response.body);
-        debugPrint("chats retrieved: ${chatList.length}");
+        debugPrint("chats retrieved: ${chatList[0]}");
       }
       if (response.hasError) {
         debugPrint("server error: ${response.body}");
