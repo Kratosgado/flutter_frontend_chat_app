@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/models/message_model.dart';
 import 'package:flutter_frontend_chat_app/views/chatlist/message.dart';
 import 'package:flutter_frontend_chat_app/views/chatlist/message_input_widget.dart';
+import 'package:get/get.dart';
 
 class ChatView extends StatelessWidget {
   final String chatId;
@@ -11,8 +12,7 @@ class ChatView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          leading: IconButton(
-              icon: const Icon(Icons.arrow_back), onPressed: () => Navigator.of(context).pop()),
+          leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => Get.back()),
           title: const Text("Chat app")),
       body: Column(
         children: [
@@ -25,7 +25,7 @@ class ChatView extends StatelessWidget {
               },
             ),
           ),
-           MessageInputWidget(
+          MessageInputWidget(
             chatId: chatId,
           )
         ],

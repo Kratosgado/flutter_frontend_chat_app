@@ -46,6 +46,7 @@ dependencies:
   photo_view: ^0.14.0
   url_launcher: ^6.2.1
   animations: ^2.0.8
+  socket_io_client: ^2.0.3+1
 
 dev_dependencies:
   flutter_test:
