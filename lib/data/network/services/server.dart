@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/models/signup_data.dart';
+import 'package:flutter_frontend_chat_app/data/models/user_model.dart';
 import 'package:flutter_frontend_chat_app/resources/color_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/string_manager.dart';
@@ -33,9 +34,12 @@ class ServerController extends GetxController {
         );
         Get.snackbar(response.statusCode.toString(), response.statusText!);
       }
-    } catch (e) {
-      const AlertDialog(
-        actions: [ActionChip.elevated(label: Text('ok'))],
+    } catch (err) {
+      debugPrint(err.toString());
+      Get.snackbar(
+        "Error Fetching chats",
+        err.toString(),
+        snackPosition: SnackPosition.BOTTOM,
       );
     }
   }
@@ -46,15 +50,44 @@ class ServerController extends GetxController {
         ServerStrings.login,
         {"email": signUpData.email, "password": signUpData.password},
       );
-      await _appPreference.setUserTokenn(response.body);
 
       if (response.isOk) {
+        await _appPreference.setUserToken(response.body);
+
         await _appPreference.setIsUserLoggedIn();
+        await me();
 
         Get.offAllNamed(Routes.chatList);
       }
     } catch (err) {
-      Get.dialog(Text(err.toString()), barrierColor: ColorManager.error);
+      debugPrint(err.toString());
+      Get.snackbar(
+        "Error Fetching chats",
+        err.toString(),
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  Future<void> me() async {
+    try {
+      Response res = await connect.get(
+        ServerStrings.getMe,
+        headers: {'Authorization': "Bearer ${await _appPreference.getUserToken()}"},
+        decoder: (data) => User.fromMap(data),
+      );
+
+      if (res.isOk) {
+        await _appPreference.setUserDetails(res.body);
+        debugPrint("details saved");
+      }
+    } catch (err) {
+      debugPrint(err.toString());
+      Get.snackbar(
+        "Error Fetching chats",
+        err.toString(),
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
   }
 

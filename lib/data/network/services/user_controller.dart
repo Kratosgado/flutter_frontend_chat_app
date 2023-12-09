@@ -12,6 +12,7 @@ class UserController extends GetxController {
 
   final connect = GetConnect();
 
+
   void fetchUsers() async {
     try {
       var response = await connect.get(

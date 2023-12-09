@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend_chat_app/app/app_refs.dart';
+import 'package:flutter_frontend_chat_app/app/di.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/chat_controller.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/server.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/user_controller.dart';
 import 'package:get/get.dart';
@@ -8,6 +11,8 @@ class UserListView extends GetView<UserController> {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = instance<AppPreferences>().getCurrentUser();
+
     Get.lazyPut(() => UserController());
     return Scaffold(
       appBar: AppBar(
@@ -27,8 +32,20 @@ class UserListView extends GetView<UserController> {
               itemCount: controller.usersList.length,
               itemBuilder: (context, index) {
                 var user = controller.usersList[index];
-                return ListTile(
-                  title: Text(user.username ?? "No name"),
+                return Column(
+                  children: [
+                    ListTile(
+                      onTap: () {
+                        debugPrint(user.id);
+                        ChatController().createChat(user.id);
+                      },
+                      title: Text(user.username!),
+                    ),
+                    const Divider(
+                      height: 0.2,
+                      thickness: 0.5,
+                    )
+                  ],
                 );
               },
             ),

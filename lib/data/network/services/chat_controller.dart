@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/server.dart';
+import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import '../../../app/app_refs.dart';
@@ -21,18 +23,24 @@ class ChatController extends GetxController {
   }
 
   void connectToSocket() {
-    debugPrint("connecting to socket");
-    socket = IO.io(BASEURL, <String, dynamic>{
-      'transports': ['websocket'],
-      'autoConnect': false,
-    });
-    socket.connect();
-    socket.on('connect', (_) {
-      debugPrint("connected to socket");
+    socket = IO.io(
+      BASEURL,
+      IO.OptionBuilder().setTransports(['websocket']).build(),
+    );
+    socket.id = 'replacedIdsdfjosdijf';
+    // socket.connect();
+    socket.onConnect((data) {
+      debugPrint("connect scopt");
     });
 
     socket.on('newMessage', (data) {
-      debugPrint(data);
+      try {
+        fetchChats();
+        Get.snackbar("Chat App", data['content']);
+        debugPrint(data.toString());
+      } catch (e) {
+        debugPrint(e.toString());
+      }
     });
 
     socket.onDisconnect((data) => debugPrint("disconnect"));
@@ -40,6 +48,7 @@ class ChatController extends GetxController {
 
   Future<void> fetchChats() async {
     try {
+      ServerController().me();
       var response = await connect.get(
         ServerStrings.getChats,
         headers: {"Authorization": "Bearer ${await _appPreference.getUserToken()}"},
@@ -66,7 +75,7 @@ class ChatController extends GetxController {
           ServerStrings.sendMessage, {"content": content, "chatId": chatId},
           headers: {"Authorization": "Bearer ${await _appPreference.getUserToken()}"});
       if (res.isOk) {
-        Get.snackbar("message sent", "lkfdj");
+        debugPrint("message sent: $content");
       }
       if (res.hasError) {
         debugPrint("server error: ${res.body}");
@@ -76,6 +85,26 @@ class ChatController extends GetxController {
     } catch (e) {
       debugPrint(3.toString());
       Get.snackbar("Error Fetching chats", e.toString());
+    }
+  }
+
+  Future<void> createChat(String userId) async {
+    try {
+      Response res = await connect.post(ServerStrings.createChat, {
+        "userIds": [userId]
+      }, headers: {
+        "Authorization": "Bearer ${await _appPreference.getUserToken()}"
+      });
+
+      if (res.isOk) {
+        Get.offNamed(Routes.chat);
+      }
+      if (res.hasError) {
+        debugPrint(res.statusText);
+        Get.snackbar(res.status.toString(), res.statusText!);
+      }
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 

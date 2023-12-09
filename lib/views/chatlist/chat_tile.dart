@@ -13,6 +13,7 @@ OpenContainer chatTile(Chat chat) {
     // middleColor: Colors.blue.shade700,
     transitionType: ContainerTransitionType.fadeThrough,
     closedBuilder: (ctx, action) => ListTile(
+      // onTap: () {},
       dense: true,
       tileColor: Colors.transparent,
       minVerticalPadding: 10,

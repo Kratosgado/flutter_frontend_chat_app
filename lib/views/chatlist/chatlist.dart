@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend_chat_app/data/models/user_model.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat_controller.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/server.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
@@ -6,15 +7,23 @@ import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 import 'package:flutter_frontend_chat_app/views/chatlist/chat_tile.dart';
 import 'package:get/get.dart';
 
+import '../../app/app_refs.dart';
+import '../../app/di.dart';
+
 class ChatListView extends StatelessWidget {
-  const ChatListView({super.key});
+  ChatListView({super.key});
+
+  final appPreference = instance<AppPreferences>();
+
 
   @override
   Widget build(BuildContext context) {
+    final User currentUser = appPreference.getCurrentUser();
+
     Get.lazyPut(() => ChatController());
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Hello User"),
+        title:  Text("Hello ${currentUser.username}"),
         actions: [
           IconButton(
             onPressed: () => ServerController().logout(),
