@@ -5,8 +5,10 @@ import 'package:flutter_frontend_chat_app/views/chatlist/message_input_widget.da
 import 'package:get/get.dart';
 
 class ChatView extends StatelessWidget {
-  final String chatId;
-  const ChatView({super.key, required this.chatId});
+  String? chatId;
+  ChatView({super.key, this.chatId}) {
+    chatId = chatId ?? Get.arguments.chatId;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class ChatView extends StatelessWidget {
             ),
           ),
           MessageInputWidget(
-            chatId: chatId,
+            chatId: chatId!,
           )
         ],
       ),

@@ -70,9 +70,16 @@ class ServerStrings {
   static const String deleteUser = '$BASEURL/user/delete';
 
   // Chat
-  static const String getChats = '$BASEURL/chat/';
-  static const String getChat = '$BASEURL/chat';
-  static const String createChat = '$BASEURL/chat/create';
+  static const String getChats = 'findAllChats';
+  static const String returningChats = 'returningChats';
+  static const String getChat = 'findOneChat';
+  static const String returningChat = 'returningChat';
+  static const String createChat = 'createChat';
+  static const String deleteChat = 'deleteChat';
 
-  static const String sendMessage = '$BASEURL/chat/sendMessage';
+  static const String chatCreated = 'chatCreated';
+  static const String newMessage = 'newMessage';
+  static const String messageDelivered = 'messageDelivered';
+
+  static const String sendMessage = 'sendMessage';
 }

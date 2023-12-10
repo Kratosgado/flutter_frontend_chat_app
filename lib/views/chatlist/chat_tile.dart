@@ -1,7 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/models/chat_model.dart';
-import 'package:flutter_frontend_chat_app/resources/color_manager.dart';
 
 import 'chat_view.dart';
 
@@ -44,7 +43,6 @@ OpenContainer chatTile(Chat chat) {
       ),
     ),
     openBuilder: (context, action) => ChatView(
-      chatId: chat.id,
     ),
   );
 }
