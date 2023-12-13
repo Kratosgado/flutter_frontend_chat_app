@@ -72,7 +72,7 @@ class ServerStrings {
   // Chat
   static const String getChats = 'findAllChats';
   static const String returningChats = 'returningChats';
-  static const String getChat = 'findOneChat';
+  static const String findOneChat = 'findOneChat';
   static const String returningChat = 'returningChat';
   static const String createChat = 'createChat';
   static const String deleteChat = 'deleteChat';

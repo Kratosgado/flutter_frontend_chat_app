@@ -34,7 +34,7 @@ class ChatListView extends StatelessWidget {
         padding: const EdgeInsets.all(Spacing.s12),
         child: GetBuilder<ChatController>(
           init: ChatController(),
-          // initState: (state) => controller.fetchChats(),
+          // initState: (state) => ChatController().onInit(),
           builder: (controller) {
             return Obx(() {
               if (controller.chatList.isEmpty) {

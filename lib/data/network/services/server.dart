@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/models/signup_data.dart';
 import 'package:flutter_frontend_chat_app/data/models/user_model.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/chat_controller.dart';
 import 'package:flutter_frontend_chat_app/resources/color_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/string_manager.dart';
@@ -93,6 +94,6 @@ class ServerController extends GetxController {
 
   Future<void> logout() async {
     await _appPreference.logout();
-    Get.offNamed(Routes.loginRoute);
+    Get.offAllNamed(Routes.loginRoute);
   }
 }

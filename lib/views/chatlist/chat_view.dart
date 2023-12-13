@@ -13,35 +13,34 @@ class ChatView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final chatController = Get.find<ChatController>();
     return Scaffold(
       appBar: AppBar(
           leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => Get.back()),
           title: const Text("Chat app")),
       body: GetBuilder<ChatController>(
+        initState: (_) => chatController.findOneChat(chatId),
         builder: (controller) {
-          return SingleChildScrollView(
-              child: Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: messages.length,
-                  itemBuilder: (context, index) {
-                    final message = messages[index];
-                    return MessageWidget(message: message);
-                  },
+          return Obx(() {
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: controller.openedChat.value.messages.length,
+                    itemBuilder: (context, index) {
+                      final message = controller.openedChat.value.messages[index];
+                      return MessageWidget(message: message);
+                    },
+                  ),
                 ),
-              ),
-              MessageInputWidget(
-                chatId: chatId!,
-              )
-            ],
-          ));
+                MessageInputWidget(
+                  chatId: chatId!,
+                )
+              ],
+            );
+          });
         },
       ),
     );
   }
 }
-
-List<Message> messages = [
-  Message(id: "sljfoi", content: "hello", chatId: "lksf", senderId: "ldfsj"),
-];
