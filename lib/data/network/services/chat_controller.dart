@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
+import 'package:flutter_frontend_chat_app/resources/utils.dart';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 import '../../../app/app_refs.dart';
@@ -10,14 +11,14 @@ import '../../models/chat_model.dart';
 class ChatController extends GetxController {
   final _appPreference = instance<AppPreferences>();
   final chatList = RxList<Chat>();
-  final openedChat = Rx<Chat>(Chat.fromMap({}));
+  // final openedChat = Rx<Chat>(Chat.fromMap({}));
   final connect = GetConnect();
   late io.Socket socket = io.io(BASEURL);
 
   @override
   void onInit() async {
     await connectToSocket();
-    // await fetchChats();
+    await fetchChats();
     super.onInit();
   }
 
@@ -45,7 +46,7 @@ class ChatController extends GetxController {
 
     socket.on(ServerStrings.returningChat, (data) {
       final chat = Chat.fromMap(data);
-      openedChat.value = chat;
+      // openedChat.value = chat;
     });
 
     socket.on(ServerStrings.chatCreated, (data) {
@@ -62,7 +63,10 @@ class ChatController extends GetxController {
 
     socket.on(ServerStrings.returningChats, (data) {
       try {
-        chatList.value = data.map((chat) => Chat.fromMap(chat)).toList();
+        debugPrint("chats received...");
+        debugPrint(data[1]["id"]);
+        final source = data.map((chat) => Chat.fromMap(chat)).toList();
+        chatList.value = TypeDecoder.fromMapList(source);
       } catch (e) {
         debugPrint(e.toString());
       }
@@ -75,7 +79,7 @@ class ChatController extends GetxController {
 
   Future<void> fetchChats() async {
     try {
-       socket.emit(ServerStrings.getChats);
+      socket.emit(ServerStrings.getChats);
       // var response = await connect.get(
       //   ServerStrings.getChats,
       //   headers: {"Authorization": "Bearer ${await _appPreference.getUserToken()}"},

@@ -15,7 +15,6 @@ class ChatListView extends StatelessWidget {
 
   final appPreference = instance<AppPreferences>();
 
-
   @override
   Widget build(BuildContext context) {
     final User currentUser = appPreference.getCurrentUser();
@@ -23,7 +22,7 @@ class ChatListView extends StatelessWidget {
     Get.lazyPut(() => ChatController());
     return Scaffold(
       appBar: AppBar(
-        title:  Text("Hello ${currentUser.username}"),
+        title: Text("Hello ${currentUser.username}"),
         actions: [
           IconButton(
             onPressed: () => ServerController().logout(),
@@ -37,8 +36,11 @@ class ChatListView extends StatelessWidget {
           init: ChatController(),
           // initState: (state) => controller.fetchChats(),
           builder: (controller) {
-            return Obx(
-              () => ListView.builder(
+            return Obx(() {
+              if (controller.chatList.isEmpty) {
+                return const CircularProgressIndicator.adaptive();
+              }
+              return ListView.builder(
                 itemCount: controller.chatList.length,
                 itemBuilder: (context, index) {
                   var chat = controller.chatList[index];
@@ -49,8 +51,8 @@ class ChatListView extends StatelessWidget {
                     ],
                   );
                 },
-              ),
-            );
+              );
+            });
           },
         ),
       ),

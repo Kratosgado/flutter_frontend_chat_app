@@ -42,7 +42,7 @@ OpenContainer chatTile(Chat chat) {
         },
       ),
     ),
-    openBuilder: (context, action) => ChatView(
+    openBuilder: (context, action) => ChatView(chatId: chat.id,
     ),
   );
 }
