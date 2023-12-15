@@ -27,7 +27,7 @@ OpenContainer chatTile(Chat chat) {
                 : const Icon(Icons.person_4)),
       ),
       title: Text(
-        chat.users.first.username!,
+        chat.convoName,
       ),
       subtitle: Text(chat.messages.isEmpty ? "No message" : chat.messages.first.content),
       // onTap: () => Navigator.of(context).pushNamed(ChatView.routename, arguments: chat),

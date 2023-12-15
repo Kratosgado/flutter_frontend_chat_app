@@ -9,7 +9,7 @@ import '../../../app/app_refs.dart';
 import '../../../app/di.dart';
 
 class AuthController extends GetConnect {
-  final _appPreference = instance<AppPreferences>();
+  final _appPreference = AppPreferences();
 
   Future<void> signUp({required SignUpData signUpData}) async {
     try {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend_chat_app/data/models/message_model.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
 import 'package:flutter_frontend_chat_app/views/chatlist/message.dart';
 import 'package:flutter_frontend_chat_app/views/chatlist/message_input_widget.dart';
 import 'package:get/get.dart';
@@ -21,14 +21,16 @@ class ChatView extends StatelessWidget {
       body: GetBuilder<ChatController>(
         initState: (_) => chatController.findOneChat(chatId),
         builder: (controller) {
+
           return Obx(() {
+            final messages = SocketService.openedChat.value.messages;
             return Column(
               children: [
                 Expanded(
                   child: ListView.builder(
-                    itemCount: controller.openedChat.value.messages.length,
+                    itemCount: messages.length,
                     itemBuilder: (context, index) {
-                      final message = controller.openedChat.value.messages[index];
+                      final message = messages[index];
                       return MessageWidget(message: message);
                     },
                   ),

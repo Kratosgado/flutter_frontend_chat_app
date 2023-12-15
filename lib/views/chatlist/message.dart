@@ -9,7 +9,7 @@ class MessageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentUser = instance<AppPreferences>().getCurrentUser();
+    final currentUser = AppPreferences().getCurrentUser();
 
     return Container(
       padding: const EdgeInsets.all(8),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/utils.dart';
 import 'package:get/get.dart';
@@ -9,95 +10,95 @@ import '../../../resources/string_manager.dart';
 import '../../models/chat_model.dart';
 
 class ChatController extends GetxController {
-  final _appPreference = instance<AppPreferences>();
-  final RxList<Chat> chatList = <Chat>[].obs;
-  final Rx<Chat> openedChat = Rx(Chat(id: '', convoName: '', messages: [], users: []));
-  final connect = GetConnect();
+  // final _appPreference = instance<AppPreferences>();
+  // final RxList<Chat> chatList = <Chat>[].obs;
+  // final Rx<Chat> openedChat = Rx(Chat(id: '', convoName: '', messages: [], users: []));
+  // final connect = GetConnect();
 
-  late String token;
-  late io.Socket socket = io.io(BASEURL);
+  // late String token;
+  // late io.Socket SocketService.socket = io.io(BASEURL);
 
   @override
   void onInit() async {
-    token = await _appPreference.getUserToken();
-    await connectToSocket();
+    // token = await _appPreference.getUserToken();
+    // await connectToSocket();
     await fetchChats();
 
     super.onInit();
   }
 
-  Future<void> connectToSocket() async {
-    socket = io.io(
-      BASEURL,
-      io.OptionBuilder()
-          .setTransports(['websocket'])
-          .setExtraHeaders({"authorization": "Bearer $token"})
-          .setQuery({"userId": _appPreference.getCurrentUser().id})
-          .enableReconnection()
-          .enableAutoConnect()
-          .enableForceNewConnection()
-          .enableForceNew()
-          .build(),
-    );
-    socket.connect();
+  // Future<void> connectToSocket() async {
+  //   SocketService.socket = io.io(
+  //     BASEURL,
+  //     io.OptionBuilder()
+  //         .setTransports(['websocket'])
+  //         .setExtraHeaders({"authorization": "Bearer $token"})
+  //         .setQuery({"userId": _appPreference.getCurrentUser().id})
+  //         .enableReconnection()
+  //         .enableAutoConnect()
+  //         .enableForceNewConnection()
+  //         .enableForceNew()
+  //         .build(),
+  //   );
+  //   SocketService.socket.connect();
 
-    socket.onConnect((data) {
-      debugPrint("connected ${socket.id}");
-    });
+  //   SocketService.socket.onConnect((data) {
+  //     debugPrint("connected ${SocketService.socket.id}");
+  //   });
 
-    socket.on(ServerStrings.newMessage, (data) {
-      try {
-        // fetchChats();
-        Get.snackbar("Chat App", data['content']);
-        debugPrint(data.toString());
-      } catch (e) {
-        debugPrint(e.toString());
-      }
-    });
+  //   SocketService.socket.on(ServerStrings.newMessage, (data) {
+  //     try {
+  //       // fetchChats();
+  //       Get.snackbar("Chat App", data['content']);
+  //       debugPrint(data.toString());
+  //     } catch (e) {
+  //       debugPrint(e.toString());
+  //     }
+  //   });
 
-    socket.on(ServerStrings.chatCreated, (data) {
-      try {
-        debugPrint("chat created: ${data["id"]}");
-        final createdChat = Chat.fromMap(data);
-        chatList.add(createdChat);
-        // Get.snackbar("New Chat created", data[""]);
-        Get.offNamed(Routes.chat, arguments: createdChat.id);
-        debugPrint(data.toString());
-      } catch (e) {
-        debugPrint(e.toString());
-      }
-    });
+  //   SocketService.socket.on(ServerStrings.chatCreated, (data) {
+  //     try {
+  //       debugPrint("chat created: ${data["id"]}");
+  //       final createdChat = Chat.fromMap(data);
+  //       chatList.add(createdChat);
+  //       // Get.snackbar("New Chat created", data[""]);
+  //       Get.offNamed(Routes.chat, arguments: createdChat.id);
+  //       debugPrint(data.toString());
+  //     } catch (e) {
+  //       debugPrint(e.toString());
+  //     }
+  //   });
 
-    socket.on(ServerStrings.returningChats, (data) {
-      try {
-        final source = data.map((chat) => Chat.fromMap(chat)).toList();
-        debugPrint("chats recieved: ${source.length}");
+  //   SocketService.socket.on(ServerStrings.returningChats, (data) {
+  //     try {
+  //       final source = data.map((chat) => Chat.fromMap(chat)).toList();
+  //       debugPrint("chats recieved: ${source.length}");
 
-        chatList.value = TypeDecoder.fromMapList(source);
-      } catch (e) {
-        debugPrint(e.toString());
-      }
-    });
-    socket.on(ServerStrings.returningChat, (data) {
-      try {
-        debugPrint("recieved chat: ${data["id"]}");
-        final chat = Chat.fromMap(data);
+  //       chatList.value = TypeDecoder.fromMapList(source);
+  //     } catch (e) {
+  //       debugPrint(e.toString());
+  //     }
+  //   });
+  //   SocketService.socket.on(ServerStrings.returningChat, (data) {
+  //     try {
+  //       debugPrint("recieved chat: ${data["id"]}");
+  //       final chat = Chat.fromMap(data);
 
-        debugPrint("recieved chat id: ${chat.id}");
-        openedChat.value = chat;
-      } catch (err) {
-        debugPrint(err.toString());
-        Get.snackbar("Chat recieving error", err.toString());
-      }
-    });
+  //       debugPrint("recieved chat id: ${chat.id}");
+  //       openedChat.value = chat;
+  //     } catch (err) {
+  //       debugPrint(err.toString());
+  //       Get.snackbar("Chat recieving error", err.toString());
+  //     }
+  //   });
 
-    socket.onDisconnect((data) => debugPrint("disconnect"));
-  }
+  //   SocketService.socket.onDisconnect((data) => debugPrint("disconnect"));
+  // }
 
   Future<void> fetchChats() async {
     try {
       debugPrint("fetching chats of user");
-      socket.emit(ServerStrings.getChats);
+      SocketService.socket.emit(ServerStrings.getChats);
       // var response = await connect.get(
       //   ServerStrings.getChats,
       //   headers: {"Authorization": "Bearer ${await _appPreference.getUserToken()}"},
@@ -121,12 +122,12 @@ class ChatController extends GetxController {
   // send message to recieve chats
   void findOneChat(chatId) {
     debugPrint("finding chat with id: $chatId");
-    socket.emit(ServerStrings.findOneChat, chatId);
+    SocketService.socket.emit(ServerStrings.findOneChat, chatId);
   }
 
   void sendMessage(String content, String chatId) async {
     try {
-      socket.emit(
+      SocketService.socket.emit(
         ServerStrings.sendMessage,
         {"content": content, "chatId": chatId},
       );
@@ -150,7 +151,7 @@ class ChatController extends GetxController {
 
   Future<void> createChat(String userId) async {
     try {
-      socket.emit(ServerStrings.createChat, {
+      SocketService.socket.emit(ServerStrings.createChat, {
         "userIds": [userId]
       });
       // Response res = await connect.post(ServerStrings.createChat, {
@@ -174,7 +175,7 @@ class ChatController extends GetxController {
   @override
   void onClose() {
     debugPrint("disconnecting");
-    socket.disconnect();
+    SocketService.socket.disconnect();
     super.onClose();
   }
 }

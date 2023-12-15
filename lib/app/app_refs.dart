@@ -7,9 +7,9 @@ const String PREFS_KEY_IS_USER_LOGGED_IN = "PREFS_KEY_IS_USER_LOGGED_IN";
 const String PREFS_KEY_TOKEN = "PREFS_KEY_TOKEN";
 
 class AppPreferences {
-  GetStorage localStorage;
+  GetStorage localStorage = GetStorage();
 
-  AppPreferences(this.localStorage);
+  // AppPreferences(this.localStorage);
 
   Future<void> setUserToken(String token) async {
     localStorage.write(PREFS_KEY_TOKEN, token);

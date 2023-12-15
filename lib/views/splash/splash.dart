@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/app/app_refs.dart';
 import 'package:flutter_frontend_chat_app/app/di.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 import 'package:flutter_frontend_chat_app/views/auth/signup.dart';
@@ -19,7 +20,7 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
-  final appPreference = instance<AppPreferences>();
+  final appPreference = AppPreferences();
   Timer? timer;
 
   startDelay() {
@@ -28,12 +29,7 @@ class _SplashViewState extends State<SplashView> {
 
   goNext() async {
     appPreference.isUserLoggedIn().then((isUserLoggedIn) => {
-          if (isUserLoggedIn)
-            {
-              Get.offNamed(Routes.chatList)
-            }
-          else
-            {Get.offNamed(Routes.loginRoute)}
+          if (isUserLoggedIn) {Get.offNamed(Routes.chatList)} else {Get.offNamed(Routes.loginRoute)}
         });
   }
 

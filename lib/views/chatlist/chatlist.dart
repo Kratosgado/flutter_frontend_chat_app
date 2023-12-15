@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/models/user_model.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/auth.controller.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 import 'package:flutter_frontend_chat_app/views/chatlist/chat_tile.dart';
@@ -13,7 +14,7 @@ import '../../app/di.dart';
 class ChatListView extends StatelessWidget {
   ChatListView({super.key});
 
-  final appPreference = instance<AppPreferences>();
+  final appPreference = AppPreferences();
 
   @override
   Widget build(BuildContext context) {
@@ -34,18 +35,18 @@ class ChatListView extends StatelessWidget {
         padding: const EdgeInsets.all(Spacing.s12),
         child: GetBuilder<ChatController>(
           init: ChatController(),
-          // initState: (state) => ChatController().onInit(),
+          initState: (state) => ChatController().onInit(),
           builder: (controller) {
             return Obx(() {
-              if (controller.chatList.isEmpty) {
+              if (SocketService.chatList.isEmpty) {
                 return const Center(
                   child: CircularProgressIndicator.adaptive(),
                 );
               }
               return ListView.builder(
-                itemCount: controller.chatList.length,
+                itemCount: SocketService.chatList.length,
                 itemBuilder: (context, index) {
-                  var chat = controller.chatList[index];
+                  var chat = SocketService.chatList[index];
                   return Column(
                     children: [
                       chatTile(chat),

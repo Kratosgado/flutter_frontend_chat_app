@@ -17,13 +17,14 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
+
 class _MyAppState extends State<MyApp> {
-  AppPreferences appPreferences = instance<AppPreferences>();
+  AppPreferences appPreferences = AppPreferences();
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter Chat app',
       debugShowCheckedModeBanner: false,
       defaultTransition: Transition.zoom,
       useInheritedMediaQuery: true,

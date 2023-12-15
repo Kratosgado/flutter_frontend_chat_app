@@ -11,7 +11,6 @@ class UserListView extends GetView<UserController> {
 
   @override
   Widget build(BuildContext context) {
-
     Get.lazyPut(() => UserController());
     final chatController = Get.find<ChatController>();
     return Scaffold(
@@ -25,10 +24,7 @@ class UserListView extends GetView<UserController> {
         ],
       ),
       body: GetBuilder<UserController>(
-        initState: (state) {
-          controller.fetchUsers();
-          chatController.onInit();
-        },
+        initState: (state) => controller.fetchUsers(),
         builder: (controller) {
           return Obx(
             () => ListView.builder(
