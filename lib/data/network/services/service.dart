@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
@@ -10,17 +11,14 @@ import '../../models/chat_model.dart';
 import '../../models/user_model.dart';
 
 class SocketService extends GetxService {
-
   static final _appPreference = AppPreferences();
   static RxList<Chat> chatList = <Chat>[].obs;
   static Rx<Chat> openedChat = Rx(Chat(id: '', convoName: '', messages: [], users: []));
   final connect = GetConnect();
 
-
-  late String token;
+  static late final String token;
   static io.Socket socket = io.io(BASEURL);
   static late final User currentUser;
-
 
   Future<void> init() async {
     currentUser = _appPreference.getCurrentUser();
@@ -28,7 +26,7 @@ class SocketService extends GetxService {
     token = await _appPreference.getUserToken();
     debugPrint('token $token');
     await connectToSocket();
-    // await fetchChats();
+    await ChatController.fetchChats();
 
     super.onInit();
   }
@@ -38,7 +36,7 @@ class SocketService extends GetxService {
       BASEURL,
       io.OptionBuilder()
           .setTransports(['websocket'])
-          .setExtraHeaders({"authorization": "Bearer ${await _appPreference.getUserToken()}"})
+          .setExtraHeaders({"authorization": "Bearer $token"})
           .setQuery({"userId": currentUser.id})
           .enableReconnection()
           .enableAutoConnect()
@@ -64,7 +62,7 @@ class SocketService extends GetxService {
 
     socket.on(ServerStrings.chatCreated, (data) {
       try {
-        debugPrint("chat created: ${data["id"]}");
+        debugPrint("chat created: ${data.toString()}");
         final createdChat = Chat.fromMap(data);
         chatList.add(createdChat);
         // Get.snackbar("New Chat created", data[""]);
@@ -87,7 +85,7 @@ class SocketService extends GetxService {
     });
     socket.on(ServerStrings.returningChat, (data) {
       try {
-        debugPrint("recieved chat: ${data["id"]}");
+        debugPrint("recieved chat: ${data.toString()}");
         final chat = Chat.fromMap(data);
 
         debugPrint("recieved chat id: ${chat.id}");
@@ -100,5 +98,4 @@ class SocketService extends GetxService {
 
     socket.onDisconnect((data) => debugPrint("disconnect"));
   }
-  
 }

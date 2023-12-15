@@ -13,7 +13,7 @@ class ChatController extends GetxController {
     super.onInit();
   }
 
-  Future<void> fetchChats() async {
+  static Future<void> fetchChats() async {
     try {
       debugPrint("fetching chats of user");
       SocketService.socket.emit(ServerStrings.getChats);

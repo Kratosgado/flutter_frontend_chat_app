@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 class ChatView extends StatelessWidget {
   String? chatId;
   ChatView({super.key, this.chatId}) {
-    chatId = chatId ?? Get.arguments.chatId;
+    chatId = chatId ?? Get.arguments;
   }
 
   @override
@@ -21,7 +21,6 @@ class ChatView extends StatelessWidget {
       body: GetBuilder<ChatController>(
         initState: (_) => chatController.findOneChat(chatId),
         builder: (controller) {
-
           return Obx(() {
             final messages = SocketService.openedChat.value.messages;
             return Column(
