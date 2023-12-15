@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/app/app_refs.dart';
 import 'package:flutter_frontend_chat_app/app/di.dart';
-import 'package:flutter_frontend_chat_app/data/network/services/chat_controller.dart';
-import 'package:flutter_frontend_chat_app/data/network/services/server.dart';
-import 'package:flutter_frontend_chat_app/data/network/services/user_controller.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/auth.controller.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/user.controller.dart';
 import 'package:get/get.dart';
 
 class UserListView extends GetView<UserController> {
@@ -11,21 +11,24 @@ class UserListView extends GetView<UserController> {
 
   @override
   Widget build(BuildContext context) {
-    final currentUser = instance<AppPreferences>().getCurrentUser();
 
     Get.lazyPut(() => UserController());
+    final chatController = Get.find<ChatController>();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Users"),
         actions: [
           IconButton(
-            onPressed: () => ServerController().logout(),
+            onPressed: () => AuthController().logout(),
             icon: const Icon(Icons.logout_outlined),
           ),
         ],
       ),
       body: GetBuilder<UserController>(
-        initState: (state) => controller.fetchUsers(),
+        initState: (state) {
+          controller.fetchUsers();
+          chatController.onInit();
+        },
         builder: (controller) {
           return Obx(
             () => ListView.builder(
@@ -37,7 +40,7 @@ class UserListView extends GetView<UserController> {
                     ListTile(
                       onTap: () {
                         debugPrint(user.id);
-                        ChatController().createChat(user.id);
+                        chatController.createChat(user.id);
                       },
                       title: Text(user.username!),
                     ),

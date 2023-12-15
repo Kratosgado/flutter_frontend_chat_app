@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/models/user_model.dart';
-import 'package:flutter_frontend_chat_app/data/network/services/chat_controller.dart';
-import 'package:flutter_frontend_chat_app/data/network/services/server.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/auth.controller.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 import 'package:flutter_frontend_chat_app/views/chatlist/chat_tile.dart';
@@ -25,7 +25,7 @@ class ChatListView extends StatelessWidget {
         title: Text("Hello ${currentUser.username}"),
         actions: [
           IconButton(
-            onPressed: () => ServerController().logout(),
+            onPressed: () => AuthController().logout(),
             icon: const Icon(Icons.logout_outlined),
           ),
         ],
@@ -38,7 +38,9 @@ class ChatListView extends StatelessWidget {
           builder: (controller) {
             return Obx(() {
               if (controller.chatList.isEmpty) {
-                return const CircularProgressIndicator.adaptive();
+                return const Center(
+                  child: CircularProgressIndicator.adaptive(),
+                );
               }
               return ListView.builder(
                 itemCount: controller.chatList.length,

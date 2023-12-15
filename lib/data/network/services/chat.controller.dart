@@ -57,6 +57,7 @@ class ChatController extends GetxController {
 
     socket.on(ServerStrings.chatCreated, (data) {
       try {
+        debugPrint("chat created: ${data["id"]}");
         final createdChat = Chat.fromMap(data);
         chatList.add(createdChat);
         // Get.snackbar("New Chat created", data[""]);
@@ -125,17 +126,22 @@ class ChatController extends GetxController {
 
   void sendMessage(String content, String chatId) async {
     try {
-      Response res = await connect.post(
-          ServerStrings.sendMessage, {"content": content, "chatId": chatId},
-          headers: {"Authorization": "Bearer ${await _appPreference.getUserToken()}"});
-      if (res.isOk) {
-        debugPrint("message sent: $content");
-      }
-      if (res.hasError) {
-        debugPrint("server error: ${res.body}");
+      socket.emit(
+        ServerStrings.sendMessage,
+        {"content": content, "chatId": chatId},
+      );
+      debugPrint("sending message: $content");
+      // Response res = await connect.post(
+      //     ServerStrings.sendMessage, {"content": content, "chatId": chatId},
+      //     headers: {"Authorization": "Bearer $token"});
+      // if (res.isOk) {
+      //   debugPrint("message sent: $content");
+      // }
+      // if (res.hasError) {
+      //   debugPrint("server error: ${res.body}");
 
-        Get.snackbar(res.statusCode.toString(), res.statusText!);
-      }
+      //   Get.snackbar(res.statusCode.toString(), res.statusText!);
+      // }
     } catch (e) {
       debugPrint(3.toString());
       Get.snackbar("Error Fetching chats", e.toString());
@@ -144,7 +150,7 @@ class ChatController extends GetxController {
 
   Future<void> createChat(String userId) async {
     try {
-      socket.emit('createChat', {
+      socket.emit(ServerStrings.createChat, {
         "userIds": [userId]
       });
       // Response res = await connect.post(ServerStrings.createChat, {

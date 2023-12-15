@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend_chat_app/data/network/services/chat_controller.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 
 class MessageInputWidget extends StatelessWidget {
   final String chatId;
@@ -16,7 +16,7 @@ class MessageInputWidget extends StatelessWidget {
           Expanded(
             child: TextField(
               controller: messageController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: "Type a message...",
               ),
             ),

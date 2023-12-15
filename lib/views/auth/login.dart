@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/models/signup_data.dart';
-import 'package:flutter_frontend_chat_app/data/network/services/server.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/auth.controller.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/string_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
-import 'package:flutter_frontend_chat_app/views/auth/signup.dart';
 import 'package:get/get.dart';
 
 class LoginView extends StatefulWidget {
@@ -73,7 +72,7 @@ class LoginViewState extends State<LoginView> {
                       if (_formKey.currentState!.validate()) {
                         final signInData = SignUpData(
                             email: _emailController.text, password: _passwordController.text);
-                        ServerController().signIn(signInData);
+                        AuthController().signIn(signInData);
                       }
                     },
                   ),

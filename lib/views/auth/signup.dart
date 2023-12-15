@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/models/signup_data.dart';
-import 'package:flutter_frontend_chat_app/data/network/services/server.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/auth.controller.dart';
 
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 import 'package:flutter_frontend_chat_app/views/auth/login.dart';
@@ -95,7 +95,7 @@ class SignUpViewState extends State<SignUpView> {
                             email: _emailController.text,
                             username: _usernameController.text,
                             password: _passwordController.text);
-                        ServerController().signUp(signUpData: signUpData);
+                        AuthController().signUp(signUpData: signUpData);
                       }
                     },
                   ),

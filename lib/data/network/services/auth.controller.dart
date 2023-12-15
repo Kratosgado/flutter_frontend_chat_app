@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/models/signup_data.dart';
 import 'package:flutter_frontend_chat_app/data/models/user_model.dart';
-import 'package:flutter_frontend_chat_app/data/network/services/chat_controller.dart';
-import 'package:flutter_frontend_chat_app/resources/color_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/string_manager.dart';
 import 'package:get/get.dart';
@@ -10,13 +8,12 @@ import 'package:get/get.dart';
 import '../../../app/app_refs.dart';
 import '../../../app/di.dart';
 
-class ServerController extends GetxController {
+class AuthController extends GetConnect {
   final _appPreference = instance<AppPreferences>();
-  final connect = GetConnect();
 
   Future<void> signUp({required SignUpData signUpData}) async {
     try {
-      final response = await connect.post(
+      final response = await post(
         ServerStrings.signup,
         {
           "username": signUpData.username,
@@ -47,7 +44,7 @@ class ServerController extends GetxController {
 
   Future<void> signIn(SignUpData signUpData) async {
     try {
-      Response response = await connect.post(
+      Response response = await post(
         ServerStrings.login,
         {"email": signUpData.email, "password": signUpData.password},
       );
@@ -72,7 +69,7 @@ class ServerController extends GetxController {
 
   Future<void> me() async {
     try {
-      Response res = await connect.get(
+      Response res = await get(
         ServerStrings.getMe,
         headers: {'Authorization': "Bearer ${await _appPreference.getUserToken()}"},
         decoder: (data) => User.fromMap(data),
