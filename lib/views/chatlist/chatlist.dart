@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend_chat_app/data/models/user_model.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/auth.controller.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
@@ -8,16 +7,12 @@ import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 import 'package:flutter_frontend_chat_app/views/chatlist/chat_tile.dart';
 import 'package:get/get.dart';
 
-import '../../app/app_refs.dart';
-
 class ChatListView extends StatelessWidget {
-  ChatListView({super.key});
-
-  final appPreference = AppPreferences();
+  const ChatListView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final User currentUser = appPreference.getCurrentUser();
+    final currentUser = SocketService.currentUser;
 
     Get.lazyPut(() => ChatController());
     return Scaffold(
@@ -34,7 +29,6 @@ class ChatListView extends StatelessWidget {
         padding: const EdgeInsets.all(Spacing.s12),
         child: GetBuilder<ChatController>(
           init: ChatController(),
-          initState: (state) => ChatController().onInit(),
           builder: (controller) {
             return Obx(() {
               if (SocketService.chatList.isEmpty) {

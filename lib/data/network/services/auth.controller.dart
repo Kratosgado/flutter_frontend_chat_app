@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/models/signup_data.dart';
 import 'package:flutter_frontend_chat_app/data/models/user_model.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
+import 'package:flutter_frontend_chat_app/main.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/string_manager.dart';
 import 'package:get/get.dart';
@@ -49,10 +51,11 @@ class AuthController extends GetConnect {
       );
 
       if (response.isOk) {
-        await _appPreference.setUserToken(response.body);
+        await SocketService.appPreference.setUserToken(response.body);
 
-        await _appPreference.setIsUserLoggedIn();
+        await SocketService.appPreference.setIsUserLoggedIn();
         await me();
+        await initService();
 
         Get.offAllNamed(Routes.chatList);
       }

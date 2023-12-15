@@ -21,6 +21,7 @@ class AppPreferences {
 
   User getCurrentUser() {
     final userMap = localStorage.read('currentUser');
+
     return User.fromMap(userMap);
   }
 

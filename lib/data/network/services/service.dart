@@ -11,20 +11,19 @@ import '../../models/chat_model.dart';
 import '../../models/user_model.dart';
 
 class SocketService extends GetxService {
-  static final _appPreference = AppPreferences();
+  static final appPreference = AppPreferences();
   static RxList<Chat> chatList = <Chat>[].obs;
   static Rx<Chat> openedChat = Rx(Chat(id: '', convoName: '', messages: [], users: []));
   final connect = GetConnect();
 
-  static late final String token;
+  static late String token;
   static io.Socket socket = io.io(BASEURL);
-  static late final User currentUser;
+  static late User currentUser;
 
   Future<void> init() async {
-    currentUser = _appPreference.getCurrentUser();
+    currentUser = appPreference.getCurrentUser();
 
-    token = await _appPreference.getUserToken();
-    debugPrint('token $token');
+    token = await appPreference.getUserToken();
     await connectToSocket();
     await ChatController.fetchChats();
 
@@ -67,7 +66,6 @@ class SocketService extends GetxService {
         chatList.add(createdChat);
         // Get.snackbar("New Chat created", data[""]);
         Get.offNamed(Routes.chat, arguments: createdChat.id);
-        debugPrint(data.toString());
       } catch (e) {
         debugPrint(e.toString());
       }
