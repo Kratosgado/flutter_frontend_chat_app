@@ -9,7 +9,6 @@ import 'package:flutter_frontend_chat_app/views/chatlist/chat_tile.dart';
 import 'package:get/get.dart';
 
 import '../../app/app_refs.dart';
-import '../../app/di.dart';
 
 class ChatListView extends StatelessWidget {
   ChatListView({super.key});
