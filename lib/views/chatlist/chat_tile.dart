@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/models/chat_model.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 
 import 'chat_view.dart';
 
@@ -37,12 +38,13 @@ OpenContainer chatTile(Chat chat) {
           size: 10,
         ),
         onPressed: () {
-          // TODO: Delete Chat
+          ChatController.deleteChat(chat.id);
           // chatService.deleteConversation(chat);
         },
       ),
     ),
-    openBuilder: (context, action) => ChatView(chatId: chat.id,
+    openBuilder: (context, action) => ChatView(
+      chatId: chat.id,
     ),
   );
 }

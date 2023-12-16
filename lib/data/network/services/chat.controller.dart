@@ -52,6 +52,14 @@ class ChatController extends GetxController {
     }
   }
 
+  static Future<void> deleteChat(String chatId)async{
+    try {
+      SocketService.socket.emit(ServerStrings.deleteChat, chatId);
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
   @override
   void onClose() {
     debugPrint("disconnecting");

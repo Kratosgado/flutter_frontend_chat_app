@@ -55,6 +55,8 @@ class SocketService extends GetxService {
         // fetchChats();
         final message = Message.fromMap(data);
         openedChat.value.messages.add(message);
+        openedChat.refresh();
+        // ChatController.findOneChat(message.chatId);
         debugPrint(openedChat.value.messages.last.content);
 
         Get.snackbar("Chat App", message.content);
@@ -94,6 +96,10 @@ class SocketService extends GetxService {
         debugPrint(err.toString());
         Get.snackbar("Chat recieving error", err.toString());
       }
+    });
+
+    socket.on(ServerStrings.chatDeleted, (chatId) {
+      chatList.removeWhere((element) => element.id == chatId as String);
     });
 
     socket.onDisconnect((data) => debugPrint("disconnect"));
