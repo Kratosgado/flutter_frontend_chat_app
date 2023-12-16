@@ -34,7 +34,7 @@ class SignUpViewState extends State<SignUpView> {
           key: _formKey,
           child: Center(
             child: SizedBox(
-              height: Spacing.s100 * 2.6,
+              height: Spacing.s140 * 2.3,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[

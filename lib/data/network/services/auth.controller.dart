@@ -8,6 +8,7 @@ import 'package:flutter_frontend_chat_app/resources/string_manager.dart';
 import 'package:get/get.dart';
 
 import '../../../app/app_refs.dart';
+import '../../../app/di.dart';
 
 class AuthController extends GetConnect {
   final _appPreference = AppPreferences();

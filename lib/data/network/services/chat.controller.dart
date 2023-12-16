@@ -24,7 +24,7 @@ class ChatController extends GetxController {
   }
 
   // send message to recieve chats
-  void findOneChat(chatId) {
+  static void findOneChat(chatId) {
     debugPrint("finding chat with id: $chatId");
     SocketService.socket.emit(ServerStrings.findOneChat, chatId);
   }

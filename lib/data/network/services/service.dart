@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend_chat_app/data/models/message_model.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
@@ -52,8 +53,11 @@ class SocketService extends GetxService {
     socket.on(ServerStrings.newMessage, (data) {
       try {
         // fetchChats();
-        Get.snackbar("Chat App", data['content']);
-        debugPrint(data.toString());
+        final message = Message.fromMap(data);
+        openedChat.value.messages.add(message);
+        debugPrint(openedChat.value.messages.last.content);
+
+        Get.snackbar("Chat App", message.content);
       } catch (e) {
         debugPrint(e.toString());
       }
@@ -83,9 +87,7 @@ class SocketService extends GetxService {
     });
     socket.on(ServerStrings.returningChat, (data) {
       try {
-        debugPrint("recieved chat: ${data.toString()}");
         final chat = Chat.fromMap(data);
-
         debugPrint("recieved chat id: ${chat.id}");
         openedChat.value = chat;
       } catch (err) {

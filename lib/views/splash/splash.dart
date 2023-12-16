@@ -6,6 +6,7 @@ import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 import 'package:get/get.dart';
 
+import '../../app/di.dart';
 import 'animated_container.dart';
 import 'loading_text.dart';
 
@@ -25,8 +26,16 @@ class _SplashViewState extends State<SplashView> {
   }
 
   goNext() async {
-    appPreference.isUserLoggedIn().then((isUserLoggedIn) => {
-          if (isUserLoggedIn) {Get.offNamed(Routes.chatList)} else {Get.offNamed(Routes.loginRoute)}
+    appPreference.isUserLoggedIn().then((isUserLoggedIn) async => {
+          if (isUserLoggedIn)
+            {
+              await initService(),
+              Get.offNamed(Routes.chatList),
+            }
+          else
+            {
+              Get.offNamed(Routes.loginRoute),
+            }
         });
   }
 
