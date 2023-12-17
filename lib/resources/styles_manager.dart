@@ -2,9 +2,21 @@ import 'package:flutter/material.dart';
 
 import 'font_manager.dart';
 
+//  const TextStyle(
+//             fontWeight: FontWeight.bold,
+//             fontSize: 18,
+//             color: Colors.white,
+//             shadows: [Shadow(blurRadius: 2, offset: Offset(1, 1))],
+//           ),
+
 TextStyle _getTextStyle(double fontSize, String fontFamily, FontWeight fontWeight, Color color) {
   return TextStyle(
-      fontSize: fontSize, fontFamily: fontFamily, color: color, fontWeight: fontWeight);
+    fontSize: fontSize,
+    fontFamily: fontFamily,
+    color: color,
+    fontWeight: fontWeight,
+    shadows: const [Shadow(blurRadius: 2, offset: Offset(1, 1))],
+  );
 }
 
 // regular style
@@ -20,7 +32,12 @@ TextStyle getLightStyle({double fontSize = FontSize.s12, required Color color}) 
 // bold text style
 
 TextStyle getBoldStyle({double fontSize = FontSize.s12, required Color color}) {
-  return _getTextStyle(fontSize, FontConstants.fontFamily, FontWeightManager.bold, color);
+  return _getTextStyle(
+    fontSize,
+    FontConstants.fontFamily,
+    FontWeightManager.bold,
+    color,
+  );
 }
 
 // semi bold text style

@@ -17,7 +17,9 @@ class ChatListView extends StatelessWidget {
     Get.lazyPut(() => ChatController());
     return Scaffold(
       appBar: AppBar(
-        title: Text("Hello ${currentUser.username}"),
+        title: Text(
+          "Hello ${currentUser.username}",
+        ),
         actions: [
           IconButton(
             onPressed: () => AuthController().logout(),
@@ -43,7 +45,11 @@ class ChatListView extends StatelessWidget {
                   return Column(
                     children: [
                       chatTile(chat),
-                      const Divider(height: 0.1, thickness: 0.5),
+                      const Divider(
+                        height: 0.1,
+                        thickness: 0.5,
+                        color: Colors.black,
+                      ),
                     ],
                   );
                 },

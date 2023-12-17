@@ -104,4 +104,5 @@ class SocketService extends GetxService {
 
     socket.onDisconnect((data) => debugPrint("disconnect"));
   }
+
 }

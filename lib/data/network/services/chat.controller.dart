@@ -4,8 +4,6 @@ import 'package:get/get.dart';
 import '../../../resources/string_manager.dart';
 
 class ChatController extends GetxController {
-
-
   @override
   void onInit() async {
     await fetchChats();
@@ -52,7 +50,7 @@ class ChatController extends GetxController {
     }
   }
 
-  static Future<void> deleteChat(String chatId)async{
+  static Future<void> deleteChat(String chatId) async {
     try {
       SocketService.socket.emit(ServerStrings.deleteChat, chatId);
     } catch (e) {
