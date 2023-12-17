@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/models/message_model.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
 import '../../../app/app_refs.dart';
@@ -20,7 +21,6 @@ class SocketService extends GetxService {
   static late String token;
   static io.Socket socket = io.io(BASEURL);
   static late User currentUser;
-
 
   Future<void> init() async {
     currentUser = appPreference.getCurrentUser();
@@ -50,6 +50,10 @@ class SocketService extends GetxService {
     socket.onConnect((data) {
       debugPrint("connected ${socket.id}");
     });
+
+    socket.onError((data) => {
+          debugPrint(data.toString()),
+        });
 
     socket.on(ServerStrings.newMessage, (data) {
       try {
@@ -105,5 +109,4 @@ class SocketService extends GetxService {
 
     socket.onDisconnect((data) => debugPrint("disconnect"));
   }
-
 }

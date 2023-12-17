@@ -56,7 +56,10 @@ class AuthController extends GetConnect {
 
         await SocketService.appPreference.setIsUserLoggedIn();
         await me();
-        await initService();
+        if (!SocketService.socket.active) {
+          debugPrint("socket not active");
+          await initService();
+        }
 
         Get.offAllNamed(Routes.chatList);
       }

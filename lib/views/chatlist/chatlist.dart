@@ -31,9 +31,8 @@ class ChatListView extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(Spacing.s12),
         child: GetBuilder<ChatController>(
-          initState: (_)async => {await initService(), await ChatController().onInit()},
+          init: ChatController(),
           builder: (controller) {
-            
             return Obx(() {
               if (SocketService.chatList.isEmpty) {
                 return const Center(

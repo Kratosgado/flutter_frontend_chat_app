@@ -19,7 +19,7 @@ ThemeData getApplicationTheme() {
         onSecondary: ColorManager.grey2,
       ),
       // ripple color
-      splashColor: ColorManager.primaryOpacity70,
+      splashColor: Colors.teal,
       // will be used incase of disabled button for example
       secondaryHeaderColor: ColorManager.grey,
       // card view theme
