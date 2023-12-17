@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend_chat_app/app/di.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/auth.controller.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
@@ -30,8 +31,9 @@ class ChatListView extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(Spacing.s12),
         child: GetBuilder<ChatController>(
-          init: ChatController(),
+          initState: (_)async => {await initService(), await ChatController().onInit()},
           builder: (controller) {
+            
             return Obx(() {
               if (SocketService.chatList.isEmpty) {
                 return const Center(

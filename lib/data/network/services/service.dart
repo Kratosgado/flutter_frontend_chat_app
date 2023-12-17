@@ -21,6 +21,7 @@ class SocketService extends GetxService {
   static io.Socket socket = io.io(BASEURL);
   static late User currentUser;
 
+
   Future<void> init() async {
     currentUser = appPreference.getCurrentUser();
 

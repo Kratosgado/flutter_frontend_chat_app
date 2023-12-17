@@ -1,13 +1,19 @@
+import 'dart:convert';
+
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/models/chat_model.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
+import 'package:flutter_frontend_chat_app/resources/assets_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
+import 'package:get/get.dart';
 
 import 'chat_view.dart';
 
 OpenContainer chatTile(Chat chat) {
-  final profile = chat.users.first.profilePic != null;
+  final profilePic = chat.users.first.profilePic != null;
+  final imageData = profilePic ? base64Decode(chat.users.first.profilePic!) : null;
+
   final Color topColor = Colors.blue.shade700;
   final Color bottomColor = Colors.teal.shade400;
   return OpenContainer(
@@ -27,9 +33,9 @@ OpenContainer chatTile(Chat chat) {
       child: ListTile(
         // onTap: () {},
         dense: true,
-        // tileColor: Colors.transparent,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 0),
         leading: GestureDetector(
-          onTap: () {},
+          onTap: () => viewProfileImage(chat),
           child: Container(
             padding: const EdgeInsets.all(Spacing.s5),
             decoration:
@@ -41,15 +47,17 @@ OpenContainer chatTile(Chat chat) {
               )
             ]),
             child: Hero(
-                tag: 'profile_pic_tag_${chat.id}',
-                child: profile
-                    ? CircleAvatar(
-                        backgroundImage: AssetImage(chat.users.first.profilePic!),
-                      )
-                    : const Icon(
-                        Icons.person_2_rounded,
-                        color: Colors.blue,
-                      )),
+              tag: 'profile_pic${chat.id}',
+              child: profilePic
+                  ? CircleAvatar(
+                      backgroundImage: MemoryImage(imageData!),
+                    )
+                  : Image.asset(
+                      ImageAssets.image,
+                      fit: BoxFit.contain,
+                      height: 25,
+                    ),
+            ),
           ),
         ),
         title: Text(
@@ -82,6 +90,26 @@ OpenContainer chatTile(Chat chat) {
     ),
     openBuilder: (context, action) => ChatView(
       chatId: chat.id,
+    ),
+  );
+}
+
+void viewProfileImage(Chat chat) {
+  final profilePic = chat.users.first.profilePic != null;
+  final imageData = profilePic ? base64Decode(chat.users.first.profilePic!) : null;
+  Get.to(
+    () => Hero(
+      tag: "profile_pic${chat.id}",
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          title: Text(chat.users.first.username!),
+        ),
+        body: Center(
+          child: profilePic ? Image.memory(imageData!) : Image.asset(ImageAssets.image),
+        ),
+      ),
     ),
   );
 }

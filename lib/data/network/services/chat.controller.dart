@@ -5,7 +5,7 @@ import '../../../resources/string_manager.dart';
 
 class ChatController extends GetxController {
   @override
-  void onInit() async {
+  Future<void> onInit() async {
     await fetchChats();
 
     super.onInit();
@@ -56,12 +56,5 @@ class ChatController extends GetxController {
     } catch (e) {
       debugPrint(e.toString());
     }
-  }
-
-  @override
-  void onClose() {
-    debugPrint("disconnecting");
-    SocketService.socket.disconnect();
-    super.onClose();
   }
 }

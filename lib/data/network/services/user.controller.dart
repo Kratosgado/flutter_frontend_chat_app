@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,10 +10,15 @@ class UserController extends GetxController {
 
   final connect = GetConnect();
 
+  @override
+  Future<void> onInit() async {
+    await fetchUsers();
+    super.onInit();
+  }
 
-  void fetchUsers() async {
+  Future<void> fetchUsers() async {
     try {
-      var response = await connect.get(
+      final response = await connect.get(
         ServerStrings.getUsers,
         decoder: (data) => data.map((user) => User.fromMap(user)).toList(),
       );

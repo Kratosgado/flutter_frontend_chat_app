@@ -22,7 +22,7 @@ class UserListView extends GetView<UserController> {
         ],
       ),
       body: GetBuilder<UserController>(
-        initState: (state) => controller.fetchUsers(),
+        init: UserController(),
         builder: (controller) {
           return Obx(
             () => ListView.builder(
