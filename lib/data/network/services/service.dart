@@ -82,12 +82,20 @@ class SocketService extends GetxService {
       }
     });
 
-    socket.on(ServerStrings.returningChats, (data) {
+    socket.on(ServerStrings.returningChats, (data) async {
       try {
         final source = data.map((chat) => Chat.fromMap(chat)).toList();
         debugPrint("chats recieved: ${source.length}");
 
-        chatList.value = TypeDecoder.fromMapList(source);
+        final chats = TypeDecoder.fromMapList<Chat>(source);
+        for (var chat in chats) {
+          for (var user in chat.users) {
+            if (user.profilePic != null) {
+              user.profilePic = await TypeDecoder.saveImageAsAsset(user.profilePic!);
+            }
+          }
+        }
+        chatList.value = chats;
       } catch (e) {
         debugPrint(e.toString());
       }

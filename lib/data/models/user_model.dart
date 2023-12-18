@@ -5,7 +5,7 @@ class User {
   final String id;
   final String email;
   final String? username;
-  final String? profilePic;
+  String? profilePic;
   // final DateTime createdAt;
   // final DateTime updatedAt;
   // final List<Chat> conversations;

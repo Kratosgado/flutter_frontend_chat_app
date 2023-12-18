@@ -6,6 +6,8 @@ import 'package:flutter_frontend_chat_app/data/models/chat_model.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
 import 'package:flutter_frontend_chat_app/resources/assets_manager.dart';
+import 'package:flutter_frontend_chat_app/resources/styles_manager.dart';
+import 'package:flutter_frontend_chat_app/resources/utils.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 import 'package:get/get.dart';
 
@@ -13,8 +15,8 @@ import 'chat_view.dart';
 
 OpenContainer chatTile(Chat chat) {
   final profilePic =
-      chat.users.firstWhere((user) => user.id != SocketService.currentUser.id).profilePic != null;
-  final imageData = profilePic ? base64Decode(chat.users.first.profilePic!) : null;
+      chat.users.firstWhere((user) => user.id != SocketService.currentUser.id).profilePic;
+  debugPrint(profilePic);
 
   final Color topColor = Colors.blue.shade700;
   final Color bottomColor = Colors.teal.shade400;
@@ -39,25 +41,27 @@ OpenContainer chatTile(Chat chat) {
         leading: GestureDetector(
           onTap: () => viewProfileImage(chat),
           child: Container(
-            padding: const EdgeInsets.all(Spacing.s5),
-            decoration:
-                const BoxDecoration(shape: BoxShape.circle, color: Colors.white, boxShadow: [
-              BoxShadow(
-                color: Colors.black,
-                blurRadius: Spacing.s4,
-                offset: Offset(2, 2),
-              )
-            ]),
+            padding: const EdgeInsets.all(2),
+            margin: const EdgeInsets.only(left: Spacing.s5),
+            decoration: StyleManager.boxDecoration.copyWith(
+              shape: BoxShape.circle,
+              borderRadius: null,
+              boxShadow: [
+                const BoxShadow(
+                  color: Colors.black,
+                  blurRadius: Spacing.s4,
+                  offset: Offset(2, 2),
+                )
+              ],
+            ),
             child: Hero(
               tag: 'profile_pic${chat.id}',
-              child: profilePic
+              child: profilePic != null
                   ? CircleAvatar(
-                      backgroundImage: MemoryImage(imageData!),
+                      backgroundImage: AssetImage(profilePic),
                     )
-                  : Image.asset(
-                      ImageAssets.image,
-                      fit: BoxFit.contain,
-                      height: 25,
+                  : const CircleAvatar(
+                      backgroundImage: AssetImage(ImageAssets.image),
                     ),
             ),
           ),
@@ -97,8 +101,7 @@ OpenContainer chatTile(Chat chat) {
 }
 
 void viewProfileImage(Chat chat) {
-  final profilePic = chat.users.first.profilePic != null;
-  final imageData = profilePic ? base64Decode(chat.users.first.profilePic!) : null;
+  final user = chat.users.firstWhere((user) => user.id != SocketService.currentUser.id);
   Get.to(
     () => Hero(
       tag: "profile_pic${chat.id}",
@@ -106,10 +109,12 @@ void viewProfileImage(Chat chat) {
         backgroundColor: Colors.black,
         appBar: AppBar(
           backgroundColor: Colors.black,
-          title: Text(chat.users.first.username!),
+          title: Text(user.username!),
         ),
         body: Center(
-          child: profilePic ? Image.memory(imageData!) : Image.asset(ImageAssets.image),
+          child: user.profilePic != null
+              ? Image.asset(user.profilePic!)
+              : Image.asset(ImageAssets.image),
         ),
       ),
     ),

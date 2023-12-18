@@ -54,7 +54,7 @@ TextStyle getMediumStyle({double fontSize = FontSize.s12, required Color color})
 
 class StyleManager {
   static final boxDecoration = BoxDecoration(
-    borderRadius: BorderRadius.circular(20),
+    // borderRadius: BorderRadius.circular(20),
     boxShadow: const [
       BoxShadow(color: Colors.blue, offset: Offset(0, -1), blurRadius: 5),
       BoxShadow(color: Colors.red, offset: Offset(0, 1), blurRadius: 5),
@@ -63,7 +63,7 @@ class StyleManager {
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
       colors: [
-        Colors.pink,
+        Colors.blue.shade100,
         Colors.blue.shade900,
       ],
     ),
