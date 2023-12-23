@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/models/message_model.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
 import '../../../app/app_refs.dart';

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
 
 import '../../resources/values_manager.dart';

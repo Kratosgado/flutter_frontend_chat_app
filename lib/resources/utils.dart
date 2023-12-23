@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class TypeDecoder {
   static List<T> fromMapList<T>(dynamic source) {
