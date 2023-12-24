@@ -58,13 +58,19 @@ OpenContainer chatTile(Chat chat) {
                 )),
           ),
         ),
-        title: Text(
-          chat.convoName,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-            color: Colors.white,
-            shadows: [Shadow(blurRadius: 2, offset: Offset(1, 1))],
+        title: ShaderMask(
+          shaderCallback: ((bounds) => const LinearGradient(colors: [
+                Colors.pink,
+                Colors.blue,
+              ]).createShader(bounds)),
+          child: Text(
+            chat.convoName,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              color: Colors.white,
+              shadows: [Shadow(blurRadius: 2, offset: Offset(1, 1))],
+            ),
           ),
         ),
         subtitle: Text(
