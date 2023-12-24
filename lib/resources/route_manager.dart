@@ -1,6 +1,6 @@
 import 'package:flutter_frontend_chat_app/views/auth/login.dart';
-import 'package:flutter_frontend_chat_app/views/chatlist/chat_view.dart';
-import 'package:flutter_frontend_chat_app/views/chatlist/chatlist.dart';
+import 'package:flutter_frontend_chat_app/views/chat/chat_view.dart';
+import 'package:flutter_frontend_chat_app/views/chat/chatlist.dart';
 import 'package:flutter_frontend_chat_app/views/splash/splash.dart';
 import 'package:flutter_frontend_chat_app/views/user/user.profile.dart';
 import 'package:flutter_frontend_chat_app/views/user/user_list.dart';

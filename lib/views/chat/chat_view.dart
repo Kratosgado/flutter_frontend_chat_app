@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/models/message_model.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
-import 'package:flutter_frontend_chat_app/views/chatlist/message.dart';
-import 'package:flutter_frontend_chat_app/views/chatlist/message_input_widget.dart';
+import 'package:flutter_frontend_chat_app/views/chat/components/message.dart';
+import 'package:flutter_frontend_chat_app/views/chat/components/message_input_widget.dart';
 import 'package:get/get.dart';
 
 class ChatView extends StatelessWidget {

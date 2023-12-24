@@ -6,7 +6,8 @@ import 'package:flutter_frontend_chat_app/data/network/services/auth.controller.
 import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
-import 'package:flutter_frontend_chat_app/views/chatlist/chat_tile.dart';
+import 'package:flutter_frontend_chat_app/views/chat/components/chat_tile.dart';
+import 'package:flutter_frontend_chat_app/views/chat/components/leading.tile.dart';
 import 'package:get/get.dart';
 
 class ChatListView extends StatelessWidget {
@@ -19,6 +20,7 @@ class ChatListView extends StatelessWidget {
     Get.lazyPut(() => ChatController());
     return Scaffold(
       appBar: AppBar(
+        leading: leadingTile(),
         title: Text(
           "Hello ${currentUser.username}",
         ),

@@ -9,13 +9,12 @@ import 'package:flutter_frontend_chat_app/resources/styles_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 import 'package:get/get.dart';
 
-import 'chat_view.dart';
+import '../chat_view.dart';
 
 OpenContainer chatTile(Chat chat) {
   final notCurrentUser =  chat.users.firstWhereOrNull((user) => user.id != SocketService.currentUser.id);
   final profilePic =
      notCurrentUser ?.profilePic ?? ImageAssets.image;
-  debugPrint(profilePic);
 
   final Color topColor = Colors.blue.shade700;
   final Color bottomColor = Colors.teal.shade400;
@@ -40,7 +39,7 @@ OpenContainer chatTile(Chat chat) {
         leading: GestureDetector(
           onTap: () => viewProfileImage(chat),
           child: Container(
-            padding: const EdgeInsets.all(2),
+            padding: const EdgeInsets.all(Spacing.s2),
             margin: const EdgeInsets.only(left: Spacing.s5),
             decoration: StyleManager.boxDecoration.copyWith(
               shape: BoxShape.circle,
