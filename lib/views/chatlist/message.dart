@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend_chat_app/app/app_refs.dart';
 import 'package:flutter_frontend_chat_app/data/models/message_model.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
 
 class MessageWidget extends StatelessWidget {
   final Message message;
@@ -8,7 +8,7 @@ class MessageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentUser = AppPreferences().getCurrentUser();
+    final currentUser =  SocketService.currentUser;
 
     return Container(
       padding: const EdgeInsets.all(8),

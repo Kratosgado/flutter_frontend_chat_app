@@ -22,7 +22,7 @@ class SocketService extends GetxService {
   static late User currentUser;
 
   Future<void> init() async {
-    currentUser = appPreference.getCurrentUser();
+    currentUser = await appPreference.getCurrentUser();
 
     token = await appPreference.getUserToken();
     await connectToSocket();
@@ -73,7 +73,7 @@ class SocketService extends GetxService {
       try {
         debugPrint("chat created: ${data.toString()}");
         final createdChat = Chat.fromMap(data);
-        chatList.add(createdChat);
+        chatList.addIf(chatList.map((element) => element.id != createdChat.id), createdChat);
         // Get.snackbar("New Chat created", data[""]);
         Get.offNamed(Routes.chat, arguments: createdChat.id);
       } catch (e) {
@@ -115,5 +115,11 @@ class SocketService extends GetxService {
     });
 
     socket.onDisconnect((data) => debugPrint("disconnect"));
+  }
+
+  @override
+  void onClose() {
+    socket.disconnect();
+    super.onClose();
   }
 }

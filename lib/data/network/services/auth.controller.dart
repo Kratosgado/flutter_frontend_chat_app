@@ -55,10 +55,7 @@ class AuthController extends GetConnect {
 
         await SocketService.appPreference.setIsUserLoggedIn();
         await me();
-        if (!SocketService.socket.active) {
-          debugPrint("socket not active");
-          await initService();
-        }
+        await initService();
 
         Get.offAllNamed(Routes.chatList);
       }
@@ -81,7 +78,7 @@ class AuthController extends GetConnect {
       );
 
       if (res.isOk) {
-        await _appPreference.setUserDetails(res.body);
+        await _appPreference.setCurrentUser(res.body);
         debugPrint("details saved");
       }
     } catch (err) {
@@ -96,6 +93,7 @@ class AuthController extends GetConnect {
 
   Future<void> logout() async {
     await _appPreference.logout();
+    SocketService().onClose();
     Get.offAllNamed(Routes.loginRoute);
   }
 }

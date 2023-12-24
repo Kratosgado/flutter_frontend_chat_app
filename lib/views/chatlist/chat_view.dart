@@ -14,41 +14,38 @@ class ChatView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Get.back();
-              ChatController.fetchChats();
-            },
-          ),
-          title: Text(SocketService.openedChat.value.convoName)),
-      body: GetBuilder<ChatController>(
-        initState: (_) => ChatController.findOneChat(chatId),
-        builder: (controller) {
-          return Column(
-            children: [
-              Expanded(
-                child: Obx(() {
-                  RxList<Message> messages = SocketService.openedChat.value.messages.obs;
+    ChatController.findOneChat(chatId);
 
-                  return ListView.builder(
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) {
-                      final message = messages[index];
-                      return MessageWidget(message: message);
-                    },
-                  );
-                }),
+    return Obx(() {
+      final openedChat = SocketService.openedChat.value;
+
+      return Scaffold(
+        appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                Get.back();
+                ChatController.fetchChats();
+              },
+            ),
+            title: Text(openedChat.convoName)),
+        body: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemCount: openedChat.messages.length,
+                itemBuilder: (context, index) {
+                  final message = openedChat.messages[index];
+                  return MessageWidget(message: message);
+                },
               ),
-              MessageInputWidget(
-                chatId: chatId!,
-              )
-            ],
-          );
-        },
-      ),
-    );
+            ),
+            MessageInputWidget(
+              chatId: chatId!,
+            )
+          ],
+        ),
+      );
+    });
   }
 }

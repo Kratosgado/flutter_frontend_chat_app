@@ -12,8 +12,9 @@ import 'package:get/get.dart';
 import 'chat_view.dart';
 
 OpenContainer chatTile(Chat chat) {
+  final notCurrentUser =  chat.users.firstWhereOrNull((user) => user.id != SocketService.currentUser.id);
   final profilePic =
-      chat.users.firstWhere((user) => user.id != SocketService.currentUser.id).profilePic;
+     notCurrentUser ?.profilePic ?? ImageAssets.image;
   debugPrint(profilePic);
 
   final Color topColor = Colors.blue.shade700;
@@ -54,13 +55,9 @@ OpenContainer chatTile(Chat chat) {
             ),
             child: Hero(
               tag: 'profile_pic${chat.id}',
-              child: profilePic != null
-                  ? CircleAvatar(
+              child: CircleAvatar(
                       backgroundImage: AssetImage(profilePic),
                     )
-                  : const CircleAvatar(
-                      backgroundImage: AssetImage(ImageAssets.image),
-                    ),
             ),
           ),
         ),

@@ -15,12 +15,12 @@ class AppPreferences {
     localStorage.write(PREFS_KEY_TOKEN, token);
   }
 
-  Future<void> setUserDetails(User currentuser) async {
+  Future<void> setCurrentUser(User currentuser) async {
     localStorage.write('currentUser', currentuser.toMap());
   }
 
-  User getCurrentUser() {
-    final userMap = localStorage.read('currentUser');
+  Future<User> getCurrentUser() async {
+    final userMap = await localStorage.read('currentUser');
 
     return User.fromMap(userMap);
   }
@@ -39,5 +39,6 @@ class AppPreferences {
 
   Future<void> logout() async {
     localStorage.remove(PREFS_KEY_IS_USER_LOGGED_IN);
+    localStorage.remove('currentUser');
   }
 }
