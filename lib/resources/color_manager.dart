@@ -4,6 +4,8 @@ class ColorManager {
   static const secondaryColor = Color(0xFF242430);
   static const darkColor = Color(0xFF191923);
   static const bgColor = Color(0xFF000515);
+  static final Color topColor = Colors.blue.shade700;
+  static final Color bottomColor = Colors.teal.shade400;
 
   static Color primary = HexColor.fromHex("#ED9728");
   static Color darkGrey = HexColor.fromHex("#525252");
