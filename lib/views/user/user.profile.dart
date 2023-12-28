@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
 import 'package:flutter_frontend_chat_app/resources/assets_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/color_manager.dart';
-import 'package:flutter_frontend_chat_app/resources/components/action_button.dart';
 import 'package:flutter_frontend_chat_app/views/utils/view_picture.dart';
 import 'package:get/get.dart';
 
@@ -80,7 +79,7 @@ class UserProfileView extends StatelessWidget {
                 ),
                 if (enabled.value)
                   ElevatedButton.icon(
-                    icon: Icon(Icons.save),
+                    icon: const Icon(Icons.save),
                     label: ShaderMask(
                         shaderCallback: ((bounds) => const LinearGradient(colors: [
                               Colors.white,

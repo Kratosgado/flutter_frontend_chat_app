@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';

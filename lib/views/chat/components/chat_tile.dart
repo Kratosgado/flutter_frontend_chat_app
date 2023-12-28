@@ -75,6 +75,9 @@ OpenContainer chatTile(Chat chat) {
         ),
         subtitle: Text(
           chat.messages.isEmpty ? "No message" : chat.messages.first.content,
+          // softWrap: true,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
             fontSize: 14,
             color: Colors.white.withOpacity(0.8),

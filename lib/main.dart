@@ -6,5 +6,5 @@ import 'package:flutter_frontend_chat_app/app/app.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await initAppModule();
-  runApp(MyApp());
+  runApp(SafeArea(child: MyApp()));
 }
