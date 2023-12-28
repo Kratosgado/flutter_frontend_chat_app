@@ -9,14 +9,31 @@ import '../../resources/styles_manager.dart';
 import '../../resources/values_manager.dart';
 
 class UserProfileView extends StatelessWidget {
-  const UserProfileView({super.key});
+  UserProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final enabled = false.obs;
+    final email = SocketService.currentUser.email.obs;
+    final username = SocketService.currentUser.username.obs;
     final currentUser = SocketService.currentUser;
     final profilePic = currentUser.profilePic ?? ImageAssets.image;
 
-    final enabled = false.obs;
+    TextField field(String type, TextEditingController controller) {
+      return TextField(
+        enabled: enabled.value,
+        controller: controller,
+        style: Theme.of(context).textTheme.bodyMedium,
+        decoration: InputDecoration(
+          label: Text(type),
+          labelStyle: Theme.of(context).textTheme.titleLarge,
+          prefixIcon: const Icon(Icons.email),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -31,6 +48,7 @@ class UserProfileView extends StatelessWidget {
       ),
       body: Container(
         height: Get.height,
+        padding: const EdgeInsets.all(Spacing.s4),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Spacing.s12),
           gradient: LinearGradient(
@@ -67,16 +85,11 @@ class UserProfileView extends StatelessWidget {
                     ),
                   ),
                 ),
-                TextField(
-                  enabled: enabled.value,
-                  decoration: InputDecoration(
-                    label: const Text("Username"),
-                    prefixIcon: const Icon(Icons.person_2_rounded),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
+                field("username", TextEditingController(text: username.value)),
+                const SizedBox(
+                  height: Spacing.s8,
                 ),
+                field("email", TextEditingController(text: email.value)),
                 if (enabled.value)
                   ElevatedButton.icon(
                     icon: const Icon(Icons.save),

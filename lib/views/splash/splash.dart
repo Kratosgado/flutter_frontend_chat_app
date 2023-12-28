@@ -22,7 +22,7 @@ class _SplashViewState extends State<SplashView> {
   Timer? timer;
 
   startDelay() {
-    timer = Timer(const Duration(seconds: 3), goNext);
+    timer = Timer(const Duration(seconds: 2), goNext);
   }
 
   goNext() async {

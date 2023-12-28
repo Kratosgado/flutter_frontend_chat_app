@@ -42,3 +42,12 @@ class MessageWidget extends StatelessWidget {
     );
   }
 }
+
+  // Future<void> selectImage() async {
+  //   final picker = ImagePicker();
+  //   final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+  //   if (pickedFile != null) {
+  //     selectedImage = File(pickedFile.path);
+  //   }
+  // }
