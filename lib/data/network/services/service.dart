@@ -7,31 +7,34 @@ import 'package:socket_io_client/socket_io_client.dart' as io;
 import '../../../app/app_refs.dart';
 import '../../../resources/route_manager.dart';
 import '../../../resources/string_manager.dart';
-import '../../../resources/utils.dart';
 import '../../models/chat_model.dart';
 import '../../models/user_model.dart';
 
 class SocketService extends GetxService {
   static final appPreference = AppPreferences();
-  static RxList<Chat> chatList = <Chat>[].obs;
   static Rx<Chat> openedChat = Rx(Chat(id: '', convoName: '', messages: [], users: []));
   final connect = GetConnect();
 
+  RxList<Chat> chatList = ChatController.to.chatList;
+
+  // for socket
   static late String token;
   static io.Socket socket = io.io(BASEURL);
   static late User currentUser;
+
+  static SocketService get to => Get.find();
 
   Future<void> init() async {
     currentUser = await appPreference.getCurrentUser();
 
     token = await appPreference.getUserToken();
     await connectToSocket();
-    await ChatController.fetchChats();
+    await ChatController.to.fetchChats();
 
     super.onInit();
   }
 
-  static Future<void> connectToSocket() async {
+  Future<void> connectToSocket() async {
     socket = io.io(
       BASEURL,
       io.OptionBuilder()
@@ -51,8 +54,10 @@ class SocketService extends GetxService {
     });
 
     socket.onError((data) => {
+      ChatController.to.change(chatList, status: RxStatus.error("Cannot connect to Socket")),
           debugPrint(data.toString()),
         });
+    
 
     socket.on(ServerStrings.newMessage, (data) {
       try {
@@ -81,24 +86,6 @@ class SocketService extends GetxService {
       }
     });
 
-    socket.on(ServerStrings.returningChats, (data) async {
-      try {
-        final source = data.map((chat) => Chat.fromMap(chat)).toList();
-        debugPrint("chats recieved: ${source.length}");
-
-        final chats = TypeDecoder.fromMapList<Chat>(source);
-        for (var chat in chats) {
-          for (var user in chat.users) {
-            if (user.profilePic != null) {
-              user.profilePic = await TypeDecoder.saveImageAsAsset(user.profilePic!);
-            }
-          }
-        }
-        chatList.value = chats;
-      } catch (e) {
-        debugPrint(e.toString());
-      }
-    });
     socket.on(ServerStrings.returningChat, (data) {
       try {
         final chat = Chat.fromMap(data);

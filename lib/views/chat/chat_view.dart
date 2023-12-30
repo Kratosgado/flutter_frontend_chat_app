@@ -5,15 +5,16 @@ import 'package:flutter_frontend_chat_app/views/chat/components/message.dart';
 import 'package:flutter_frontend_chat_app/views/chat/components/message_input_widget.dart';
 import 'package:get/get.dart';
 
-class ChatView extends StatelessWidget {
+class ChatView extends GetView<ChatController> {
   String? chatId;
   ChatView({super.key, this.chatId}) {
     chatId = chatId ?? Get.arguments;
   }
 
+
   @override
   Widget build(BuildContext context) {
-    ChatController.findOneChat(chatId);
+    controller.findOneChat(chatId);
 
     return Obx(() {
       final openedChat = SocketService.openedChat.value;
@@ -24,7 +25,7 @@ class ChatView extends StatelessWidget {
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
                 Get.back();
-                ChatController.fetchChats();
+                ChatController.to.fetchChats();
               },
             ),
             title: Text(openedChat.convoName)),

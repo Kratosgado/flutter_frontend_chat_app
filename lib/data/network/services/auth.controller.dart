@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/models/signup_data.dart';
 import 'package:flutter_frontend_chat_app/data/models/user_model.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/string_manager.dart';
@@ -55,6 +56,7 @@ class AuthController extends GetConnect {
 
         await SocketService.appPreference.setIsUserLoggedIn();
         await me();
+        Get.lazyPut(() => ChatController());
         await initService();
 
         Get.offAllNamed(Routes.chatList);

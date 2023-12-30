@@ -27,5 +27,5 @@ List<GetPage> getRoutes() => [
       GetPage(name: Routes.chatList, page: () => const ChatListView()),
       GetPage(name: Routes.userList, page: () => const UserListView()),
       GetPage(name: Routes.chat, page: () => ChatView()),
-      GetPage(name: Routes.userProfile, page: () => UserProfileView())
+      GetPage(name: Routes.userProfile, page: () => const UserProfileView())
     ];

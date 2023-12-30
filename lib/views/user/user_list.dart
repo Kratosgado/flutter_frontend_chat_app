@@ -31,7 +31,7 @@ class UserListView extends GetView<UserController> {
               itemBuilder: (context, index) {
                 final user = controller.usersList[index];
                 if (user.id == SocketService.currentUser.id) {
-                  return const Spacer();
+                  return const SizedBox();
                 }
 
                 return Column(

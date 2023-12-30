@@ -7,6 +7,5 @@ import '../data/network/services/service.dart';
 Future<void> initService() async {
   debugPrint("starting services");
   await GetStorage().initStorage;
-
   await Get.put(SocketService()).init();
 }

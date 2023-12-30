@@ -89,7 +89,7 @@ OpenContainer chatTile(Chat chat) {
             size: 10,
           ),
           onPressed: () {
-            ChatController.deleteChat(chat.id);
+            ChatController.to.deleteChat(chat.id);
             // chatService.deleteConversation(chat);
           },
         ),

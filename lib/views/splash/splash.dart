@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/app/app_refs.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 import 'package:get/get.dart';
@@ -29,7 +30,10 @@ class _SplashViewState extends State<SplashView> {
     appPreference.isUserLoggedIn().then((isUserLoggedIn) async => {
           if (isUserLoggedIn)
             {
+              Get.put( ChatController()),
+              // Get.put(SocketService()),
               await initService(),
+
               Get.offNamed(Routes.chatList),
             }
           else

@@ -9,7 +9,7 @@ import '../../resources/styles_manager.dart';
 import '../../resources/values_manager.dart';
 
 class UserProfileView extends StatelessWidget {
-  UserProfileView({super.key});
+  const UserProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {

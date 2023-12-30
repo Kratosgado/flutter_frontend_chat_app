@@ -35,19 +35,15 @@ class ChatListView extends StatelessWidget {
         child: GetBuilder<ChatController>(
           init: ChatController(),
           builder: (controller) {
-            return Obx(() {
-              if (SocketService.chatList.isEmpty) {
-                return const Center(
-                  child: CircularProgressIndicator.adaptive(),
-                );
-              }
+            return controller.obx((chatList) {
+              
               return ListView.builder(
-                itemCount: SocketService.chatList.length,
+                itemCount: chatList?.length,
                 itemBuilder: (context, index) {
-                  var chat = SocketService.chatList[index];
+                  var chat = chatList?[index];
                   return Column(
                     children: [
-                      chatTile(chat),
+                      chatTile(chat!),
                       const Divider(
                         height: 0.1,
                         thickness: 0.5,
@@ -57,8 +53,12 @@ class ChatListView extends StatelessWidget {
                   );
                 },
               );
-            });
+            },
+            onEmpty: const Center(child: Text("No conversation yet"),),
+            onError:  (err)=> Text(err.toString()),
+            );
           },
+          
         ),
       ),
       floatingActionButton: IconButton(
