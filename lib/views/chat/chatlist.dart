@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/auth.controller.dart';
@@ -35,30 +34,31 @@ class ChatListView extends StatelessWidget {
         child: GetBuilder<ChatController>(
           init: ChatController(),
           builder: (controller) {
-            return controller.obx((chatList) {
-              
-              return ListView.builder(
-                itemCount: chatList?.length,
-                itemBuilder: (context, index) {
-                  var chat = chatList?[index];
-                  return Column(
-                    children: [
-                      chatTile(chat!),
-                      const Divider(
-                        height: 0.1,
-                        thickness: 0.5,
-                        color: Colors.black,
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-            onEmpty: const Center(child: Text("No conversation yet"),),
-            onError:  (err)=> Text(err.toString()),
+            return controller.obx(
+              (chatList) {
+                return ListView.builder(
+                  itemCount: chatList?.length,
+                  itemBuilder: (context, index) {
+                    var chat = chatList?[index];
+                    return Column(
+                      children: [
+                        chatTile(chat!),
+                        const Divider(
+                          height: 0.1,
+                          thickness: 0.5,
+                          color: Colors.black,
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              onEmpty: const Center(
+                child: Text("No conversation yet"),
+              ),
+              onError: (err) => Center(child: Text(err.toString())),
             );
           },
-          
         ),
       ),
       floatingActionButton: IconButton(

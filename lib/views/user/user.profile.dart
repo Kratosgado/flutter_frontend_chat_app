@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/user.controller.dart';
 import 'package:flutter_frontend_chat_app/resources/assets_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/color_manager.dart';
+import 'package:flutter_frontend_chat_app/views/utils/select_image.dart';
 import 'package:flutter_frontend_chat_app/views/utils/view_picture.dart';
 import 'package:get/get.dart';
 
@@ -84,6 +88,18 @@ class UserProfileView extends StatelessWidget {
                       child: Image.asset(profilePic),
                     ),
                   ),
+                ),
+                TextButton(
+                  style: ButtonStyle(
+                      foregroundColor:
+                          MaterialStateColor.resolveWith((states) => Colors.blue.shade100)),
+                  onPressed: () async {
+                    File? selectedImage = await selectImage();
+                    if (selectedImage != null) {
+                      UserController().updateProfilePic(selectedImage);
+                    }
+                  },
+                  child: const Text("Change Profile Pic"),
                 ),
                 field("username", TextEditingController(text: username.value)),
                 const SizedBox(

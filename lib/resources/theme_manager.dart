@@ -84,8 +84,8 @@ ThemeData getApplicationTheme() {
 
         // enabled border
         enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: ColorManager.grey, width: Spacing.s1_5),
-            borderRadius: const BorderRadius.all(Radius.circular(Spacing.s8))),
+            borderRadius: BorderRadius.circular(80),
+            borderSide: BorderSide(color: Colors.teal.shade300)),
         disabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(80),
             borderSide: BorderSide(color: Colors.teal.shade300)),

@@ -18,7 +18,7 @@ class MessageWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: Spacing.s8),
         margin: const EdgeInsets.symmetric(vertical: Spacing.s2, horizontal: Spacing.s8),
         decoration: BoxDecoration(
-          color: isCurrentUser ? Colors.blue : Colors.pink,
+          color: isCurrentUser ? Colors.blue.shade700 : Colors.teal.shade300,
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Column(

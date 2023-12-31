@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
 import 'package:get/get.dart';
 
 import '../../../resources/string_manager.dart';
@@ -28,6 +31,29 @@ class UserController extends GetxController {
       }
       if (response.hasError) {
         debugPrint("server error: $response");
+        Get.snackbar(response.statusCode.toString(), response.statusText!);
+      }
+    } catch (err) {
+      debugPrint(err.toString());
+      Get.snackbar(
+        "Error Fetching chats",
+        err.toString(),
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  Future<void> updateProfilePic(File selectedImage) async {
+    try {
+      final formData = FormData({"image": selectedImage});
+      final response = await connect.put(ServerStrings.updateProfilePicture, formData,
+          headers: {"Authorization": "Bearer ${SocketService.token}"});
+      if (response.isOk) {
+        debugPrint("image updated successfully");
+        // TODO: update user data
+      }
+      if (response.hasError) {
+        debugPrint("server error: ${response.statusText}");
         Get.snackbar(response.statusCode.toString(), response.statusText!);
       }
     } catch (err) {
