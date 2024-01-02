@@ -14,25 +14,27 @@ class MessageInputWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Value<Rx<File>> selectedImage = File("").obs.reactive;
+    final selectedImage = Rx<File>(File(""));
 
-    selectedImage.change(selectedImage.value, status: RxStatus.empty());
+    // selectedImage.change(selectedImage.value, status: RxStatus.empty());
 
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Column(
           children: [
-            selectedImage.obx(
-              (state) {
-                return Container(
-                  height: 150, // Set the desired height of the image preview
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                  ),
-                  child: Image.file(state!.value),
-                );
+            Obx(
+              () {
+                if (selectedImage.value.path.isNotEmpty) {
+                  return Container(
+                    height: 150, // Set the desired height of the image preview
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                    ),
+                    child: Image.file(selectedImage.value),
+                  );
+                }
+                return const SizedBox();
               },
-              onEmpty: const SizedBox(),
             ),
             const SizedBox(height: 8.0),
             Row(
@@ -51,9 +53,9 @@ class MessageInputWidget extends StatelessWidget {
                             onPressed: () async {
                               File? image = await selectImage();
                               if (image != null) {
-                                selectedImage.value?.value = image;
-                                selectedImage.change(selectedImage.value,
-                                    status: RxStatus.success());
+                                selectedImage.value = image;
+                                // selectedImage.change(selectedImage.value,
+                                //     status: RxStatus.success());
                               }
                             },
                           ),
@@ -74,15 +76,10 @@ class MessageInputWidget extends StatelessWidget {
                           icon: const Icon(Icons.send_rounded),
                           color: Colors.teal,
                           onPressed: () async {
-                            final text = messageController.text.trim();
-
-                            // if (text.isNotEmpty || selectedImage != null) {
-                            // Upload the image to Firebase Storage if selected
-                            String? imageUrl;
-                            // if (selectedImage != null) {
-                            //   imageUrl = await uploadImage(selectedImage!);
-                            // }
-
+                            ChatController.to.sendMessage(
+                                messageController.text.trim(), selectedImage.value, chatId);
+                            messageController.clear();
+                            selectedImage.value = File("");
                             // await widget.chatService.sendMessage(widget.conversation, message);
 
                             // Clear the selected image and text input
