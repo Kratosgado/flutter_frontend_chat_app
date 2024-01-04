@@ -76,8 +76,10 @@ class MessageInputWidget extends StatelessWidget {
                           icon: const Icon(Icons.send_rounded),
                           color: Colors.teal,
                           onPressed: () async {
-                            ChatController.to.sendMessage(
-                                messageController.text.trim(), selectedImage.value, chatId);
+                            final file =
+                                selectedImage.value.path.isNotEmpty ? selectedImage.value : null;
+                            ChatController.to
+                                .sendMessage(messageController.text.trim(), file, chatId);
                             messageController.clear();
                             selectedImage.value = File("");
                             // await widget.chatService.sendMessage(widget.conversation, message);

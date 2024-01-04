@@ -70,7 +70,7 @@ class ServerStrings {
   static const String deleteUser = '$BASEURL/user/delete';
 
   // Chat
-  static const String getChats = 'findAllChats';
+  static const String findAllChats = 'findAllChats';
   static const String returningChats = 'returningChats';
 
   static const String findOneChat = 'findOneChat';

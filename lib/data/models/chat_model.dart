@@ -2,13 +2,13 @@
 
 import 'dart:convert';
 
-
 import 'message_model.dart';
 import 'picture_model.dart';
 import 'user_model.dart';
 
 class Chat {
   final String id;
+
   final String convoName;
   // final DateTime createdAt;
   // final DateTime updatedAt;

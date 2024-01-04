@@ -39,7 +39,7 @@ class ChatListView extends StatelessWidget {
                 return ListView.builder(
                   itemCount: chatList?.length,
                   itemBuilder: (context, index) {
-                    var chat = chatList?[index];
+                    final chat = chatList?[index];
                     return Column(
                       children: [
                         chatTile(chat!),

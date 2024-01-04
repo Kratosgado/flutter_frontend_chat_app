@@ -25,7 +25,7 @@ class ChatView extends GetView<ChatController> {
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
                 Get.back();
-                ChatController.to.fetchChats();
+                // ChatController.to.fetchChats();
               },
             ),
             title: Text(openedChat.convoName)),

@@ -12,7 +12,7 @@ class TypeDecoder {
     Uint8List imageData = base64Decode(base64);
     final tempDir = await Directory.systemTemp.createTemp();
     final filePath = '${tempDir.path}/${imageData.hashCode}.png';
-    // await File(filePath).writeAsBytes(imageData);
+    await File(filePath).writeAsBytes(imageData);
     return filePath;
   }
 

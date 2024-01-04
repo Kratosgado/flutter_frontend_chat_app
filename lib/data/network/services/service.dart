@@ -54,10 +54,9 @@ class SocketService extends GetxService {
     });
 
     socket.onError((data) => {
-      ChatController.to.change(chatList, status: RxStatus.error("Cannot connect to Socket")),
+          ChatController.to.change(chatList, status: RxStatus.error("Cannot connect to Socket")),
           debugPrint(data.toString()),
         });
-    
 
     socket.on(ServerStrings.newMessage, (data) {
       try {
@@ -65,6 +64,8 @@ class SocketService extends GetxService {
         final message = Message.fromMap(data);
         openedChat.value.messages.add(message);
         openedChat.refresh();
+        chatList.value.firstWhere((chat) => chat.id == message.chatId).messages.add(message);
+        chatList.refresh();
         // ChatController.findOneChat(message.chatId);
         debugPrint(openedChat.value.messages.last.content);
 

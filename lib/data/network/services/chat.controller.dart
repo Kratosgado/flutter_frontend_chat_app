@@ -22,7 +22,7 @@ class ChatController extends GetxController with StateMixin<List<Chat>> {
   Future<void> fetchChats() async {
     try {
       debugPrint("fetching chats of user");
-      SocketService.socket.emit(ServerStrings.getChats);
+      SocketService.socket.emit(ServerStrings.findAllChats);
       change(chatList, status: RxStatus.loading());
 
       SocketService.socket.on(ServerStrings.returningChats, (data) async {
@@ -30,6 +30,7 @@ class ChatController extends GetxController with StateMixin<List<Chat>> {
         debugPrint("chats recieved: ${source.length}");
 
         final chats = TypeDecoder.fromMapList<Chat>(source);
+
         for (var chat in chats) {
           for (var user in chat.users) {
             if (user.profilePic != null) {
@@ -37,6 +38,7 @@ class ChatController extends GetxController with StateMixin<List<Chat>> {
             }
           }
         }
+
         chatList.value = chats;
         if (chatList.isEmpty) {
           change(chatList, status: RxStatus.empty());
@@ -58,7 +60,7 @@ class ChatController extends GetxController with StateMixin<List<Chat>> {
 
   void sendMessage(String text, File? picture, String chatId) async {
     try {
-    final picBase64 = picture != null ? await TypeDecoder.imageToBase64(picture) : null;
+      final picBase64 = picture != null ? await TypeDecoder.imageToBase64(picture) : null;
       SocketService.socket.emit(
         ServerStrings.sendMessage,
         {

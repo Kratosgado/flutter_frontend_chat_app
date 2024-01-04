@@ -16,6 +16,7 @@ OpenContainer chatTile(Chat chat) {
   final notCurrentUser =
       chat.users.firstWhereOrNull((user) => user.id != SocketService.currentUser.id);
   final profilePic = notCurrentUser?.profilePic ?? ImageAssets.image;
+  final lastMessage = chat.messages.lastOrNull.obs;
 
   return OpenContainer(
     transitionDuration: const Duration(milliseconds: 500),
@@ -73,16 +74,16 @@ OpenContainer chatTile(Chat chat) {
             ),
           ),
         ),
-        subtitle: Text(
-          chat.messages.isEmpty ? "No message" : chat.messages.first.content,
-          // softWrap: true,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.white.withOpacity(0.8),
-          ),
-        ),
+        subtitle: Obx(() => Text(
+              lastMessage.value?.content ?? "No message",
+              // softWrap: true,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.white.withOpacity(0.8),
+              ),
+            )),
         trailing: IconButton(
           icon: const Icon(
             Icons.delete,
