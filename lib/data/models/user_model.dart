@@ -4,7 +4,7 @@ import 'dart:convert';
 class User {
   final String id;
   final String email;
-  final String? username;
+  final String username;
   String? profilePic;
   // final DateTime createdAt;
   // final DateTime updatedAt;
@@ -15,7 +15,7 @@ class User {
   User({
     required this.id,
     required this.email,
-    this.username,
+    required this.username,
     this.profilePic,
     // required this.createdAt,
     // required this.updatedAt,
@@ -56,7 +56,7 @@ class User {
     return User(
       id: map['id'] as String,
       email: map['email'] as String,
-      username: map['username'] != null ? map['username'] as String : null,
+      username: map['username'] as String,
       profilePic: map['profilePic'] != null ? map['profilePic'] as String : null,
       // createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt']),
       // updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updatedAt']),

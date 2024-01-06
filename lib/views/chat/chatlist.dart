@@ -5,6 +5,7 @@ import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 import 'package:flutter_frontend_chat_app/views/chat/components/chat_tile.dart';
 import 'package:flutter_frontend_chat_app/views/chat/components/leading.tile.dart';
+import 'package:flutter_frontend_chat_app/views/utils/account.tile.dart';
 import 'package:get/get.dart';
 
 class ChatListView extends StatelessWidget {
@@ -25,7 +26,21 @@ class ChatListView extends StatelessWidget {
           IconButton(
             onPressed: () {
               Get.bottomSheet(
-                const Text("data"),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      height: 5,
+                      width: Spacing.s60,
+                      margin: const EdgeInsets.all(Spacing.s4),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.teal,
+                      ),
+                    ),
+                    accountTile(currentUser),
+                  ],
+                ),
                 elevation: Spacing.s10,
               );
             },
