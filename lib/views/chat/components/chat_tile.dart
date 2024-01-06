@@ -1,6 +1,5 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend_chat_app/data/models/chat_model.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
 import 'package:flutter_frontend_chat_app/resources/assets_manager.dart';
@@ -9,6 +8,7 @@ import 'package:flutter_frontend_chat_app/resources/styles_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 import 'package:get/get.dart';
 
+import '../../../data/models/models.dart';
 import '../../utils/view_picture.dart';
 import '../chat_view.dart';
 

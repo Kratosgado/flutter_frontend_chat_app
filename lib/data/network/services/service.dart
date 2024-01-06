@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend_chat_app/data/models/message_model.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/isar_service.dart';
 import 'package:get/get.dart';
@@ -8,8 +7,7 @@ import 'package:socket_io_client/socket_io_client.dart' as io;
 import '../../../app/app_refs.dart';
 import '../../../resources/route_manager.dart';
 import '../../../resources/string_manager.dart';
-import '../../models/chat_model.dart';
-import '../../models/user_model.dart';
+import '../../models/models.dart';
 
 class SocketService extends GetxService {
   static final appPreference = AppPreferences();
@@ -64,7 +62,7 @@ class SocketService extends GetxService {
     socket.on(ServerStrings.newMessage, (data) {
       try {
         // fetchChats();
-        final message = Message.fromMap(data);
+        final message = Message.fromJson(data);
         openedChat.value.messages.add(message);
         openedChat.refresh();
         chatList.refresh();
@@ -81,7 +79,7 @@ class SocketService extends GetxService {
     socket.on(ServerStrings.chatCreated, (data) {
       try {
         debugPrint("chat created: ${data.toString()}");
-        final createdChat = Chat.fromMap(data);
+        final createdChat = Chat.fromJson(data);
         chatList.addIf(chatList.map((element) => element.id != createdChat.id), createdChat);
         // Get.snackbar("New Chat created", data[""]);
         Get.offNamed(Routes.chat, arguments: createdChat.id);
@@ -93,7 +91,7 @@ class SocketService extends GetxService {
 
     socket.on(ServerStrings.returningChat, (data) {
       try {
-        final chat = Chat.fromMap(data);
+        final chat = Chat.fromJson(data);
         debugPrint("recieved chat id: ${chat.id}");
         openedChat.value = chat;
       } catch (err) {

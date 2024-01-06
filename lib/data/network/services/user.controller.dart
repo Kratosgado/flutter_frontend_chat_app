@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 
 import '../../../resources/string_manager.dart';
 import '../../../resources/utils.dart';
-import '../../models/user_model.dart';
+import '../../models/models.dart';
 
 class UserController extends GetxController {
   var usersList = <User>[].obs;
@@ -23,10 +23,11 @@ class UserController extends GetxController {
     try {
       final response = await connect.get(
         ServerStrings.getUsers,
-        decoder: (data) => data.map((user) => User.fromMap(user)).toList(),
+        // decoder: (data) => data.map((user) => User.fromJson(user)).toList(),
       );
       if (response.isOk) {
-        usersList.value = TypeDecoder.fromMapList(response.body);
+        final users = response.body.map((user) => User.fromJson(user)).toList();
+        usersList.value = TypeDecoder.fromMapList(users);
         debugPrint("Users retrieved: ${usersList.length}");
       }
       if (response.hasError) {

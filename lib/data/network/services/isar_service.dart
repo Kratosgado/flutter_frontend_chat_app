@@ -20,7 +20,7 @@ class IsarService {
   Future<void> addAccount(Account account) async {
     debugPrint("Adding ${account.username} to accounts");
     final service = await db;
-    await service.accounts.put(account);
+    service.writeTxnSync(() => service.accounts.putSync(account));
   }
 
   Future<void> logout(String email) async {

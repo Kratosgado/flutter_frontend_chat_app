@@ -5,7 +5,7 @@ import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
 import 'package:get/get.dart';
 import '../../../resources/string_manager.dart';
 import '../../../resources/utils.dart';
-import '../../models/chat_model.dart';
+import '../../models/models.dart';
 
 class ChatController extends GetxController with StateMixin<List<Chat>> {
   RxList<Chat> chatList = <Chat>[].obs;
@@ -26,7 +26,7 @@ class ChatController extends GetxController with StateMixin<List<Chat>> {
       change(chatList, status: RxStatus.loading());
 
       SocketService.socket.on(ServerStrings.returningChats, (data) async {
-        final source = data.map((chat) => Chat.fromMap(chat)).toList();
+        final source = data.map((chat) => Chat.fromJson(chat)).toList();
         debugPrint("chats recieved: ${source.length}");
 
         final chats = TypeDecoder.fromMapList<Chat>(source);

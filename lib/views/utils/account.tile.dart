@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend_chat_app/data/models/user_model.dart';
 import 'package:flutter_frontend_chat_app/resources/assets_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
+
+import '../../data/models/models.dart';
 
 Widget accountTile(User user) {
   return ListTile(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
 import 'package:get/get.dart';
 
-import '../../data/models/user_model.dart';
+import '../../data/models/models.dart';
 import '../../resources/assets_manager.dart';
 
 void viewProfileImage(User user) {
@@ -15,7 +15,7 @@ void viewProfileImage(User user) {
         backgroundColor: Colors.black,
         appBar: AppBar(
           backgroundColor: Colors.black,
-          title: Text(user.username!),
+          title: Text(user.username),
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

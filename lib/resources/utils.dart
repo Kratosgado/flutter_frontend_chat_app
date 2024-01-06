@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+typedef Id = String;
+
 class TypeDecoder {
   static List<T> fromMapList<T>(dynamic source) {
     return Iterable.castFrom<dynamic, T>(source).toList();

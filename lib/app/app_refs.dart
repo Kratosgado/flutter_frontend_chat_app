@@ -1,7 +1,8 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:flutter_frontend_chat_app/data/models/user_model.dart';
 import 'package:get_storage/get_storage.dart';
+
+import '../data/models/models.dart';
 
 const String PREFS_KEY_IS_USER_LOGGED_IN = "PREFS_KEY_IS_USER_LOGGED_IN";
 const String PREFS_KEY_TOKEN = "PREFS_KEY_TOKEN";
@@ -16,13 +17,13 @@ class AppPreferences {
   }
 
   Future<void> setCurrentUser(User currentuser) async {
-    localStorage.write('currentUser', currentuser.toMap());
+    localStorage.write('currentUser', currentuser.toJson());
   }
 
   Future<User> getCurrentUser() async {
     final userMap = await localStorage.read('currentUser');
 
-    return User.fromMap(userMap);
+    return User.fromJson(userMap);
   }
 
   Future<String> getUserToken() async {

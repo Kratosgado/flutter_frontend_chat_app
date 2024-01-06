@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend_chat_app/data/models/message_model.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
+
+import '../../../data/models/models.dart';
 
 class MessageWidget extends StatelessWidget {
   final Message message;

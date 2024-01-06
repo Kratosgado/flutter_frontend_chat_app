@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/models/isar_models/account.dart';
 import 'package:flutter_frontend_chat_app/data/models/signup_data.dart';
-import 'package:flutter_frontend_chat_app/data/models/user_model.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/string_manager.dart';
 import 'package:get/get.dart';
 
-import '../../../app/app_refs.dart';
 import '../../../app/di.dart';
+import '../../models/models.dart';
 
 class AuthController extends GetConnect {
 
@@ -95,12 +94,12 @@ class AuthController extends GetConnect {
     try {
       Response res = await get(
         ServerStrings.getMe,
-        headers: {'Authorization': "Bearer ${await _appPreference.getUserToken()}"},
-        decoder: (data) => User.fromMap(data),
+        headers: {'Authorization': "Bearer ${await SocketService.appPreference.getUserToken()}"},
+        decoder: (data) => User.fromJson(data),
       );
 
       if (res.isOk) {
-        await _appPreference.setCurrentUser(res.body);
+        await SocketService.appPreference.setCurrentUser(res.body);
         debugPrint("details saved");
         return res.body as User;
       }
