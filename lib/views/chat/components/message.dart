@@ -24,11 +24,11 @@ class MessageWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (message.pictureId != null) Image.network(message.picture!.url),
-            if (message.content.isNotEmpty) ...[
+            if (message.picture != null) Image.network(message.picture!),
+            if (message.text.isNotEmpty) ...[
               const SizedBox(height: 4.0),
               Text(
-                message.content,
+                message.text,
                 style: TextStyle(
                   color: isCurrentUser ? Colors.white : Colors.black,
                   fontSize: 14.0,

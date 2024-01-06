@@ -75,7 +75,7 @@ OpenContainer chatTile(Chat chat) {
           ),
         ),
         subtitle: Obx(() => Text(
-              lastMessage.value?.content ?? "No message",
+              lastMessage.value?.text ?? "No message",
               // softWrap: true,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

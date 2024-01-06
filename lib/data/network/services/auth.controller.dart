@@ -24,7 +24,7 @@ class AuthController extends GetConnect {
         },
       );
       if (response.isOk) {
-        await signIn(signUpData);
+        await login(signUpData);
       }
       if (response.hasError) {
         debugPrint("server error: $response");
@@ -44,7 +44,8 @@ class AuthController extends GetConnect {
     }
   }
 
-  Future<void> signIn(SignUpData signUpData) async {
+  /// send login request to server
+  Future<void> login(SignUpData signUpData) async {
     try {
       Response response = await post(
         ServerStrings.login,
@@ -60,6 +61,14 @@ class AuthController extends GetConnect {
         await initService();
 
         Get.offAllNamed(Routes.chatList);
+      }
+      if (response.hasError) {
+        debugPrint(response.body["message"]);
+        Get.snackbar(
+          response.body["error"],
+          response.body["message"],
+          snackPosition: SnackPosition.BOTTOM,
+        );
       }
     } catch (err) {
       debugPrint(err.toString());

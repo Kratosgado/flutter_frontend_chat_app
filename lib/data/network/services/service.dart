@@ -51,6 +51,7 @@ class SocketService extends GetxService {
 
     socket.onConnect((data) {
       debugPrint("connected ${socket.id}");
+      socket.emit("ready");
     });
 
     socket.onError((data) => {
@@ -64,12 +65,12 @@ class SocketService extends GetxService {
         final message = Message.fromMap(data);
         openedChat.value.messages.add(message);
         openedChat.refresh();
-        chatList.value.firstWhere((chat) => chat.id == message.chatId).messages.add(message);
         chatList.refresh();
         // ChatController.findOneChat(message.chatId);
-        debugPrint(openedChat.value.messages.last.content);
+        debugPrint(openedChat.value.messages.last.text);
 
-        Get.snackbar("Chat App", message.content);
+        socket.emit(ServerStrings.deleteSocketMessage, message.id);
+        Get.snackbar("Chat App", message.text);
       } catch (e) {
         debugPrint(e.toString());
       }
@@ -82,6 +83,7 @@ class SocketService extends GetxService {
         chatList.addIf(chatList.map((element) => element.id != createdChat.id), createdChat);
         // Get.snackbar("New Chat created", data[""]);
         Get.offNamed(Routes.chat, arguments: createdChat.id);
+        socket.emit(ServerStrings.deleteSocketMessage, createdChat.id);
       } catch (e) {
         debugPrint(e.toString());
       }

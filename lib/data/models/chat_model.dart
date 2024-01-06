@@ -34,10 +34,6 @@ class Chat {
     };
   }
 
-  List<Chat> fromMapList(List<Map<String, dynamic>> list) {
-    return Iterable.castFrom<dynamic, Chat>(list).toList();
-  }
-
   factory Chat.fromMap(Map<String, dynamic> map) {
     return Chat(
       id: map['id'] as String,

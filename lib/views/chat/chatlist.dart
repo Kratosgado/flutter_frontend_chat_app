@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
-import 'package:flutter_frontend_chat_app/data/network/services/auth.controller.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
@@ -24,8 +23,15 @@ class ChatListView extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () => AuthController().logout(),
-            icon: const Icon(Icons.logout_outlined),
+            onPressed: () {
+              Get.bottomSheet(
+                const Text("data"),
+                elevation: Spacing.s10,
+              );
+            },
+            // onPressed: () => AuthController().logout(),
+
+            icon: const Icon(Icons.opacity_outlined),
           ),
         ],
       ),

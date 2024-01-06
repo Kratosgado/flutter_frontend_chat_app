@@ -46,7 +46,9 @@ class LoginViewState extends State<LoginView> {
                         return null;
                       },
                     ),
-                    // const Spacer(flex: 1),
+                    const SizedBox(
+                      height: 8,
+                    ),
                     TextFormField(
                       controller: _passwordController,
                       decoration: const InputDecoration(labelText: 'Password'),
@@ -75,7 +77,7 @@ class LoginViewState extends State<LoginView> {
                         if (_formKey.currentState!.validate()) {
                           final signInData = SignUpData(
                               email: _emailController.text, password: _passwordController.text);
-                          AuthController().signIn(signInData);
+                          AuthController().login(signInData);
                         }
                       },
                     ),
