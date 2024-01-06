@@ -2,6 +2,8 @@
 
 import 'dart:convert';
 
+import 'package:isar/isar.dart';
+
 import 'message_model.dart';
 import 'picture_model.dart';
 import 'user_model.dart';
@@ -12,15 +14,17 @@ class Chat {
   final String convoName;
   // final DateTime createdAt;
   // final DateTime updatedAt;
-  final List<Message> messages;
-  final List<User> users;
+  // final List<Message> messages;
+  final messages = IsarLinks<Message>();
+  // final List<User> users;
+  final users = IsarLinks<User>();
   final List<Picture>? pictures;
 
   Chat({
     required this.id,
     required this.convoName,
-    required this.messages,
-    required this.users,
+    // required this.messages,
+    // required this.users,
     this.pictures,
   });
 
@@ -28,7 +32,7 @@ class Chat {
     return <String, dynamic>{
       'id': id,
       'convoName': convoName,
-      'messages': messages.map((x) => x.toMap()).toList(),
+      // 'messages': messages.map((x) => x.toMap()).toList(),
       'users': users.map((x) => x.toMap()).toList(),
       'pictures': pictures?.map((x) => x.toMap()).toList(),
     };
@@ -38,16 +42,16 @@ class Chat {
     return Chat(
       id: map['id'] as String,
       convoName: map['convoName'] as String,
-      messages: List<Message>.from(
-        (map['messages'] as List<dynamic>).map<Message?>(
-          (x) => Message.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
-      users: List<User>.from(
-        (map['users'] as List<dynamic>).map<User>(
-          (x) => User.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      // messages: List<Message>.from(
+      //   (map['messages'] as List<dynamic>).map<Message?>(
+      //     (x) => Message.fromMap(x as Map<String, dynamic>),
+      //   ),
+      // ),
+      // users: List<User>.from(
+      //   (map['users'] as List<dynamic>).map<User>(
+      //     (x) => User.fromMap(x as Map<String, dynamic>),
+      //   ),
+      // ),
       pictures: map['pictures'] != null
           ? List<Picture>.from(
               (map['pictures'] as List<Picture>).map<Picture?>(

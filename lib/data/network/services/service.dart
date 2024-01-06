@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/models/message_model.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/isar_service.dart';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
@@ -12,6 +13,7 @@ import '../../models/user_model.dart';
 
 class SocketService extends GetxService {
   static final appPreference = AppPreferences();
+  static final isarService = IsarService();
   static Rx<Chat> openedChat = Rx(Chat(id: '', convoName: '', messages: [], users: []));
   final connect = GetConnect();
 
@@ -108,7 +110,9 @@ class SocketService extends GetxService {
   }
 
   @override
-  void onClose() {
+  Future<void> onClose() async {
+    await appPreference.logout();
+    await isarService.logout(currentUser.email);
     socket.disconnect();
     super.onClose();
   }

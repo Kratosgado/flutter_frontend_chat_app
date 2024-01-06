@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend_chat_app/data/models/isar_models/account.dart';
 import 'package:flutter_frontend_chat_app/data/models/signup_data.dart';
 import 'package:flutter_frontend_chat_app/data/models/user_model.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
@@ -11,7 +12,6 @@ import '../../../app/app_refs.dart';
 import '../../../app/di.dart';
 
 class AuthController extends GetConnect {
-  final _appPreference = AppPreferences();
 
   Future<void> signUp({required SignUpData signUpData}) async {
     try {
@@ -56,7 +56,18 @@ class AuthController extends GetConnect {
         await SocketService.appPreference.setUserToken(response.body);
 
         await SocketService.appPreference.setIsUserLoggedIn();
-        await me();
+        await me().then((user) async {
+          if (user != null) {
+            final currentAccount = Account()
+              ..username = user.username
+              ..email = user.email
+              ..password = signUpData.password
+              ..isActive = true;
+
+            await SocketService.isarService.addAccount(currentAccount);
+          }
+        });
+
         Get.lazyPut(() => ChatController());
         await initService();
 
@@ -80,7 +91,7 @@ class AuthController extends GetConnect {
     }
   }
 
-  Future<void> me() async {
+  Future<User?> me() async {
     try {
       Response res = await get(
         ServerStrings.getMe,
@@ -91,6 +102,7 @@ class AuthController extends GetConnect {
       if (res.isOk) {
         await _appPreference.setCurrentUser(res.body);
         debugPrint("details saved");
+        return res.body as User;
       }
     } catch (err) {
       debugPrint(err.toString());
@@ -100,10 +112,10 @@ class AuthController extends GetConnect {
         snackPosition: SnackPosition.BOTTOM,
       );
     }
+    return null;
   }
 
   Future<void> logout() async {
-    await _appPreference.logout();
     SocketService().onClose();
     Get.offAllNamed(Routes.loginRoute);
   }

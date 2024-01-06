@@ -21,26 +21,6 @@ class User {
     // required this.updatedAt,
   });
 
-  User copyWith({
-    String? id,
-    String? email,
-    String? username,
-    String? profilePic,
-    String? password,
-    String? salt,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-  }) {
-    return User(
-      id: id ?? this.id,
-      email: email ?? this.email,
-      username: username ?? this.username,
-      profilePic: profilePic ?? this.profilePic,
-      // createdAt: createdAt ?? this.createdAt,
-      // updatedAt: updatedAt ?? this.updatedAt,
-    );
-  }
-
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,

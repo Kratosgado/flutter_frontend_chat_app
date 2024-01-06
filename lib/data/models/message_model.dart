@@ -2,17 +2,22 @@
 
 import 'dart:convert';
 
+import 'package:isar/isar.dart';
+
 import 'chat_model.dart';
 import 'picture_model.dart';
 import 'user_model.dart';
 
+typedef Id = String;
+
 class Message {
-  final String? id;
+  final Id? id;
   // final DateTime createdAt;
   // final DateTime updatedAt;
   final String text;
   final String? picture;
   final String? chatId;
+  final chat = IsarLink<Chat>();
   final String? senderId;
 
   Message({
