@@ -12,7 +12,7 @@ import '../../models/models.dart';
 class SocketService extends GetxService {
   static final appPreference = AppPreferences();
   static final isarService = IsarService();
-  static Rx<Chat> openedChat = Rx(Chat(id: '', convoName: '', messages: [], users: []));
+  static Rx<Chat> openedChat = Rx<Chat>(Chat(id: '', convoName: ''));
   final connect = GetConnect();
 
   RxList<Chat> chatList = ChatController.to.chatList;
@@ -51,7 +51,7 @@ class SocketService extends GetxService {
 
     socket.onConnect((data) {
       debugPrint("connected ${socket.id}");
-      socket.emit("ready");
+      // socket.emit("ready");
     });
 
     socket.onError((data) => {

@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 
 import '../../../data/models/models.dart';
 import '../../utils/view_picture.dart';
-import '../chat_view.dart';
+import '../chat.view.dart';
 
 OpenContainer chatTile(Chat chat) {
   final notCurrentUser =

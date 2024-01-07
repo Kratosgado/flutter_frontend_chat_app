@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
-import 'package:flutter_frontend_chat_app/views/chat/components/message.dart';
-import 'package:flutter_frontend_chat_app/views/chat/components/message_input_widget.dart';
+import 'package:flutter_frontend_chat_app/views/chat/components/message.widget.dart';
+import 'package:flutter_frontend_chat_app/views/chat/components/message.input.widget.dart';
 import 'package:get/get.dart';
 
 class ChatView extends GetView<ChatController> {

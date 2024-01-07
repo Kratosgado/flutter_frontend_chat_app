@@ -3,9 +3,10 @@ import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.
 import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
-import 'package:flutter_frontend_chat_app/views/chat/components/chat_tile.dart';
+import 'package:flutter_frontend_chat_app/views/chat/components/chat.tile.dart';
 import 'package:flutter_frontend_chat_app/views/chat/components/leading.tile.dart';
 import 'package:flutter_frontend_chat_app/views/utils/account.tile.dart';
+import 'package:flutter_frontend_chat_app/views/utils/accounts.sheet.dart';
 import 'package:get/get.dart';
 
 class ChatListView extends StatelessWidget {
@@ -25,24 +26,7 @@ class ChatListView extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Get.bottomSheet(
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      height: 5,
-                      width: Spacing.s60,
-                      margin: const EdgeInsets.all(Spacing.s4),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.teal,
-                      ),
-                    ),
-                    accountTile(currentUser),
-                  ],
-                ),
-                elevation: Spacing.s10,
-              );
+              accountsSheet;
             },
             // onPressed: () => AuthController().logout(),
 

@@ -7,6 +7,7 @@ class Account {
   Id id = Isar.autoIncrement;
   String? username;
   String? email;
+  String? profilePic;
   String? password;
 
   bool? isActive;
