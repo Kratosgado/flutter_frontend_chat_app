@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend_chat_app/data/models/models.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
@@ -36,35 +37,49 @@ class ChatListView extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(Spacing.s12),
-        child: GetBuilder<ChatController>(
-          init: ChatController(),
-          builder: (controller) {
-            return controller.obx(
-              (chatList) {
-                return ListView.builder(
-                  itemCount: chatList?.length,
-                  itemBuilder: (context, index) {
-                    final chat = chatList?[index];
-                    return Column(
-                      children: [
-                        chatTile(chat!),
-                        const Divider(
-                          height: 0.1,
-                          thickness: 0.5,
-                          color: Colors.black,
-                        ),
-                      ],
-                    );
-                  },
+        child: StreamBuilder(
+            stream: SocketService.isarService.streamChats(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(),
                 );
-              },
-              onEmpty: const Center(
-                child: Text("No conversation yet"),
-              ),
-              onError: (err) => Center(child: Text(err.toString())),
-            );
-          },
-        ),
+              }
+              if (snapshot.hasError) {
+                return const Center(
+                  child: Text("Error loading chats"),
+                );
+              }
+              return GetBuilder<ChatController>(
+                init: ChatController(),
+                builder: (controller) {
+                  return controller.obx(
+                    (chatList) {
+                      return ListView.builder(
+                        itemCount: chatList?.length,
+                        itemBuilder: (context, index) {
+                          final chat = chatList?[index];
+                          return Column(
+                            children: [
+                              chatTile(chat!),
+                              const Divider(
+                                height: 0.1,
+                                thickness: 0.5,
+                                color: Colors.black,
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    onEmpty: const Center(
+                      child: Text("No conversation yet"),
+                    ),
+                    onError: (err) => Center(child: Text(err.toString())),
+                  );
+                },
+              );
+            }),
       ),
       floatingActionButton: IconButton(
         icon: const Icon(Icons.message_rounded),

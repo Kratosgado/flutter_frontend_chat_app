@@ -14,8 +14,8 @@ import '../chat.view.dart';
 
 OpenContainer chatTile(Chat chat) {
   final notCurrentUser =
-      chat.users.firstWhereOrNull((user) => user.id != SocketService.currentUser.id);
-  final profilePic = notCurrentUser?.profilePic ?? ImageAssets.image;
+      chat.users.firstWhere((user) => user.id != SocketService.currentUser.id);
+  final profilePic = notCurrentUser.profilePic ?? ImageAssets.image;
   final lastMessage = chat.messages.lastOrNull.obs;
 
   return OpenContainer(

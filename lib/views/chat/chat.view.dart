@@ -35,7 +35,7 @@ class ChatView extends GetView<ChatController> {
               child: ListView.builder(
                 itemCount: openedChat.messages.length,
                 itemBuilder: (context, index) {
-                  final message = openedChat.messages[index];
+                  final message = openedChat.messages.elementAt(index);
                   return MessageWidget(message: message);
                 },
               ),

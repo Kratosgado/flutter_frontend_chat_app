@@ -3,6 +3,8 @@ import 'package:flutter_frontend_chat_app/data/models/isar_models/account.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart' as path;
 
+import '../../models/models.dart';
+
 class IsarService {
   late Future<Isar> db;
 
@@ -15,6 +17,17 @@ class IsarService {
   Future<List<Account>> getAccounts() async {
     final service = await db;
     return service.accounts.buildQuery<Account>().findAll();
+  }
+
+  Future<void> addChats(List<Chat> chats) async {
+    final service = await db;
+    debugPrint("adding ${chats.length} to database");
+    service.writeTxnSync(() => service.chats.putAllSync(chats));
+  }
+
+  Stream<List<Chat>> streamChats() async* {
+    final service = await db;
+    yield* service.chats.where().watch(fireImmediately: true);
   }
 
   Future<void> addAccount(Account account) async {
@@ -34,6 +47,8 @@ class IsarService {
 
   Future<Isar> initDb() async {
     final appDocsDir = await path.getApplicationDocumentsDirectory();
-    return await Isar.open([AccountSchema], directory: appDocsDir.path);
+    return await Isar.open([
+      AccountSchema, MessageSchema, UserSchema, ChatSchema
+    ], directory: appDocsDir.path);
   }
 }

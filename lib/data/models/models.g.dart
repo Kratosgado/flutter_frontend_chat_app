@@ -2367,16 +2367,16 @@ const ChatSchema = CollectionSchema(
   idName: r'chatId',
   indexes: {},
   links: {
-    r'messagess': LinkSchema(
+    r'messages': LinkSchema(
       id: -448671371745869507,
-      name: r'messagess',
+      name: r'messages',
       target: r'Message',
       single: false,
       linkName: r'chat',
     ),
-    r'userss': LinkSchema(
-      id: 7903448972127670227,
-      name: r'userss',
+    r'users': LinkSchema(
+      id: -402367198561988888,
+      name: r'users',
       target: r'User',
       single: false,
     )
@@ -2443,13 +2443,12 @@ Id _chatGetId(Chat object) {
 }
 
 List<IsarLinkBase<dynamic>> _chatGetLinks(Chat object) {
-  return [object.messagess, object.userss];
+  return [object.messages, object.users];
 }
 
 void _chatAttach(IsarCollection<dynamic> col, Id id, Chat object) {
-  object.messagess
-      .attach(col, col.isar.collection<Message>(), r'messagess', id);
-  object.userss.attach(col, col.isar.collection<User>(), r'userss', id);
+  object.messages.attach(col, col.isar.collection<Message>(), r'messages', id);
+  object.users.attach(col, col.isar.collection<User>(), r'users', id);
 }
 
 extension ChatQueryWhereSort on QueryBuilder<Chat, Chat, QWhere> {
@@ -2842,51 +2841,51 @@ extension ChatQueryFilter on QueryBuilder<Chat, Chat, QFilterCondition> {
 extension ChatQueryObject on QueryBuilder<Chat, Chat, QFilterCondition> {}
 
 extension ChatQueryLinks on QueryBuilder<Chat, Chat, QFilterCondition> {
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> messagess(
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> messages(
       FilterQuery<Message> q) {
     return QueryBuilder.apply(this, (query) {
-      return query.link(q, r'messagess');
+      return query.link(q, r'messages');
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> messagessLengthEqualTo(
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> messagesLengthEqualTo(
       int length) {
     return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'messagess', length, true, length, true);
+      return query.linkLength(r'messages', length, true, length, true);
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> messagessIsEmpty() {
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> messagesIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'messagess', 0, true, 0, true);
+      return query.linkLength(r'messages', 0, true, 0, true);
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> messagessIsNotEmpty() {
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> messagesIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'messagess', 0, false, 999999, true);
+      return query.linkLength(r'messages', 0, false, 999999, true);
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> messagessLengthLessThan(
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> messagesLengthLessThan(
     int length, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'messagess', 0, true, length, include);
+      return query.linkLength(r'messages', 0, true, length, include);
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> messagessLengthGreaterThan(
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> messagesLengthGreaterThan(
     int length, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'messagess', length, include, 999999, true);
+      return query.linkLength(r'messages', length, include, 999999, true);
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> messagessLengthBetween(
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> messagesLengthBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -2894,54 +2893,54 @@ extension ChatQueryLinks on QueryBuilder<Chat, Chat, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(
-          r'messagess', lower, includeLower, upper, includeUpper);
+          r'messages', lower, includeLower, upper, includeUpper);
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> userss(FilterQuery<User> q) {
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> users(FilterQuery<User> q) {
     return QueryBuilder.apply(this, (query) {
-      return query.link(q, r'userss');
+      return query.link(q, r'users');
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> userssLengthEqualTo(
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> usersLengthEqualTo(
       int length) {
     return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'userss', length, true, length, true);
+      return query.linkLength(r'users', length, true, length, true);
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> userssIsEmpty() {
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> usersIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'userss', 0, true, 0, true);
+      return query.linkLength(r'users', 0, true, 0, true);
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> userssIsNotEmpty() {
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> usersIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'userss', 0, false, 999999, true);
+      return query.linkLength(r'users', 0, false, 999999, true);
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> userssLengthLessThan(
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> usersLengthLessThan(
     int length, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'userss', 0, true, length, include);
+      return query.linkLength(r'users', 0, true, length, include);
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> userssLengthGreaterThan(
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> usersLengthGreaterThan(
     int length, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'userss', length, include, 999999, true);
+      return query.linkLength(r'users', length, include, 999999, true);
     });
   }
 
-  QueryBuilder<Chat, Chat, QAfterFilterCondition> userssLengthBetween(
+  QueryBuilder<Chat, Chat, QAfterFilterCondition> usersLengthBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -2949,7 +2948,7 @@ extension ChatQueryLinks on QueryBuilder<Chat, Chat, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(
-          r'userss', lower, includeLower, upper, includeUpper);
+          r'users', lower, includeLower, upper, includeUpper);
     });
   }
 }
@@ -3100,16 +3099,12 @@ Chat _$ChatFromJson(Map<String, dynamic> json) => Chat(
       id: json['id'] as String,
       convoName: json['convoName'] as String,
     )
-      ..messages = (json['messages'] as List<dynamic>)
-          .map((e) => Message.fromJson(e as Map<String, dynamic>))
-          .toList()
-      ..users = (json['users'] as List<dynamic>)
-          .map((e) => User.fromJson(e as Map<String, dynamic>))
-          .toList();
+      ..messages = const MessagesJsonToIsar().fromJson(json['messages'] as List)
+      ..users = const UsersJsonToIsar().fromJson(json['users'] as List);
 
 Map<String, dynamic> _$ChatToJson(Chat instance) => <String, dynamic>{
       'id': instance.id,
       'convoName': instance.convoName,
-      'messages': instance.messages.map((e) => e.toJson()).toList(),
-      'users': instance.users.map((e) => e.toJson()).toList(),
+      'messages': const MessagesJsonToIsar().toJson(instance.messages),
+      'users': const UsersJsonToIsar().toJson(instance.users),
     };

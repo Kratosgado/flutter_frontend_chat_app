@@ -73,17 +73,19 @@ class Chat {
   //  DateTime createdAt;
   //  DateTime updatedAt;
   // message
-  @Ignore()
-  late List<Message> messages;
+  // @Ignore()
+  // late List<Message> messages;
   @Backlink(to: 'chat')
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  final messagess = IsarLinks<Message>();
+  // @JsonKey(includeFromJson: false, includeToJson: false)
+  @MessagesJsonToIsar()
+  IsarLinks<Message> messages = IsarLinks<Message>();
 
   // user
-  @Ignore()
-  late List<User> users;
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  final userss = IsarLinks<User>();
+  // @Ignore()
+  // late List<User> users;
+  // @JsonKey(includeFromJson: false, includeToJson: false)
+  @UsersJsonToIsar()
+  IsarLinks<User> users = IsarLinks<User>();
 
   Chat({
     required this.id,
@@ -110,3 +112,37 @@ int fastHash(String id) {
 }
 
 enum MessageStatus { sending, sent, delivered, seen }
+
+class MessagesJsonToIsar implements JsonConverter<IsarLinks<Message>, List<dynamic>> {
+  const MessagesJsonToIsar();
+  @override
+  fromJson(json) {
+    final messages = json.map((e) => Message.fromJson(e));
+    var isar = IsarLinks<Message>();
+    isar.addAll(messages) ;
+    return isar;
+  }
+
+  @override
+  List<Map<String, dynamic>> toJson(IsarLinks<Message> object) {
+    // TODO: implement toJson
+    throw UnimplementedError();
+  }
+}
+
+class UsersJsonToIsar implements JsonConverter<IsarLinks<User>, List<dynamic>> {
+  const UsersJsonToIsar();
+  @override
+  fromJson(json) {
+    final users = json.map((e) => User.fromJson(e));
+    var isar = IsarLinks<User>();
+    isar.addAll(users) ;
+    return isar;
+  }
+
+  @override
+  List<Map<String, dynamic>> toJson(IsarLinks<User> object) {
+    // TODO: implement toJson
+    throw UnimplementedError();
+  }
+}

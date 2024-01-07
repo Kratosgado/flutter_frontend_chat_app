@@ -40,6 +40,7 @@ class ChatController extends GetxController with StateMixin<List<Chat>> {
         }
 
         chatList.value = chats;
+        SocketService.isarService.addChats(chats);
         if (chatList.isEmpty) {
           change(chatList, status: RxStatus.empty());
         } else {
