@@ -7,9 +7,9 @@ ListTile accountTile(Account account) {
   return ListTile(
     contentPadding: const EdgeInsets.symmetric(horizontal: Spacing.s4),
     leading: CircleAvatar(
-      backgroundImage: AssetImage(account.profilePic ?? ImageAssets.image),
+      backgroundImage: AssetImage(account.user.profilePic ?? ImageAssets.image),
     ),
-    title: Text(account.username!),
+    title: Text(account.user.username!),
     trailing: Switch(
       value: account.isActive!,
       onChanged: (value) {},

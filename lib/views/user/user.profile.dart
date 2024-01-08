@@ -18,9 +18,9 @@ class UserProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final enabled = false.obs;
-    final email = SocketService.currentUser.email.obs;
-    final username = SocketService.currentUser.username.obs;
-    final currentUser = SocketService.currentUser;
+    final email = SocketService.currentAccount.user.email.obs;
+    final username = SocketService.currentAccount.user.username.obs;
+    final currentUser = SocketService.currentAccount.user;
     final profilePic = currentUser.profilePic ?? ImageAssets.image;
 
     TextField field(String type, TextEditingController controller) {

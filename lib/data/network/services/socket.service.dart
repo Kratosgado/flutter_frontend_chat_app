@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend_chat_app/data/models/isar_models/account.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/isar_service.dart';
 import 'package:get/get.dart';
@@ -10,22 +11,18 @@ import '../../../resources/string_manager.dart';
 import '../../models/models.dart';
 
 class SocketService extends GetxService {
-  static final appPreference = AppPreferences();
   static final isarService = IsarService();
-  static Rx<Chat> openedChat = Rx<Chat>(Chat(convoName: '', id: ''));
   final connect = GetConnect();
 
   // for socket
-  static late String token;
   static io.Socket socket = io.io(BASEURL);
-  static late User currentUser;
+  static late Account currentAccount;
 
   static SocketService get to => Get.find();
 
   Future<void> init() async {
-    currentUser = await appPreference.getCurrentUser();
+    currentAccount = await isarService.getCurrentAccount();
 
-    token = await appPreference.getUserToken();
     await connectToSocket();
     await ChatController.to.fetchChats();
 
@@ -37,8 +34,8 @@ class SocketService extends GetxService {
       BASEURL,
       io.OptionBuilder()
           .setTransports(['websocket'])
-          .setExtraHeaders({"authorization": "Bearer $token"})
-          .setQuery({"userId": currentUser.id})
+          .setExtraHeaders({"authorization": "Bearer ${currentAccount.token}"})
+          .setQuery({"userId": currentAccount.id})
           .enableReconnection()
           .enableAutoConnect()
           .enableForceNewConnection()
@@ -60,10 +57,7 @@ class SocketService extends GetxService {
       try {
         // fetchChats();
         final message = Message.fromJson(data);
-        openedChat.value.messages.add(message);
-        openedChat.refresh();
         // ChatController.findOneChat(message.chatId);
-        debugPrint(openedChat.value.messages.last.text);
 
         socket.emit(ServerStrings.deleteSocketMessage, message.id);
         Get.snackbar("Chat App", message.text);
@@ -89,7 +83,6 @@ class SocketService extends GetxService {
         final chat = Chat.fromJson(data);
         debugPrint("recieved chat id: ${chat.id}");
         isarService.updateChat(chat);
-        openedChat.value = chat;
       } catch (err) {
         debugPrint(err.toString());
         Get.snackbar("Chat recieving error", err.toString());
@@ -105,8 +98,7 @@ class SocketService extends GetxService {
 
   @override
   Future<void> onClose() async {
-    await appPreference.logout();
-    await isarService.logout(currentUser.email!);
+    await isarService.logout(currentAccount.id);
     socket.disconnect();
     super.onClose();
   }

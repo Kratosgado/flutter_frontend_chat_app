@@ -15,7 +15,7 @@ class ChatListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentUser = SocketService.currentUser;
+    final currentUser = SocketService.currentAccount.user;
 
     Get.lazyPut(() => ChatController());
     return Scaffold(

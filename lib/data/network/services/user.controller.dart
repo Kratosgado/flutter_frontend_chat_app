@@ -48,7 +48,7 @@ class UserController extends GetxController {
     try {
       final formData = FormData({"image": selectedImage});
       final response = await connect.put(ServerStrings.updateProfilePicture, formData,
-          headers: {"Authorization": "Bearer ${SocketService.token}"});
+          headers: {"Authorization": "Bearer ${SocketService.currentAccount.token}"});
       if (response.isOk) {
         debugPrint("image updated successfully");
         // TODO: update user data

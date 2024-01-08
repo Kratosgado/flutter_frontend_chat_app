@@ -52,18 +52,17 @@ class AuthController extends GetConnect {
       );
 
       if (response.isOk) {
-        await SocketService.appPreference.setUserToken(response.body);
-
-        await SocketService.appPreference.setIsUserLoggedIn();
-        await me().then((user) async {
+        await me(response.body).then((user) async {
           if (user != null) {
             final currentAccount = Account()
             ..id = user.id
-              ..username = user.username
-              ..email = user.email
               ..password = signUpData.password
-              ..isActive = true;
-
+              ..token = response.body
+              ..isActive = true
+              ..user.email = user.email
+              ..user.id = user.id
+              ..user.profilePic = user.profilePic
+              ..user.username = user.username;
             await SocketService.isarService.addAccount(currentAccount);
           }
         });
@@ -91,17 +90,15 @@ class AuthController extends GetConnect {
     }
   }
 
-  Future<User?> me() async {
+  Future<User?> me(String token) async {
     try {
       Response res = await get(
         ServerStrings.getMe,
-        headers: {'Authorization': "Bearer ${await SocketService.appPreference.getUserToken()}"},
+        headers: {'Authorization': "Bearer $token"},
         decoder: (data) => User.fromJson(data),
       );
 
       if (res.isOk) {
-        await SocketService.appPreference.setCurrentUser(res.body);
-        debugPrint("details saved");
         return res.body as User;
       }
     } catch (err) {

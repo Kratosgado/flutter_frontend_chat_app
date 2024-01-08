@@ -7,10 +7,9 @@ part 'account.g.dart';
 class Account {
   late String id;
   Id get accountId => fastHash(id);
-  String? username;
-  String? email;
-  String? profilePic;
   String? password;
+  String? token;
+  late User user;
 
   bool? isActive = false;
 }

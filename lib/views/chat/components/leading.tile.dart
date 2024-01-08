@@ -8,7 +8,7 @@ import '../../../resources/styles_manager.dart';
 import '../../../resources/values_manager.dart';
 
 GestureDetector leadingTile() {
-  final profilePic = SocketService.currentUser.profilePic ?? ImageAssets.image;
+  final profilePic = SocketService.currentAccount.user.profilePic ?? ImageAssets.image;
   return GestureDetector(
     onTap: () => Get.toNamed(Routes.userProfile),
     child: Container(

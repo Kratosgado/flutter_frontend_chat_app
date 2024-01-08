@@ -30,14 +30,6 @@ class AppPreferences {
     return localStorage.read(PREFS_KEY_TOKEN) ?? "";
   }
 
-  Future<void> setIsUserLoggedIn() async {
-    localStorage.write(PREFS_KEY_IS_USER_LOGGED_IN, true);
-  }
-
-  Future<bool> isUserLoggedIn() async {
-    return localStorage.read(PREFS_KEY_IS_USER_LOGGED_IN) ?? false;
-  }
-
   Future<void> logout() async {
     localStorage.remove(PREFS_KEY_IS_USER_LOGGED_IN);
     localStorage.remove('currentUser');

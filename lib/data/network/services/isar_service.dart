@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_frontend_chat_app/data/models/isar_models/account.dart';
+import 'package:get/get.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart' as path;
 
@@ -13,6 +14,11 @@ class IsarService {
   IsarService() {
     db = initDb();
     optimizeDb();
+  }
+
+  Future<Account> getCurrentAccount() async {
+    final service = await db;
+    return (await service.accounts.filter().isActiveEqualTo(true).findFirst())!;
   }
 
   Future<List<Account>> getAccounts() async {
@@ -54,7 +60,7 @@ class IsarService {
   }
 
   Future<void> addAccount(Account account) async {
-    debugPrint("Adding ${account.username} to accounts");
+    debugPrint("Adding ${account.user.username} to accounts");
     final service = await db;
     service.writeTxnSync(() => service.accounts.putSync(account));
   }
@@ -62,19 +68,21 @@ class IsarService {
   Future<void> optimizeDb() async {
     final service = await db;
     service.writeTxnSync(() => {
-      service.chats.filter().usersIsEmpty().deleteAllSync(),
-      // service.accounts.clearSync(),
-    }
-
-    );
-
+          service.chats.filter().usersIsEmpty().deleteAllSync(),
+          // service.accounts.clearSync(),
+        });
   }
 
-  Future<void> logout(String email) async {
+  Future<bool> isUserLoggedIn() async {
+    final service = await db;
+    final currentId = await service.accounts.filter().isActiveEqualTo(true).count();
+    return currentId.isGreaterThan(0);
+  }
+
+  Future<void> logout(String id) async {
     final service = await db;
     service.writeTxnSync(() {
-      final account = service.accounts.filter().emailEqualTo(email).findFirstSync()
-        ?..isActive = false;
+      final account = service.accounts.filter().idEqualTo(id).findFirstSync()?..isActive = false;
       service.accounts.putSync(account!);
     });
   }

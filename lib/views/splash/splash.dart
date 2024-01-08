@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/app/app_refs.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/socket.service.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 import 'package:get/get.dart';
@@ -19,7 +20,6 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
-  final appPreference = AppPreferences();
   Timer? timer;
 
   startDelay() {
@@ -27,7 +27,7 @@ class _SplashViewState extends State<SplashView> {
   }
 
   goNext() async {
-    appPreference.isUserLoggedIn().then((isUserLoggedIn) async => {
+    SocketService.isarService.isUserLoggedIn().then((isUserLoggedIn) async => {
           if (isUserLoggedIn)
             {
               Get.put( ChatController()),

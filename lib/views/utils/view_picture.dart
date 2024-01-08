@@ -6,7 +6,7 @@ import '../../data/models/models.dart';
 import '../../resources/assets_manager.dart';
 
 void viewProfileImage(User user) {
-  final isCurrentUser = user.id == SocketService.currentUser.id;
+  final isCurrentUser = user.id == SocketService.currentAccount.id;
 
   Get.to(
     () => Hero(

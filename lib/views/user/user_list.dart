@@ -30,7 +30,7 @@ class UserListView extends GetView<UserController> {
               itemCount: controller.usersList.length,
               itemBuilder: (context, index) {
                 final user = controller.usersList[index];
-                if (user.id == SocketService.currentUser.id) {
+                if (user.id == SocketService.currentAccount.id) {
                   return const SizedBox();
                 }
 
@@ -41,7 +41,7 @@ class UserListView extends GetView<UserController> {
                         debugPrint(user.id);
                         chatController.createChat(user.id);
                       },
-                      title: Text(user.id == SocketService.currentUser.id ? "Me" : user.username!),
+                      title: Text(user.id == SocketService.currentAccount.id ? "Me" : user.username!),
                     ),
                     const Divider(
                       height: 0.2,

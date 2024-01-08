@@ -10,8 +10,7 @@ class MessageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentUser = SocketService.currentUser;
-    final isCurrentUser = message.senderId == currentUser.id;
+    final isCurrentUser = message.senderId == SocketService.currentAccount.id;
 
     return Align(
       alignment: isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
