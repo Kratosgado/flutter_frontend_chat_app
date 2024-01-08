@@ -1,7 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
-import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/socket.service.dart';
 import 'package:flutter_frontend_chat_app/resources/assets_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/color_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/styles_manager.dart';

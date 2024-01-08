@@ -1,18 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/material.dart';
-import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
 import 'package:isar/isar.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'models.g.dart';
 
 @JsonSerializable()
-@Collection()
+@embedded
 class User {
-  String id;
-  Id get userId => fastHash(id);
-  String email;
-  String username;
+  late String id;
+  // Id get userId => fastHash(id);
+  String? email;
+  String? username;
   String? profilePic;
   //  DateTime createdAt;
   //  DateTime updatedAt;
@@ -21,9 +19,8 @@ class User {
   //  List<Picture> pictures;
 
   User({
-    required this.id,
-    required this.email,
-    required this.username,
+    this.email,
+    this.username,
     this.profilePic,
     // required this.createdAt,
     // required this.updatedAt,
@@ -34,31 +31,31 @@ class User {
 }
 
 @JsonSerializable(explicitToJson: true)
-@Collection()
+@embedded
 class Message {
-  String id;
-  Id get messageId => fastHash(id);
+  late String id;
+  // Id get messageId => fastHash(id);
 
   //  DateTime createdAt;
   //  DateTime updatedAt;
-  String text;
+  late String text;
   String? picture;
   @enumerated
   MessageStatus status = MessageStatus.sending;
 
-  final chat = IsarLinks<Chat>();
+  // final chat = IsarLinks<Chat>();
   String? chatId;
   //  chat = IsarLink<Chat>();
   String? senderId;
 
   Message({
-    required this.id,
+    //  this.id,
     // required this.createdAt,
     // required this.updatedAt,
-    required this.text,
+    //  this.text,
     this.picture,
-    required this.chatId,
-    required this.senderId,
+    this.chatId,
+    this.senderId,
   });
 
   factory Message.fromJson(Map<String, dynamic> json) => _$MessageFromJson(json);
@@ -76,18 +73,18 @@ class Chat {
   //  DateTime updatedAt;
   // message
   // @Ignore()
-  // late List<Message> messages;
-  @Backlink(to: 'chat')
+  late List<Message> messages;
+  // @Backlink(to: 'chat')
   // @JsonKey(includeFromJson: false, includeToJson: false)
-  @MessagesJsonToIsar()
-  IsarLinks<Message> messages = IsarLinks<Message>();
+  // @MessagesJsonToIsar()
+  // IsarLinks<Message> messages = IsarLinks<Message>();
 
   // user
   // @Ignore()
-  // late List<User> users;
+  late List<User> users;
   // @JsonKey(includeFromJson: false, includeToJson: false)
-  @UsersJsonToIsar()
-  IsarLinks<User> users = IsarLinks<User>();
+  // @UsersJsonToIsar()
+  // IsarLinks<User> users = IsarLinks<User>();
 
   Chat({
     required this.id,
@@ -115,38 +112,12 @@ int fastHash(String id) {
 
 enum MessageStatus { sending, sent, delivered, seen }
 
-class MessagesJsonToIsar implements JsonConverter<IsarLinks<Message>, List<dynamic>> {
-  const MessagesJsonToIsar();
+class ConvertToInt implements JsonConverter<int, String> {
   @override
-  fromJson(json) {
-    final messages = json.map((e) => Message.fromJson(e));
-    var isar = IsarLinks<Message>();
-    isar.addAll(messages);
-    return isar;
-  }
+  int fromJson(String json) => fastHash(json);
 
   @override
-  List<Map<String, dynamic>> toJson(IsarLinks<Message> object) {
-    // TODO: implement toJson
-    throw UnimplementedError();
-  }
-}
-
-class UsersJsonToIsar implements JsonConverter<IsarLinks<User>, List<dynamic>> {
-  const UsersJsonToIsar();
-  @override
-  fromJson(json) async {
-    final users = json.map((e) => User.fromJson(e)).toList();
-    debugPrint("json: ${users.length}");
-    var isar = IsarLinks<User>();
-    final db = await SocketService.isarService.db;
-    final chatUsers = await db.users.putAll(users);
-    debugPrint("isar: ${isar.length}");
-    return isar;
-  }
-
-  @override
-  List<Map<String, dynamic>> toJson(IsarLinks<User> object) {
+  String toJson(int object) {
     // TODO: implement toJson
     throw UnimplementedError();
   }

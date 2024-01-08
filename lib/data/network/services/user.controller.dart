@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/socket.service.dart';
 import 'package:get/get.dart';
 
 import '../../../resources/string_manager.dart';

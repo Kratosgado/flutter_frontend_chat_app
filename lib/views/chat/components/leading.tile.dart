@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/socket.service.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:get/get.dart';
 

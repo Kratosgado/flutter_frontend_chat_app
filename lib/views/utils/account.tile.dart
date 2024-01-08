@@ -5,14 +5,13 @@ import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 
 ListTile accountTile(Account account) {
   return ListTile(
-    dense: true,
     contentPadding: const EdgeInsets.symmetric(horizontal: Spacing.s4),
     leading: CircleAvatar(
       backgroundImage: AssetImage(account.profilePic ?? ImageAssets.image),
     ),
     title: Text(account.username!),
     trailing: Switch(
-      value: true,
+      value: account.isActive!,
       onChanged: (value) {},
       splashRadius: Spacing.s10,
       trackColor: MaterialStateProperty.resolveWith((states) {

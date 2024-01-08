@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/models/isar_models/account.dart';
 import 'package:flutter_frontend_chat_app/data/models/signup_data.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
-import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/socket.service.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/string_manager.dart';
 import 'package:get/get.dart';
@@ -58,6 +58,7 @@ class AuthController extends GetConnect {
         await me().then((user) async {
           if (user != null) {
             final currentAccount = Account()
+            ..id = user.id
               ..username = user.username
               ..email = user.email
               ..password = signUpData.password

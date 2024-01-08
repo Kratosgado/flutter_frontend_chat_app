@@ -1,29 +1,20 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/socket.service.dart';
 import 'package:get/get.dart';
 import '../../../resources/string_manager.dart';
 import '../../../resources/utils.dart';
 import '../../models/models.dart';
 
 class ChatController extends GetxController with StateMixin<List<Chat>> {
-  RxList<Chat> chatList = <Chat>[].obs;
-
   // final socket = SocketService.to.so
   static ChatController get to => Get.find();
-
-  @override
-  Future<void> onInit() async {
-    await fetchChats();
-    super.onInit();
-  }
 
   Future<void> fetchChats() async {
     try {
       debugPrint("fetching chats of user");
       SocketService.socket.emit(ServerStrings.findAllChats);
-      change(chatList, status: RxStatus.loading());
 
       SocketService.socket.on(ServerStrings.returningChats, (data) async {
         final source = data.map((chat) => Chat.fromJson(chat)).toList();
@@ -39,13 +30,7 @@ class ChatController extends GetxController with StateMixin<List<Chat>> {
           }
         }
 
-        chatList.value = chats;
         SocketService.isarService.addChats(chats);
-        if (chatList.isEmpty) {
-          change(chatList, status: RxStatus.empty());
-        } else {
-          change(chatList, status: RxStatus.success());
-        }
       });
     } catch (err) {
       debugPrint(err.toString());

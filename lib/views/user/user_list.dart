@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/auth.controller.dart';
-import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/socket.service.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/user.controller.dart';
 import 'package:get/get.dart';
 
@@ -41,7 +41,7 @@ class UserListView extends GetView<UserController> {
                         debugPrint(user.id);
                         chatController.createChat(user.id);
                       },
-                      title: Text(user.id == SocketService.currentUser.id ? "Me" : user.username),
+                      title: Text(user.id == SocketService.currentUser.id ? "Me" : user.username!),
                     ),
                     const Divider(
                       height: 0.2,

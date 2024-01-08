@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-typedef Id = String;
-
 class TypeDecoder {
   static List<T> fromMapList<T>(dynamic source) {
     return Iterable.castFrom<dynamic, T>(source).toList();
@@ -22,4 +20,18 @@ class TypeDecoder {
     Uint8List imageData = image.readAsBytesSync();
     return base64Encode(imageData);
   }
+}
+
+int fastHash(String id) {
+  var hash = 0xcbf29ce484222352;
+
+  var i = 0;
+  while (i < id.length) {
+    final codeUnit = id.codeUnitAt(i++);
+    hash ^= codeUnit >> 8;
+    hash *= 0x100000001b3;
+    hash ^= codeUnit & 0xFF;
+    hash *= 0x100000001b3;
+  }
+  return hash;
 }

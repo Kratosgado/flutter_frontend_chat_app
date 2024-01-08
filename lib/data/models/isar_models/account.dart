@@ -1,14 +1,16 @@
+import 'package:flutter_frontend_chat_app/data/models/models.dart';
 import 'package:isar/isar.dart';
 
 part 'account.g.dart';
 
 @Collection()
 class Account {
-  Id id = Isar.autoIncrement;
+  late String id;
+  Id get accountId => fastHash(id);
   String? username;
   String? email;
   String? profilePic;
   String? password;
 
-  bool? isActive;
+  bool? isActive = false;
 }

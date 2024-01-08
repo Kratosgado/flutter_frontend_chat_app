@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/models/models.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
-import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/socket.service.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 import 'package:flutter_frontend_chat_app/views/chat/components/chat.tile.dart';
@@ -26,11 +26,7 @@ class ChatListView extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {
-              accountsSheet;
-            },
-            // onPressed: () => AuthController().logout(),
-
+            onPressed: () => accountsSheet,
             icon: const Icon(Icons.opacity_outlined),
           ),
         ],
@@ -40,7 +36,7 @@ class ChatListView extends StatelessWidget {
         child: StreamBuilder(
             stream: SocketService.isarService.streamChats(),
             builder: (context, snapshot) {
-              if (!snapshot.hasData || ChatController.to.chatList.isEmpty) {
+              if (!snapshot.hasData) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
@@ -51,7 +47,6 @@ class ChatListView extends StatelessWidget {
                 );
               }
               final chatList = snapshot.data!;
-              debugPrint("chats retrieved: ${chatList.first.users.length}");
               return ListView.builder(
                 itemCount: chatList.length,
                 itemBuilder: (context, index) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../data/network/services/service.dart';
+import '../../data/network/services/socket.service.dart';
 import '../../resources/values_manager.dart';
 import 'account.tile.dart';
 
@@ -25,9 +25,8 @@ final accountsSheet = Get.bottomSheet(
             return const Center(child: CircularProgressIndicator());
           }
           final accounts = snapshots.data!;
-          return ListView.builder(
-            itemCount: accounts.length,
-            itemBuilder: (context, index) => accountTile(accounts[index]),
+          return Column(
+            children: accounts.map((account) => accountTile(account)).toList(),
           );
         },
       ),

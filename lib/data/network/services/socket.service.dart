@@ -12,10 +12,8 @@ import '../../models/models.dart';
 class SocketService extends GetxService {
   static final appPreference = AppPreferences();
   static final isarService = IsarService();
-  static Rx<Chat> openedChat = Rx<Chat>(Chat(id: '', convoName: ''));
+  static Rx<Chat> openedChat = Rx<Chat>(Chat(convoName: '', id: ''));
   final connect = GetConnect();
-
-  RxList<Chat> chatList = ChatController.to.chatList;
 
   // for socket
   static late String token;
@@ -55,7 +53,6 @@ class SocketService extends GetxService {
     });
 
     socket.onError((data) => {
-          ChatController.to.change(chatList, status: RxStatus.error("Cannot connect to Socket")),
           debugPrint(data.toString()),
         });
 
@@ -65,7 +62,6 @@ class SocketService extends GetxService {
         final message = Message.fromJson(data);
         openedChat.value.messages.add(message);
         openedChat.refresh();
-        chatList.refresh();
         // ChatController.findOneChat(message.chatId);
         debugPrint(openedChat.value.messages.last.text);
 
@@ -80,7 +76,6 @@ class SocketService extends GetxService {
       try {
         debugPrint("chat created: ${data.toString()}");
         final createdChat = Chat.fromJson(data);
-        chatList.addIf(chatList.map((element) => element.id != createdChat.id), createdChat);
         // Get.snackbar("New Chat created", data[""]);
         Get.offNamed(Routes.chat, arguments: createdChat.id);
         socket.emit(ServerStrings.deleteSocketMessage, createdChat.id);
@@ -93,6 +88,7 @@ class SocketService extends GetxService {
       try {
         final chat = Chat.fromJson(data);
         debugPrint("recieved chat id: ${chat.id}");
+        isarService.updateChat(chat);
         openedChat.value = chat;
       } catch (err) {
         debugPrint(err.toString());
@@ -101,7 +97,7 @@ class SocketService extends GetxService {
     });
 
     socket.on(ServerStrings.chatDeleted, (chatId) {
-      chatList.removeWhere((element) => element.id == chatId as String);
+      isarService.deleteChat(chatId as String);
     });
 
     socket.onDisconnect((data) => debugPrint("disconnect"));
@@ -110,7 +106,7 @@ class SocketService extends GetxService {
   @override
   Future<void> onClose() async {
     await appPreference.logout();
-    await isarService.logout(currentUser.email);
+    await isarService.logout(currentUser.email!);
     socket.disconnect();
     super.onClose();
   }
