@@ -37,7 +37,7 @@ OpenContainer chatTile(Chat chat) {
         dense: true,
         contentPadding: const EdgeInsets.symmetric(horizontal: 0),
         leading: GestureDetector(
-          onTap: () => viewProfileImage(notCurrentUser!),
+          onTap: () => viewProfileImage(notCurrentUser),
           child: Container(
             padding: const EdgeInsets.all(Spacing.s2),
             margin: const EdgeInsets.only(left: Spacing.s5),

@@ -40,7 +40,7 @@ class ChatListView extends StatelessWidget {
         child: StreamBuilder(
             stream: SocketService.isarService.streamChats(),
             builder: (context, snapshot) {
-              if (!snapshot.hasData) {
+              if (!snapshot.hasData || ChatController.to.chatList.isEmpty) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
@@ -50,32 +50,21 @@ class ChatListView extends StatelessWidget {
                   child: Text("Error loading chats"),
                 );
               }
-              return GetBuilder<ChatController>(
-                init: ChatController(),
-                builder: (controller) {
-                  return controller.obx(
-                    (chatList) {
-                      return ListView.builder(
-                        itemCount: chatList?.length,
-                        itemBuilder: (context, index) {
-                          final chat = chatList?[index];
-                          return Column(
-                            children: [
-                              chatTile(chat!),
-                              const Divider(
-                                height: 0.1,
-                                thickness: 0.5,
-                                color: Colors.black,
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    onEmpty: const Center(
-                      child: Text("No conversation yet"),
-                    ),
-                    onError: (err) => Center(child: Text(err.toString())),
+              final chatList = snapshot.data!;
+              debugPrint("chats retrieved: ${chatList.first.users.length}");
+              return ListView.builder(
+                itemCount: chatList.length,
+                itemBuilder: (context, index) {
+                  final chat = chatList[index];
+                  return Column(
+                    children: [
+                      chatTile(chat),
+                      const Divider(
+                        height: 0.1,
+                        thickness: 0.5,
+                        color: Colors.black,
+                      ),
+                    ],
                   );
                 },
               );

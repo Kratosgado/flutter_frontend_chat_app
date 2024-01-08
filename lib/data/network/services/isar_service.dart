@@ -12,6 +12,7 @@ class IsarService {
 
   IsarService() {
     db = initDb();
+    optimizeDb();
   }
 
   Future<List<Account>> getAccounts() async {
@@ -22,7 +23,18 @@ class IsarService {
   Future<void> addChats(List<Chat> chats) async {
     final service = await db;
     debugPrint("adding ${chats.length} to database");
-    service.writeTxnSync(() => service.chats.putAllSync(chats));
+    service.writeTxnSync(() {
+      for (var chat in chats) {
+        service.users.putAllSync(chat.users.toList());
+        service.messages.putAllSync(chat.messages.toList());
+      }
+      service.chats.putAllSync(chats);
+    });
+  }
+
+  Future<void> addChatUsers(List<User> users) async {
+    final service = await db;
+    service.writeTxnSync(() => service.users.putAllSync(users));
   }
 
   Stream<List<Chat>> streamChats() async* {
@@ -36,6 +48,11 @@ class IsarService {
     service.writeTxnSync(() => service.accounts.putSync(account));
   }
 
+  Future<void> optimizeDb() async {
+    final service = await db;
+    service.writeTxnSync(() => service.chats.filter().usersIsEmpty().deleteAllSync());
+  }
+
   Future<void> logout(String email) async {
     final service = await db;
     service.writeTxnSync(() {
@@ -47,8 +64,7 @@ class IsarService {
 
   Future<Isar> initDb() async {
     final appDocsDir = await path.getApplicationDocumentsDirectory();
-    return await Isar.open([
-      AccountSchema, MessageSchema, UserSchema, ChatSchema
-    ], directory: appDocsDir.path);
+    return await Isar.open([AccountSchema, MessageSchema, UserSchema, ChatSchema],
+        directory: appDocsDir.path);
   }
 }

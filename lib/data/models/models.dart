@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/material.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/service.dart';
 import 'package:isar/isar.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -119,7 +121,7 @@ class MessagesJsonToIsar implements JsonConverter<IsarLinks<Message>, List<dynam
   fromJson(json) {
     final messages = json.map((e) => Message.fromJson(e));
     var isar = IsarLinks<Message>();
-    isar.addAll(messages) ;
+    isar.addAll(messages);
     return isar;
   }
 
@@ -133,10 +135,13 @@ class MessagesJsonToIsar implements JsonConverter<IsarLinks<Message>, List<dynam
 class UsersJsonToIsar implements JsonConverter<IsarLinks<User>, List<dynamic>> {
   const UsersJsonToIsar();
   @override
-  fromJson(json) {
-    final users = json.map((e) => User.fromJson(e));
+  fromJson(json) async {
+    final users = json.map((e) => User.fromJson(e)).toList();
+    debugPrint("json: ${users.length}");
     var isar = IsarLinks<User>();
-    isar.addAll(users) ;
+    final db = await SocketService.isarService.db;
+    final chatUsers = await db.users.putAll(users);
+    debugPrint("isar: ${isar.length}");
     return isar;
   }
 
