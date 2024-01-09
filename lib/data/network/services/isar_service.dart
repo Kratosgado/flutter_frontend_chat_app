@@ -38,9 +38,8 @@ class IsarService {
       service.writeTxnSync(() async {
         // final chat = service.chats.getSync(fastHash(message.chatId!))!;
         final chat = service.chats.where().chatIdEqualTo(fastHash(message.chatId!)).findFirstSync();
-        debugPrint("before");
-        chat!.messages.add(message);
-        debugPrint("after");
+        chat!.messages = chat.messages.toList();
+        chat.messages.add(message);
         service.chats.putSync(chat);
       });
     } catch (e) {
@@ -53,9 +52,9 @@ class IsarService {
       final service = await db;
       service.writeTxnSync(() {
         final chat = service.chats.getSync(fastHash(message.chatId!));
-        chat!.messages.map((mes) {
-          mes = mes.id == message.id ? message : mes;
-        });
+        chat!.messages = chat.messages.toList();
+        chat.messages
+            .insert(chat.messages.indexWhere((element) => element.id == message.id), message);
         service.chats.putSync(chat);
       });
     } catch (e) {

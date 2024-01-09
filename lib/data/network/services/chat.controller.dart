@@ -50,18 +50,18 @@ class ChatController extends GetxController with StateMixin<List<Chat>> {
       );
       debugPrint("sending message: ${message.text}");
 
-    SocketService.socket.on(ServerStrings.newMessage, (data) {
-      try {
-        // fetchChats();
-        final message = Message.fromJson(data);
-        
+      SocketService.socket.on(ServerStrings.newMessage, (data) {
+        try {
+          // fetchChats();
+          final message = Message.fromJson(data);
 
-        SocketService.socket.emit(ServerStrings.deleteSocketMessage, message.id);
-        Get.snackbar("Chat App", message.text);
-      } catch (e) {
-        debugPrint(e.toString());
-      }
-    });
+          SocketService.isarService.updateMessage(message);
+          // SocketService.socket.emit(ServerStrings.deleteSocketMessage, message.id);
+          Get.snackbar("Chat App", message.text);
+        } catch (e) {
+          debugPrint(e.toString());
+        }
+      });
     } catch (e) {
       debugPrint(3.toString());
       Get.snackbar("Error Fetching chats", e.toString());

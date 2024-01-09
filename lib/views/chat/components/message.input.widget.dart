@@ -84,6 +84,7 @@ class MessageInputWidget extends StatelessWidget {
                             final message = Message()
                               ..chatId = chatId
                               ..picture = picBase64
+                              ..senderId = SocketService.currentAccount.id
                               ..text = messageController.text.trim();
                             SocketService.isarService.sendMessage(message);
 

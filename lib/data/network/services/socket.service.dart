@@ -23,7 +23,7 @@ class SocketService extends GetxService {
     currentAccount = await isarService.getCurrentAccount();
 
     await connectToSocket();
-    await ChatController.to.fetchChats();
+    // await ChatController.to.fetchChats();
 
     super.onInit();
   }
