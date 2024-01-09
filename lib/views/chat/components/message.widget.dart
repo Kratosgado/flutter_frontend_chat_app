@@ -24,7 +24,7 @@ class MessageWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (message.picture != null) Image.network(message.picture!),
+            if (message.picture != null) Image.asset(message.picture!),
             if (message.text.isNotEmpty) ...[
               const SizedBox(height: 4.0),
               Text(
@@ -35,6 +35,21 @@ class MessageWidget extends StatelessWidget {
                 ),
               ),
             ],
+            // switch (message.status) {
+            //   MessageStatus.SENDING => const Icon(Icons.lock_clock),
+            //   MessageStatus.SENT => const Icon(FontAwesomeIcons.clock),
+            //   MessageStatus.DELIVERED => const Icon(FontAwesomeIcons.noteSticky),
+            //   MessageStatus.SEEN => const Icon(Icons.delivery_dining),
+            // },
+            Icon(
+              switch (message.status) {
+                MessageStatus.SENDING => Icons.lock_clock,
+                MessageStatus.SENT => Icons.waves_rounded,
+                MessageStatus.DELIVERED => Icons.add_location_alt,
+                MessageStatus.SEEN => Icons.remove_red_eye,
+              },
+              size: 10,
+            ),
             const SizedBox(height: 4.0),
           ],
         ),

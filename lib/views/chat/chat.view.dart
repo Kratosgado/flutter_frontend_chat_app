@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 
 class ChatView extends StatelessWidget {
   final String chatId;
-   ChatView({super.key, this.chatId = ""}){
+  ChatView({super.key, this.chatId = ""}) {
     ChatController.to.findOneChat(chatId);
   }
 
@@ -42,7 +42,7 @@ class ChatView extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: chat.messages.length,
                     itemBuilder: (context, index) {
-                      final message = chat.messages.elementAt(index);
+                      final message = chat.messages[index];
                       return MessageWidget(message: message);
                     },
                   ),

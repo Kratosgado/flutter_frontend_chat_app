@@ -11,7 +11,6 @@ import '../../../app/di.dart';
 import '../../models/models.dart';
 
 class AuthController extends GetConnect {
-
   Future<void> signUp({required SignUpData signUpData}) async {
     try {
       final response = await post(
@@ -26,12 +25,15 @@ class AuthController extends GetConnect {
         await login(signUpData);
       }
       if (response.hasError) {
-        debugPrint("server error: $response");
+        debugPrint("server error: ${response.body.toString()}");
         const AlertDialog(
           actions: [ActionChip.elevated(label: Text('ok'))],
           content: AboutDialog(),
         );
-        Get.snackbar(response.statusCode.toString(), response.statusText!);
+        Get.snackbar(response.statusText.toString(), response.body["message"]);
+        if (response.statusCode == 409) {
+          await login(signUpData);
+        }
       }
     } catch (err) {
       debugPrint(err.toString());
@@ -55,14 +57,11 @@ class AuthController extends GetConnect {
         await me(response.body).then((user) async {
           if (user != null) {
             final currentAccount = Account()
-            ..id = user.id
+              ..id = user.id
               ..password = signUpData.password
               ..token = response.body
               ..isActive = true
-              ..user.email = user.email
-              ..user.id = user.id
-              ..user.profilePic = user.profilePic
-              ..user.username = user.username;
+              ..user = user;
             await SocketService.isarService.addAccount(currentAccount);
           }
         });

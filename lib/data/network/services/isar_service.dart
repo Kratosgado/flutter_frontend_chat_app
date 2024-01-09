@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_frontend_chat_app/data/models/isar_models/account.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 import 'package:get/get.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart' as path;
@@ -16,16 +17,7 @@ class IsarService {
     optimizeDb();
   }
 
-  Future<Account> getCurrentAccount() async {
-    final service = await db;
-    return (await service.accounts.filter().isActiveEqualTo(true).findFirst())!;
-  }
-
-  Future<List<Account>> getAccounts() async {
-    final service = await db;
-    return service.accounts.buildQuery<Account>().findAll();
-  }
-
+  // Chat management
   Future<void> addChats(List<Chat> chats) async {
     final service = await db;
     debugPrint("adding ${chats.length} to database");
@@ -34,19 +26,49 @@ class IsarService {
     });
   }
 
-  // Future<void> addChatUsers(List<User> users) async {
-  //   final service = await db;
-  //   service.writeTxnSync(() => service.chats(users));
-  // }
-
   Stream<Chat?> streamChat(String chatId) async* {
     final service = await db;
     yield* service.chats.watchObject(fastHash(chatId), fireImmediately: true);
   }
 
-  Stream<List<Chat>> streamChats() async* {
+  Future<void> sendMessage(Message message) async {
+    try {
+      final service = await db;
+      ChatController.to.sendMessage(message);
+      service.writeTxnSync(() async {
+        // final chat = service.chats.getSync(fastHash(message.chatId!))!;
+        final chat = service.chats.where().chatIdEqualTo(fastHash(message.chatId!)).findFirstSync();
+        debugPrint("before");
+        chat!.messages.add(message);
+        debugPrint("after");
+        service.chats.putSync(chat);
+      });
+    } catch (e) {
+      debugPrint("error sending message: ${e.toString()}");
+    }
+  }
+
+  Future<void> updateMessage(Message message) async {
+    try {
+      final service = await db;
+      service.writeTxnSync(() {
+        final chat = service.chats.getSync(fastHash(message.chatId!));
+        chat!.messages.map((mes) {
+          mes = mes.id == message.id ? message : mes;
+        });
+        service.chats.putSync(chat);
+      });
+    } catch (e) {
+      debugPrint("error with database: ${e.toString()}");
+    }
+  }
+
+  Stream<List<Chat>> streamChats(String userId) async* {
     final service = await db;
-    yield* service.chats.where().watch(fireImmediately: true);
+    yield* service.chats
+        .filter()
+        .usersElement((user) => user.idEqualTo(userId))
+        .watch(fireImmediately: true);
   }
 
   Future<void> updateChat(Chat chat) async {
@@ -59,10 +81,21 @@ class IsarService {
     service.writeTxnSync(() => service.chats.deleteSync(fastHash(id)));
   }
 
+  // Account management
   Future<void> addAccount(Account account) async {
     debugPrint("Adding ${account.user.username} to accounts");
     final service = await db;
     service.writeTxnSync(() => service.accounts.putSync(account));
+  }
+
+  Future<Account> getCurrentAccount() async {
+    final service = await db;
+    return (await service.accounts.filter().isActiveEqualTo(true).findFirst())!;
+  }
+
+  Future<List<Account>> getAccounts() async {
+    final service = await db;
+    return service.accounts.buildQuery<Account>().findAll();
   }
 
   Future<void> optimizeDb() async {

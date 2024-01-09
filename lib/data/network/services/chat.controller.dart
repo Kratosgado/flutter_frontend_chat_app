@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/socket.service.dart';
 import 'package:get/get.dart';
@@ -44,18 +42,26 @@ class ChatController extends GetxController with StateMixin<List<Chat>> {
     SocketService.socket.emit(ServerStrings.findOneChat, chatId);
   }
 
-  void sendMessage(String text, File? picture, String chatId) async {
+  void sendMessage(Message message) async {
     try {
-      final picBase64 = picture != null ? await TypeDecoder.imageToBase64(picture) : null;
       SocketService.socket.emit(
         ServerStrings.sendMessage,
-        {
-          "content": text,
-          "picture": picBase64,
-          "chatId": chatId,
-        },
+        message.toJson(),
       );
-      debugPrint("sending message: $text");
+      debugPrint("sending message: ${message.text}");
+
+    SocketService.socket.on(ServerStrings.newMessage, (data) {
+      try {
+        // fetchChats();
+        final message = Message.fromJson(data);
+        
+
+        SocketService.socket.emit(ServerStrings.deleteSocketMessage, message.id);
+        Get.snackbar("Chat App", message.text);
+      } catch (e) {
+        debugPrint(e.toString());
+      }
+    });
     } catch (e) {
       debugPrint(3.toString());
       Get.snackbar("Error Fetching chats", e.toString());

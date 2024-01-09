@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
+import 'package:flutter_frontend_chat_app/data/models/models.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/socket.service.dart';
 import 'package:get/get.dart';
 
+import '../../../resources/utils.dart';
 import '../../utils/select_image.dart';
 
 class MessageInputWidget extends StatelessWidget {
@@ -76,10 +78,15 @@ class MessageInputWidget extends StatelessWidget {
                           icon: const Icon(Icons.send_rounded),
                           color: Colors.teal,
                           onPressed: () async {
-                            final file =
-                                selectedImage.value.path.isNotEmpty ? selectedImage.value : null;
-                            ChatController.to
-                                .sendMessage(messageController.text.trim(), file, chatId);
+                            final picBase64 = selectedImage.value.path.isNotEmpty
+                                ? await TypeDecoder.imageToBase64(selectedImage.value)
+                                : null;
+                            final message = Message()
+                              ..chatId = chatId
+                              ..picture = picBase64
+                              ..text = messageController.text.trim();
+                            SocketService.isarService.sendMessage(message);
+
                             messageController.clear();
                             selectedImage.value = File("");
                             // await widget.chatService.sendMessage(widget.conversation, message);

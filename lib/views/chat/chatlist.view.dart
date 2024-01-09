@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend_chat_app/data/models/models.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/socket.service.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 import 'package:flutter_frontend_chat_app/views/chat/components/chat.tile.dart';
 import 'package:flutter_frontend_chat_app/views/chat/components/leading.tile.dart';
-import 'package:flutter_frontend_chat_app/views/utils/account.tile.dart';
 import 'package:flutter_frontend_chat_app/views/utils/accounts.sheet.dart';
 import 'package:get/get.dart';
 
@@ -34,7 +32,7 @@ class ChatListView extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(Spacing.s12),
         child: StreamBuilder(
-            stream: SocketService.isarService.streamChats(),
+            stream: SocketService.isarService.streamChats(currentUser.id),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const Center(

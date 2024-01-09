@@ -1,6 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, constant_identifier_names
 import 'package:isar/isar.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:uuid/v1.dart' as uuid;
 
 part 'models.g.dart';
 
@@ -33,7 +34,7 @@ class User {
 @JsonSerializable(explicitToJson: true)
 @embedded
 class Message {
-  late String id;
+  String id = const uuid.UuidV1().generate();
   // Id get messageId => fastHash(id);
 
   //  DateTime createdAt;
@@ -41,7 +42,7 @@ class Message {
   late String text;
   String? picture;
   @enumerated
-  MessageStatus status = MessageStatus.sending;
+  MessageStatus status = MessageStatus.SENDING;
 
   // final chat = IsarLinks<Chat>();
   String? chatId;
@@ -74,10 +75,6 @@ class Chat {
   // message
   // @Ignore()
   late List<Message> messages;
-  // @Backlink(to: 'chat')
-  // @JsonKey(includeFromJson: false, includeToJson: false)
-  // @MessagesJsonToIsar()
-  // IsarLinks<Message> messages = IsarLinks<Message>();
 
   // user
   // @Ignore()
@@ -110,15 +107,4 @@ int fastHash(String id) {
   return hash;
 }
 
-enum MessageStatus { sending, sent, delivered, seen }
-
-class ConvertToInt implements JsonConverter<int, String> {
-  @override
-  int fromJson(String json) => fastHash(json);
-
-  @override
-  String toJson(int object) {
-    // TODO: implement toJson
-    throw UnimplementedError();
-  }
-}
+enum MessageStatus { SENDING, SENT, DELIVERED, SEEN }

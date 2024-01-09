@@ -1639,7 +1639,7 @@ Message _messageDeserialize(
   object.id = reader.readString(offsets[1]);
   object.status =
       _MessagestatusValueEnumMap[reader.readByteOrNull(offsets[4])] ??
-          MessageStatus.sending;
+          MessageStatus.SENDING;
   object.text = reader.readString(offsets[5]);
   return object;
 }
@@ -1661,7 +1661,7 @@ P _messageDeserializeProp<P>(
       return (reader.readStringOrNull(offset)) as P;
     case 4:
       return (_MessagestatusValueEnumMap[reader.readByteOrNull(offset)] ??
-          MessageStatus.sending) as P;
+          MessageStatus.SENDING) as P;
     case 5:
       return (reader.readString(offset)) as P;
     default:
@@ -1670,16 +1670,16 @@ P _messageDeserializeProp<P>(
 }
 
 const _MessagestatusEnumValueMap = {
-  'sending': 0,
-  'sent': 1,
-  'delivered': 2,
-  'seen': 3,
+  'SENDING': 0,
+  'SENT': 1,
+  'DELIVERED': 2,
+  'SEEN': 3,
 };
 const _MessagestatusValueEnumMap = {
-  0: MessageStatus.sending,
-  1: MessageStatus.sent,
-  2: MessageStatus.delivered,
-  3: MessageStatus.seen,
+  0: MessageStatus.SENDING,
+  1: MessageStatus.SENT,
+  2: MessageStatus.DELIVERED,
+  3: MessageStatus.SEEN,
 };
 
 extension MessageQueryFilter
@@ -2474,10 +2474,10 @@ Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
     };
 
 const _$MessageStatusEnumMap = {
-  MessageStatus.sending: 'sending',
-  MessageStatus.sent: 'sent',
-  MessageStatus.delivered: 'delivered',
-  MessageStatus.seen: 'seen',
+  MessageStatus.SENDING: 'SENDING',
+  MessageStatus.SENT: 'SENT',
+  MessageStatus.DELIVERED: 'DELIVERED',
+  MessageStatus.SEEN: 'SEEN',
 };
 
 Chat _$ChatFromJson(Map<String, dynamic> json) => Chat(

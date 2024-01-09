@@ -13,3 +13,8 @@ class Account {
 
   bool? isActive = false;
 }
+
+// @embedded
+// class Settings {
+  
+// }

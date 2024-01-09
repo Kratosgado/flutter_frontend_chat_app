@@ -5,7 +5,6 @@ import 'package:flutter_frontend_chat_app/data/network/services/isar_service.dar
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
-import '../../../app/app_refs.dart';
 import '../../../resources/route_manager.dart';
 import '../../../resources/string_manager.dart';
 import '../../models/models.dart';
@@ -53,24 +52,12 @@ class SocketService extends GetxService {
           debugPrint(data.toString()),
         });
 
-    socket.on(ServerStrings.newMessage, (data) {
-      try {
-        // fetchChats();
-        final message = Message.fromJson(data);
-        // ChatController.findOneChat(message.chatId);
-
-        socket.emit(ServerStrings.deleteSocketMessage, message.id);
-        Get.snackbar("Chat App", message.text);
-      } catch (e) {
-        debugPrint(e.toString());
-      }
-    });
-
-    socket.on(ServerStrings.chatCreated, (data) {
+    socket.on(ServerStrings.chatCreated, (data) async {
       try {
         debugPrint("chat created: ${data.toString()}");
         final createdChat = Chat.fromJson(data);
         // Get.snackbar("New Chat created", data[""]);
+        await isarService.addChats([createdChat]);
         Get.offNamed(Routes.chat, arguments: createdChat.id);
         socket.emit(ServerStrings.deleteSocketMessage, createdChat.id);
       } catch (e) {
