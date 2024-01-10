@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend_chat_app/app/app_refs.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:get/get.dart';
 
@@ -18,7 +17,6 @@ class MyApp extends StatefulWidget {
 
 
 class _MyAppState extends State<MyApp> {
-  AppPreferences appPreferences = AppPreferences();
 
   @override
   Widget build(BuildContext context) {

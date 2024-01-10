@@ -28,7 +28,7 @@ class ChatController extends GetxController with StateMixin<List<Chat>> {
           }
         }
 
-        SocketService.isarService.addChats(chats);
+        SocketService.hiveService.addChats(chats);
       });
     } catch (err) {
       debugPrint(err.toString());
@@ -55,7 +55,7 @@ class ChatController extends GetxController with StateMixin<List<Chat>> {
           // fetchChats();
           final message = Message.fromJson(data);
 
-          SocketService.isarService.updateMessage(message);
+          SocketService.hiveService.updateMessage(message);
           // SocketService.socket.emit(ServerStrings.deleteSocketMessage, message.id);
           Get.snackbar("Chat App", message.text);
         } catch (e) {

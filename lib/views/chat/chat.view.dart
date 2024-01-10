@@ -13,19 +13,19 @@ class ChatView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: SocketService.isarService.streamChat(chatId),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text(snapshot.error.toString()),
-            );
-          }
-          final chat = snapshot.data!;
+    return ValueListenableBuilder(
+        valueListenable: SocketService.hiveService.streamChat(chatId),
+        builder: (context, box, _) {
+          // if (!snapshot.hasData) {
+          //   return const Center(
+          //     child: CircularProgressIndicator(),
+          //   );
+          // } else if (snapshot.hasError) {
+          //   return Center(
+          //     child: Text(snapshot.error.toString()),
+          //   );
+          // }
+          final chat = box.values.first;
           return Scaffold(
             appBar: AppBar(
                 leading: IconButton(

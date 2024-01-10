@@ -32,7 +32,7 @@ class ChatListView extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(Spacing.s12),
         child: StreamBuilder(
-            stream: SocketService.isarService.streamChats(currentUser.id),
+            stream: SocketService.hiveService.streamChats(currentUser.id),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const Center(
@@ -48,7 +48,7 @@ class ChatListView extends StatelessWidget {
               return ListView.builder(
                 itemCount: chatList.length,
                 itemBuilder: (context, index) {
-                  final chat = chatList[index];
+                  final chat = chatList.elementAt(index);
                   return Column(
                     children: [
                       chatTile(chat),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend_chat_app/data/models/isar_models/account.dart';
 import 'package:flutter_frontend_chat_app/data/models/signup_data.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/socket.service.dart';
@@ -56,13 +55,11 @@ class AuthController extends GetConnect {
       if (response.isOk) {
         await me(response.body).then((user) async {
           if (user != null) {
-            final currentAccount = Account()
-              ..id = user.id
+            final currentAccount = Account(id: user.id, user: user)
               ..password = signUpData.password
               ..token = response.body
-              ..isActive = true
-              ..user = user;
-            await SocketService.isarService.addAccount(currentAccount);
+              ..isActive = true;
+            await SocketService.hiveService.addAccount(currentAccount);
           }
         });
 

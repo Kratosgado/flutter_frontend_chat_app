@@ -86,7 +86,7 @@ class MessageInputWidget extends StatelessWidget {
                               ..picture = picBase64
                               ..senderId = SocketService.currentAccount.id
                               ..text = messageController.text.trim();
-                            SocketService.isarService.sendMessage(message);
+                            SocketService.hiveService.sendMessage(message);
 
                             messageController.clear();
                             selectedImage.value = File("");

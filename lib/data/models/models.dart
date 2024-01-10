@@ -1,25 +1,48 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, constant_identifier_names
-import 'package:isar/isar.dart';
+import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:uuid/v1.dart' as uuid;
 
 part 'models.g.dart';
 
+@HiveType(typeId: 0)
+class Account extends HiveObject {
+  @HiveField(0)
+   String id;
+  @HiveField(1)
+  String? password;
+  @HiveField(2)
+  String? token;
+  @HiveField(3)
+  late User user;
+  @HiveField(4)
+  bool? isActive = false;
+  Account({
+    required this.id,
+    this.password,
+    this.token,
+    required this.user,
+    this.isActive,
+  });
+  
+}
+
 @JsonSerializable()
-@embedded
-class User {
-  late String id;
-  // Id get userId => fastHash(id);
+@HiveType(typeId: 1)
+class User extends HiveObject {
+  @HiveField(0)
+  String id;
+  @HiveField(1)
   String? email;
+  @HiveField(2)
   String? username;
+  @HiveField(3)
   String? profilePic;
   //  DateTime createdAt;
   //  DateTime updatedAt;
-  //  List<Chat> conversations;
-  //  List<Message> messages;
-  //  List<Picture> pictures;
 
   User({
+    required this.id,
     this.email,
     this.username,
     this.profilePic,
@@ -32,16 +55,19 @@ class User {
 }
 
 @JsonSerializable(explicitToJson: true)
-@embedded
-class Message {
+@HiveType(typeId: 2)
+class Message extends HiveObject{
+  @HiveField(0)
   String id = const uuid.UuidV1().generate();
   // Id get messageId => fastHash(id);
 
   //  DateTime createdAt;
   //  DateTime updatedAt;
+  @HiveField(1)
   late String text;
+  @HiveField(2)
   String? picture;
-  @enumerated
+  @HiveField(3)
   MessageStatus status = MessageStatus.SENDING;
 
   // final chat = IsarLinks<Chat>();
@@ -64,24 +90,18 @@ class Message {
 }
 
 @JsonSerializable(explicitToJson: true)
-@Collection()
-class Chat {
-  late String id;
-  Id get chatId => fastHash(id);
-
+@HiveType(typeId: 3)
+class Chat extends HiveObject{
+  @HiveField(0)
+  String id;
+  @HiveField(1)
   late String convoName;
   //  DateTime createdAt;
   //  DateTime updatedAt;
-  // message
-  // @Ignore()
+  @HiveField(2)
   late List<Message> messages;
-
-  // user
-  // @Ignore()
+  @HiveField(3)
   late List<User> users;
-  // @JsonKey(includeFromJson: false, includeToJson: false)
-  // @UsersJsonToIsar()
-  // IsarLinks<User> users = IsarLinks<User>();
 
   Chat({
     required this.id,
@@ -92,19 +112,29 @@ class Chat {
   Map<String, dynamic> toJson() => _$ChatToJson(this);
 }
 
-int fastHash(String id) {
-  var hash = 0xcbf29ce484222352;
+// int fastHash(String id) {
+//   var hash = 0xcbf29ce484222352;
 
-  var i = 0;
-  while (i < id.length) {
-    final codeUnit = id.codeUnitAt(i++);
-    hash ^= codeUnit >> 8;
-    hash *= 0x100000001b3;
-    hash ^= codeUnit & 0xFF;
-    hash *= 0x100000001b3;
-  }
+//   var i = 0;
+//   while (i < id.length) {
+//     final codeUnit = id.codeUnitAt(i++);
+//     hash ^= codeUnit >> 8;
+//     hash *= 0x100000001b3;
+//     hash ^= codeUnit & 0xFF;
+//     hash *= 0x100000001b3;
+//   }
 
-  return hash;
+//   return hash;
+// }
+
+@HiveType(typeId: 4)
+enum MessageStatus {
+  @HiveField(0, defaultValue: true)
+  SENDING,
+  @HiveField(1)
+  SENT,
+  @HiveField(2)
+  DELIVERED,
+  @HiveField(3)
+  SEEN
 }
-
-enum MessageStatus { SENDING, SENT, DELIVERED, SEEN }

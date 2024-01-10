@@ -26,7 +26,7 @@ class _SplashViewState extends State<SplashView> {
   }
 
   goNext() async {
-    SocketService.isarService.isUserLoggedIn().then((isUserLoggedIn) async => {
+    SocketService.hiveService.isUserLoggedIn().then((isUserLoggedIn) async => {
           if (isUserLoggedIn)
             {
               Get.put( ChatController()),

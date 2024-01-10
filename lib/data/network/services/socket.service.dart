@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend_chat_app/data/models/isar_models/account.dart';
-import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
-import 'package:flutter_frontend_chat_app/data/network/services/isar_service.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/hive.service.dart';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
 import '../../../resources/route_manager.dart';
 import '../../../resources/string_manager.dart';
 import '../../models/models.dart';
+import 'chat.controller.dart';
 
 class SocketService extends GetxService {
-  static final isarService = IsarService();
+  static final hiveService = HiveService();
   final connect = GetConnect();
 
   // for socket
@@ -20,10 +19,10 @@ class SocketService extends GetxService {
   static SocketService get to => Get.find();
 
   Future<void> init() async {
-    currentAccount = await isarService.getCurrentAccount();
+    currentAccount = await hiveService.getCurrentAccount();
 
     await connectToSocket();
-    // await ChatController.to.fetchChats();
+    await ChatController.to.fetchChats();
 
     super.onInit();
   }
@@ -57,7 +56,7 @@ class SocketService extends GetxService {
         debugPrint("chat created: ${data.toString()}");
         final createdChat = Chat.fromJson(data);
         // Get.snackbar("New Chat created", data[""]);
-        await isarService.addChats([createdChat]);
+        await hiveService.addChats([createdChat]);
         Get.offNamed(Routes.chat, arguments: createdChat.id);
         socket.emit(ServerStrings.deleteSocketMessage, createdChat.id);
       } catch (e) {
@@ -69,7 +68,7 @@ class SocketService extends GetxService {
       try {
         final chat = Chat.fromJson(data);
         debugPrint("recieved chat id: ${chat.id}");
-        isarService.updateChat(chat);
+        hiveService.updateChat(chat);
       } catch (err) {
         debugPrint(err.toString());
         Get.snackbar("Chat recieving error", err.toString());
@@ -77,7 +76,7 @@ class SocketService extends GetxService {
     });
 
     socket.on(ServerStrings.chatDeleted, (chatId) {
-      isarService.deleteChat(chatId as String);
+      hiveService.deleteChat(chatId as String);
     });
 
     socket.onDisconnect((data) => debugPrint("disconnect"));
@@ -85,7 +84,7 @@ class SocketService extends GetxService {
 
   @override
   Future<void> onClose() async {
-    await isarService.logout(currentAccount.id);
+    await hiveService.logout(currentAccount);
     socket.disconnect();
     super.onClose();
   }
