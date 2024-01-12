@@ -156,8 +156,16 @@ class AuthController extends GetConnect {
     return null;
   }
 
+  Future<void> switchCurrentUser(Account account) async {
+    account.isActive = true;
+    await SocketService.hiveService.addAccount(account);
+    await SocketService.to.onClose();
+    await initService();
+    await Get.offAllNamed(Routes.splashRoute);
+  }
+
   Future<void> logout() async {
-    SocketService.to.onClose();
+    await SocketService.to.onClose();
     Get.offAllNamed(Routes.loginRoute);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/auth.controller.dart';
 import 'package:flutter_frontend_chat_app/resources/assets_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 
@@ -16,8 +17,11 @@ ListTile accountTile(Account account) {
       children: [
         Switch(
           value: account.isActive,
-          onChanged: (value) {
+          onChanged: (value) async {
             debugPrint("switched: $value");
+            if (value) {
+              await AuthController().switchCurrentUser(account);
+            }
             account.isActive = value;
           },
           splashRadius: Spacing.s10,
