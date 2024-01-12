@@ -96,7 +96,6 @@ class ChatController {
         try {
           debugPrint("chat created: ${data.toString()}");
           final createdChat = Chat.fromJson(data);
-          // Get.snackbar("New Chat created", data[""]);
           await SocketService.hiveService.addChats([createdChat]).then(
               (value) => {Get.off(() => ChatView(chatId: createdChat.id))});
           // Get.offNamed(Routes.chat, arguments: createdChat.id);

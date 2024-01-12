@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/hive.service.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/socket.service.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
@@ -7,6 +7,9 @@ import 'package:flutter_frontend_chat_app/views/chat/components/chat.tile.dart';
 import 'package:flutter_frontend_chat_app/views/chat/components/leading.tile.dart';
 import 'package:flutter_frontend_chat_app/views/utils/accounts.sheet.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import '../../data/models/models.dart';
 
 class ChatListView extends StatelessWidget {
   const ChatListView({super.key});
@@ -15,7 +18,6 @@ class ChatListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentUser = SocketService.currentAccount.user;
 
-    Get.lazyPut(() => ChatController());
     return Scaffold(
       appBar: AppBar(
         leading: leadingTile(),
@@ -33,26 +35,23 @@ class ChatListView extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(Spacing.s12),
-        child: StreamBuilder(
-            stream: SocketService.hiveService.streamChats(currentUser.id),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return Center(
-                  child: snapshot.connectionState == ConnectionState.done
-                      ? const Text("No conversation yet")
-                      : const CircularProgressIndicator(),
-                );
-              }
-              if (snapshot.hasError) {
+        child: ValueListenableBuilder(
+            valueListenable: Hive.box<Chat>(HiveService.chatsBoxName).listenable(),
+            builder: (context, box, _) {
+              var chats = box.values
+                  .where((chat) => chat.users.any((user) => user.id == currentUser.id))
+                  .toList();
+
+              if (chats.isEmpty) {
                 return const Center(
-                  child: Text("Error loading chats"),
+                  child: Text("No conversation yet"),
                 );
               }
-              final chatList = snapshot.data!;
+
               return ListView.builder(
-                itemCount: chatList.length,
+                itemCount: chats.length,
                 itemBuilder: (context, index) {
-                  final chat = chatList.elementAt(index);
+                  final chat = chats[index];
                   return Column(
                     children: [
                       chatTile(chat),

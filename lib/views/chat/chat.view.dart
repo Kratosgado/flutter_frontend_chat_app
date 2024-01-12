@@ -35,7 +35,6 @@ class ChatView extends StatelessWidget {
                   icon: const Icon(Icons.arrow_back),
                   onPressed: () {
                     Get.back();
-                    // ChatController.to.fetchChats();
                   },
                 ),
                 title: Text(chat.convoName)),

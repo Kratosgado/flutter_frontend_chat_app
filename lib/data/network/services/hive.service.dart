@@ -26,17 +26,11 @@ class HiveService {
     await box.putAll({for (var chat in chats) chat.id: chat});
   }
 
-  ValueListenable<Box<Chat>> streamChat(String chatId) {
+  Stream<Chat> streamChat(String chatId) {
     ChatController().findOneChat(chatId);
     final box = Hive.box<Chat>(chatsBoxName);
-
-    return box.listenable(keys: [chatId]);
-  }
-
-  Stream<List<Chat>> streamChats(String userId) async* {
-    final box = Hive.box<Chat>(chatsBoxName);
-    var chats = box.values.where((chat) => chat.users.any((user) => user.id == userId));
-    yield* Stream.fromIterable(Iterable.generate(chats.length, (index) => chats.toList()));
+    var chat = box.get(chatId);
+    return Stream.value(chat!);
   }
 
   Future<void> sendMessage(Message message) async {
@@ -47,6 +41,7 @@ class HiveService {
       // chat?.messages.box.put(message.id, message);
       ChatController().sendMessage(message);
       chat?.save();
+      debugPrint("sending message: ${message.text}");
     } catch (e) {
       debugPrint("error sending message: ${e.toString()}");
     }

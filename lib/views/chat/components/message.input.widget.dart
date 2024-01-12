@@ -63,7 +63,7 @@ class MessageInputWidget extends StatelessWidget {
                           ),
                           IconButton(
                             icon: const Icon(Icons.emoji_emotions),
-                            color: Colors.yellow,
+                            color: Colors.teal,
                             onPressed: () {},
                           ),
                         ],
