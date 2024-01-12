@@ -17,7 +17,6 @@ OpenContainer chatTile(Chat chat) {
       chat.users.firstWhere((user) => user.id != SocketService.currentAccount.id);
   final profilePic = notCurrentUser.profilePic ?? ImageAssets.image;
   final lastMessage = chat.messages.lastOrNull.obs;
-
   return OpenContainer(
     transitionDuration: const Duration(milliseconds: 500),
     closedColor: Colors.transparent,
@@ -90,7 +89,7 @@ OpenContainer chatTile(Chat chat) {
             size: 10,
           ),
           onPressed: () {
-            ChatController.to.deleteChat(chat.id);
+            ChatController().deleteChat(chat.id);
             // chatService.deleteConversation(chat);
           },
         ),

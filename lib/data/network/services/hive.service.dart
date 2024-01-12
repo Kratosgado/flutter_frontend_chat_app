@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
-import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart' as path;
 import 'package:path/path.dart';
@@ -11,6 +10,7 @@ class HiveService {
   static const accountBoxName = 'accountsBox';
   static const usersBoxName = 'usersBox';
   static const chatsBoxName = 'chatsBox';
+  static const messageBoxName = 'messageBox';
 
   late Future<bool> initDbFuture;
 
@@ -21,34 +21,16 @@ class HiveService {
   // Chat management
   Future<void> addChats(List<Chat> chats) async {
     final box = Hive.box<Chat>(chatsBoxName);
+    // chats.map((e) => e.messages.box.(e) => )
     debugPrint("adding ${chats.length} to database");
     await box.putAll({for (var chat in chats) chat.id: chat});
   }
 
   ValueListenable<Box<Chat>> streamChat(String chatId) {
+    ChatController().findOneChat(chatId);
     final box = Hive.box<Chat>(chatsBoxName);
 
     return box.listenable(keys: [chatId]);
-  }
-
-  Future<void> sendMessage(Message message) async {
-    try {
-      final box = Hive.box<Chat>(chatsBoxName);
-      var chat = box.get(message.chatId);
-      chat?.messages.add(message);
-      ChatController.to.sendMessage(message);
-      chat?.save();
-    } catch (e) {
-      debugPrint("error sending message: ${e.toString()}");
-    }
-  }
-
-  Future<void> updateMessage(Message message) async {
-    try {
-      message.save();
-    } catch (e) {
-      debugPrint("error with database: ${e.toString()}");
-    }
   }
 
   Stream<List<Chat>> streamChats(String userId) async* {
@@ -57,12 +39,41 @@ class HiveService {
     yield* Stream.fromIterable(Iterable.generate(chats.length, (index) => chats.toList()));
   }
 
+  Future<void> sendMessage(Message message) async {
+    try {
+      final box = Hive.box<Chat>(chatsBoxName);
+      var chat = box.get(message.chatId);
+
+      // chat?.messages.box.put(message.id, message);
+      ChatController().sendMessage(message);
+      chat?.save();
+    } catch (e) {
+      debugPrint("error sending message: ${e.toString()}");
+    }
+  }
+
+  Future<void> updateMessage(Message message) async {
+    try {
+      final box = Hive.box<Chat>(chatsBoxName);
+      var chat = box.get(message.chatId);
+      chat?.messages.map((mess) {
+        mess = mess.id == message.id ? message : mess;
+      });
+      debugPrint("new message id: ${message.id}");
+      chat?.save();
+    } catch (e) {
+      debugPrint("error with database: ${e.toString()}");
+    }
+  }
+
   Future<void> updateChat(Chat chat) async {
-    final box = Hive.box<Chat>(chatsBoxName);
-    var foundChat = box.get(chat.id);
-    foundChat = chat;
-    await foundChat.save();
-    debugPrint("Saved to chat");
+    try {
+      final box = Hive.box<Chat>(chatsBoxName);
+      await box.put(chat.id, chat);
+      debugPrint("Saved to chat");
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   Future<void> deleteChat(String id) async {
@@ -79,10 +90,10 @@ class HiveService {
 
   Future<Account> getCurrentAccount() async {
     final box = Hive.box<Account>(accountBoxName);
-    return box.values.firstWhere((account) => account.isActive = true);
+    return box.values.firstWhere((account) => account.isActive == true);
   }
 
-  Future<List<Account>> getAccounts() async {
+  List<Account> getAccounts() {
     final box = Hive.box<Account>(accountBoxName);
     return box.values.toList();
   }
@@ -96,30 +107,32 @@ class HiveService {
   // }
 
   Future<bool> isUserLoggedIn() async {
-    await Hive.openBox<Account>(accountBoxName);
     final box = Hive.box<Account>(accountBoxName);
-    return box.values.any((account) => account.isActive = true);
+    return box.values.any((account) => account.isActive == true);
   }
 
   Future<void> logout(Account account) async {
     account.isActive = false;
-    account.save();
-    debugPrint("account logged out");
+    await account.save();
+    debugPrint("account logged out: ${account.isActive}");
   }
 
   Future<bool> initDb() async {
-    final appDocsDir = await path.getApplicationDocumentsDirectory();
-    final hiveFolder = join(appDocsDir.path, 'hive');
-    Hive.init(hiveFolder);
     try {
+      final appDocsDir = await path.getApplicationDocumentsDirectory();
+      final hiveFolder = join(appDocsDir.path, 'hives');
+      Hive.init(hiveFolder);
       Hive.registerAdapter(AccountAdapter());
       Hive.registerAdapter(UserAdapter());
       Hive.registerAdapter(MessageAdapter());
       Hive.registerAdapter(ChatAdapter());
+      Hive.registerAdapter(MessageStatusAdapter());
     } catch (e) {
       debugPrint(e.toString());
     }
-    // await Hive.openBox<Account>(accountBoxName);
+
+    await Hive.openBox<Account>(accountBoxName);
+    await Hive.openBox<Message>(messageBoxName);
     await Hive.openBox<Chat>(chatsBoxName);
     debugPrint("Hive initialization done");
     return true;

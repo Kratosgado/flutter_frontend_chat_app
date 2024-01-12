@@ -11,13 +11,31 @@ ListTile accountTile(Account account) {
       backgroundImage: AssetImage(account.user.profilePic ?? ImageAssets.image),
     ),
     title: Text(account.user.username!),
-    trailing: Switch(
-      value: account.isActive!,
-      onChanged: (value) {},
-      splashRadius: Spacing.s10,
-      trackColor: MaterialStateProperty.resolveWith((states) {
-        return Colors.teal;
-      }),
+    trailing: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Switch(
+          value: account.isActive,
+          onChanged: (value) {
+            debugPrint("switched: $value");
+            account.isActive = value;
+          },
+          splashRadius: Spacing.s10,
+          trackColor: MaterialStateProperty.resolveWith((states) {
+            return Colors.teal;
+          }),
+        ),
+        IconButton(
+          onPressed: () async {
+            await account.delete();
+          },
+          icon: const Icon(
+            Icons.delete,
+            size: Spacing.s15,
+            color: Colors.teal,
+          ),
+        )
+      ],
     ),
   );
 }

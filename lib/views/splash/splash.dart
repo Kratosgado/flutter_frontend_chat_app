@@ -22,6 +22,7 @@ class _SplashViewState extends State<SplashView> {
   Timer? timer;
 
   startDelay() {
+    
     timer = Timer(const Duration(seconds: 2), goNext);
   }
 
@@ -29,10 +30,7 @@ class _SplashViewState extends State<SplashView> {
     SocketService.hiveService.isUserLoggedIn().then((isUserLoggedIn) async => {
           if (isUserLoggedIn)
             {
-              Get.put( ChatController()),
-              // Get.put(SocketService()),
               await initService(),
-
               Get.offNamed(Routes.chatList),
             }
           else

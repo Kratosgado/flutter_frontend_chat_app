@@ -4,6 +4,7 @@ import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.
 import 'package:flutter_frontend_chat_app/data/network/services/socket.service.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/string_manager.dart';
+import 'package:flutter_frontend_chat_app/resources/styles_manager.dart';
 import 'package:get/get.dart';
 
 import '../../../app/di.dart';
@@ -55,7 +56,7 @@ class AuthController extends GetConnect {
       if (response.isOk) {
         await me(response.body).then((user) async {
           if (user != null) {
-            final currentAccount = Account(id: user.id, user: user)
+            final currentAccount = Account(id: user.id, user: user, isActive: true)
               ..password = signUpData.password
               ..token = response.body
               ..isActive = true;
@@ -73,7 +74,54 @@ class AuthController extends GetConnect {
         Get.snackbar(
           response.body["error"],
           response.body["message"],
+          backgroundGradient: StyleManager.boxDecoration.gradient,
           snackPosition: SnackPosition.BOTTOM,
+          duration: const Duration(seconds: 1),
+        );
+        Get.snackbar(
+          "Register?",
+          "Will you like to register to gain access?",
+          snackStyle: SnackStyle.FLOATING,
+          backgroundGradient: StyleManager.boxDecoration.gradient,
+          isDismissible: true,
+          dismissDirection: DismissDirection.up,
+          snackPosition: SnackPosition.BOTTOM,
+          mainButton: TextButton(
+            onPressed: () {
+              final usernameController = TextEditingController();
+              Get.snackbar(
+                "Username",
+                "Enter your username",
+                snackStyle: SnackStyle.FLOATING,
+                backgroundGradient: StyleManager.boxDecoration.gradient,
+                dismissDirection: DismissDirection.up,
+                snackPosition: SnackPosition.BOTTOM,
+                duration: const Duration(minutes: 1),
+                userInputForm: Form(
+                  child: TextFormField(
+                    autocorrect: true,
+                    controller: usernameController,
+                    decoration: const InputDecoration(labelText: 'Username'),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your username';
+                      }
+                      return null;
+                    },
+                    onFieldSubmitted: (username) {
+                      signUp(
+                          signUpData: SignUpData(
+                              email: signUpData.email,
+                              password: signUpData.password,
+                              username: username));
+                      Get.closeCurrentSnackbar();
+                    },
+                  ),
+                ),
+              );
+            },
+            child: const Text('Yes'),
+          ),
         );
       }
     } catch (err) {
@@ -109,7 +157,7 @@ class AuthController extends GetConnect {
   }
 
   Future<void> logout() async {
-    SocketService().onClose();
+    SocketService.to.onClose();
     Get.offAllNamed(Routes.loginRoute);
   }
 }

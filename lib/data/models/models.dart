@@ -1,4 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, constant_identifier_names
+import 'package:flutter/foundation.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/hive.service.dart';
+import 'package:flutter_frontend_chat_app/resources/utils.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:uuid/v1.dart' as uuid;
@@ -8,7 +11,7 @@ part 'models.g.dart';
 @HiveType(typeId: 0)
 class Account extends HiveObject {
   @HiveField(0)
-   String id;
+  String id;
   @HiveField(1)
   String? password;
   @HiveField(2)
@@ -16,15 +19,14 @@ class Account extends HiveObject {
   @HiveField(3)
   late User user;
   @HiveField(4)
-  bool? isActive = false;
+  bool isActive;
   Account({
     required this.id,
     this.password,
     this.token,
     required this.user,
-    this.isActive,
+    required this.isActive,
   });
-  
 }
 
 @JsonSerializable()
@@ -56,7 +58,7 @@ class User extends HiveObject {
 
 @JsonSerializable(explicitToJson: true)
 @HiveType(typeId: 2)
-class Message extends HiveObject{
+class Message extends HiveObject {
   @HiveField(0)
   String id = const uuid.UuidV1().generate();
   // Id get messageId => fastHash(id);
@@ -91,14 +93,16 @@ class Message extends HiveObject{
 
 @JsonSerializable(explicitToJson: true)
 @HiveType(typeId: 3)
-class Chat extends HiveObject{
+class Chat extends HiveObject {
   @HiveField(0)
   String id;
   @HiveField(1)
   late String convoName;
   //  DateTime createdAt;
   //  DateTime updatedAt;
+
   @HiveField(2)
+  // @JsonToHiveList()
   late List<Message> messages;
   @HiveField(3)
   late List<User> users;
@@ -112,21 +116,6 @@ class Chat extends HiveObject{
   Map<String, dynamic> toJson() => _$ChatToJson(this);
 }
 
-// int fastHash(String id) {
-//   var hash = 0xcbf29ce484222352;
-
-//   var i = 0;
-//   while (i < id.length) {
-//     final codeUnit = id.codeUnitAt(i++);
-//     hash ^= codeUnit >> 8;
-//     hash *= 0x100000001b3;
-//     hash ^= codeUnit & 0xFF;
-//     hash *= 0x100000001b3;
-//   }
-
-//   return hash;
-// }
-
 @HiveType(typeId: 4)
 enum MessageStatus {
   @HiveField(0, defaultValue: true)
@@ -137,4 +126,27 @@ enum MessageStatus {
   DELIVERED,
   @HiveField(3)
   SEEN
+}
+
+class JsonToHiveList implements JsonConverter<HiveList<Message>, List<dynamic>> {
+  const JsonToHiveList();
+
+  @override
+  HiveList<Message> fromJson(List<dynamic> json) {
+    final source = json.map((chat) => Message.fromJson(chat)).toList();
+    final box = Hive.box<Message>(HiveService.messageBoxName);
+    var messages = HiveList<Message>(box);
+
+    // messages.box.putAll({for (var message in source) message.id: message});
+    () async => {
+          await messages.box.putAll({for (var message in source) message.id: message}),
+        };
+    return messages;
+  }
+
+  @override
+  List toJson(HiveList<Message> object) {
+    // TODO: implement toJson
+    throw UnimplementedError();
+  }
 }

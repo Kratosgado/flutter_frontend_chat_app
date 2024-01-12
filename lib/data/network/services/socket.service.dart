@@ -9,7 +9,7 @@ import '../../models/models.dart';
 import 'chat.controller.dart';
 
 class SocketService extends GetxService {
-  static final hiveService = HiveService();
+  static late final HiveService hiveService;
   final connect = GetConnect();
 
   // for socket
@@ -19,10 +19,12 @@ class SocketService extends GetxService {
   static SocketService get to => Get.find();
 
   Future<void> init() async {
+    await hiveService.initDbFuture;
     currentAccount = await hiveService.getCurrentAccount();
 
     await connectToSocket();
-    await ChatController.to.fetchChats();
+
+    await ChatController().fetchChats();
 
     super.onInit();
   }
@@ -50,30 +52,6 @@ class SocketService extends GetxService {
     socket.onError((data) => {
           debugPrint(data.toString()),
         });
-
-    socket.on(ServerStrings.chatCreated, (data) async {
-      try {
-        debugPrint("chat created: ${data.toString()}");
-        final createdChat = Chat.fromJson(data);
-        // Get.snackbar("New Chat created", data[""]);
-        await hiveService.addChats([createdChat]);
-        Get.offNamed(Routes.chat, arguments: createdChat.id);
-        socket.emit(ServerStrings.deleteSocketMessage, createdChat.id);
-      } catch (e) {
-        debugPrint(e.toString());
-      }
-    });
-
-    socket.on(ServerStrings.returningChat, (data) {
-      try {
-        final chat = Chat.fromJson(data);
-        debugPrint("recieved chat id: ${chat.id}");
-        hiveService.updateChat(chat);
-      } catch (err) {
-        debugPrint(err.toString());
-        Get.snackbar("Chat recieving error", err.toString());
-      }
-    });
 
     socket.on(ServerStrings.chatDeleted, (chatId) {
       hiveService.deleteChat(chatId as String);

@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
-import 'package:flutter_frontend_chat_app/data/network/services/socket.service.dart';
+import 'package:flutter_frontend_chat_app/data/network/services/hive.service.dart';
 import 'package:flutter_frontend_chat_app/views/chat/components/message.widget.dart';
 import 'package:flutter_frontend_chat_app/views/chat/components/message.input.widget.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import '../../data/models/models.dart';
 
 class ChatView extends StatelessWidget {
   final String chatId;
   ChatView({super.key, this.chatId = ""}) {
-    ChatController.to.findOneChat(chatId);
+    ChatController().findOneChat(chatId);
   }
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-        valueListenable: SocketService.hiveService.streamChat(chatId),
+        valueListenable: Hive.box<Chat>(HiveService.chatsBoxName).listenable(keys: [chatId]),
         builder: (context, box, _) {
           // if (!snapshot.hasData) {
           //   return const Center(
@@ -25,7 +28,7 @@ class ChatView extends StatelessWidget {
           //     child: Text(snapshot.error.toString()),
           //   );
           // }
-          final chat = box.values.first;
+          final chat = box.values.firstWhere((element) => element.id == chatId);
           return Scaffold(
             appBar: AppBar(
                 leading: IconButton(

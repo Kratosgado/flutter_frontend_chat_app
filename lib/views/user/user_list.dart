@@ -11,13 +11,12 @@ class UserListView extends GetView<UserController> {
   @override
   Widget build(BuildContext context) {
     Get.lazyPut(() => UserController());
-    final chatController = Get.find<ChatController>();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Users"),
         actions: [
           IconButton(
-            onPressed: () => AuthController().logout(),
+            onPressed: () async => await AuthController().logout(),
             icon: const Icon(Icons.logout_outlined),
           ),
         ],
@@ -39,9 +38,10 @@ class UserListView extends GetView<UserController> {
                     ListTile(
                       onTap: () {
                         debugPrint(user.id);
-                        chatController.createChat(user.id);
+                        ChatController().createChat(user.id);
                       },
-                      title: Text(user.id == SocketService.currentAccount.id ? "Me" : user.username!),
+                      title:
+                          Text(user.id == SocketService.currentAccount.id ? "Me" : user.username!),
                     ),
                     const Divider(
                       height: 0.2,

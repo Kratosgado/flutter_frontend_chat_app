@@ -50,7 +50,8 @@ ThemeData getApplicationTheme() {
             backgroundColor: Colors.blue.shade700,
             foregroundColor: Colors.white,
             shape: const StadiumBorder(),
-            splashFactory: InkSparkle.splashFactory),
+            splashFactory: InkSparkle.splashFactory,
+            ),
       ),
 
       // Text theme

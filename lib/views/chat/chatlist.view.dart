@@ -24,7 +24,9 @@ class ChatListView extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () => accountsSheet,
+            onPressed: () {
+              accountsSheet();
+            },
             icon: const Icon(Icons.opacity_outlined),
           ),
         ],
@@ -35,8 +37,10 @@ class ChatListView extends StatelessWidget {
             stream: SocketService.hiveService.streamChats(currentUser.id),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return const Center(
-                  child: CircularProgressIndicator(),
+                return Center(
+                  child: snapshot.connectionState == ConnectionState.done
+                      ? const Text("No conversation yet")
+                      : const CircularProgressIndicator(),
                 );
               }
               if (snapshot.hasError) {
@@ -63,9 +67,13 @@ class ChatListView extends StatelessWidget {
               );
             }),
       ),
-      floatingActionButton: IconButton(
-        icon: const Icon(Icons.message_rounded),
+      floatingActionButton: FloatingActionButton(
         onPressed: () => Get.toNamed(Routes.userList),
+        tooltip: "Add new Chat",
+        mini: true,
+        enableFeedback: true,
+        shape: const StadiumBorder(),
+        child: const Icon(Icons.add),
       ),
     );
   }

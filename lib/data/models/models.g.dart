@@ -21,7 +21,7 @@ class AccountAdapter extends TypeAdapter<Account> {
       password: fields[1] as String?,
       token: fields[2] as String?,
       user: fields[3] as User,
-      isActive: fields[4] as bool?,
+      isActive: fields[4] as bool,
     );
   }
 
