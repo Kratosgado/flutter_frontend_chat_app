@@ -3,7 +3,6 @@ import 'package:flutter_frontend_chat_app/data/network/services/hive.service.dar
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
-import '../../../resources/route_manager.dart';
 import '../../../resources/string_manager.dart';
 import '../../models/models.dart';
 import 'chat.controller.dart';

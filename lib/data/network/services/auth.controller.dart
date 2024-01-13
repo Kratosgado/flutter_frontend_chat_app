@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend_chat_app/data/models/signup_data.dart';
+import 'package:flutter_frontend_chat_app/data/models/backend.models.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/socket.service.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';

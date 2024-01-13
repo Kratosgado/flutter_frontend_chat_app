@@ -1,7 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, constant_identifier_names
-import 'package:flutter/foundation.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/hive.service.dart';
-import 'package:flutter_frontend_chat_app/resources/utils.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:uuid/v1.dart' as uuid;

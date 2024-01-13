@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend_chat_app/data/models/models.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/socket.service.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/user.controller.dart';
 import 'package:flutter_frontend_chat_app/resources/assets_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/color_manager.dart';
+import 'package:flutter_frontend_chat_app/resources/utils.dart';
 import 'package:flutter_frontend_chat_app/views/utils/select_image.dart';
 import 'package:flutter_frontend_chat_app/views/utils/view_picture.dart';
 import 'package:get/get.dart';
@@ -22,11 +24,17 @@ class UserProfileView extends StatelessWidget {
     final username = SocketService.currentAccount.user.username.obs;
     final currentUser = SocketService.currentAccount.user;
     final profilePic = currentUser.profilePic ?? ImageAssets.image;
+    File? selectedImage;
 
     TextField field(String type, TextEditingController controller) {
       return TextField(
         enabled: enabled.value,
         controller: controller,
+        onSubmitted: (value) => type == "email"
+            ? email.value = value
+            : type == "username"
+                ? username.value = value
+                : null,
         style: Theme.of(context).textTheme.bodyMedium,
         decoration: InputDecoration(
           label: Text(type),
@@ -94,10 +102,7 @@ class UserProfileView extends StatelessWidget {
                       foregroundColor:
                           MaterialStateColor.resolveWith((states) => Colors.blue.shade100)),
                   onPressed: () async {
-                    File? selectedImage = await selectImage();
-                    if (selectedImage != null) {
-                      UserController().updateProfilePic(selectedImage);
-                    }
+                    selectedImage = await selectImage();
                   },
                   child: const Text("Change Profile Pic"),
                 ),
@@ -115,7 +120,17 @@ class UserProfileView extends StatelessWidget {
                               Colors.blue,
                             ]).createShader(bounds)),
                         child: const Text("save")),
-                    onPressed: () {},
+                    onPressed: () async {
+                      final user = User(
+                        id: currentUser.id,
+                        email: email.value,
+                        username: username.value,
+                      );
+                      if (selectedImage != null) {
+                        user.profilePic = await TypeDecoder.imageToBase64(selectedImage!);
+                      }
+                      await UserController().updateUser(user);
+                    },
                   ),
               ],
             ),

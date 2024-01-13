@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/socket.service.dart';
+import 'package:flutter_frontend_chat_app/resources/utils.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 
 import '../../../data/models/models.dart';

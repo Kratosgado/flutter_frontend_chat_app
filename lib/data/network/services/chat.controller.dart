@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/socket.service.dart';
 import 'package:flutter_frontend_chat_app/views/chat/chat.view.dart';
 import 'package:get/get.dart';
-import '../../../resources/route_manager.dart';
 import '../../../resources/string_manager.dart';
 import '../../../resources/utils.dart';
 import '../../models/models.dart';
@@ -40,10 +39,15 @@ class ChatController {
     try {
       debugPrint("finding chat with id: $chatId");
       SocketService.socket.emit(ServerStrings.findOneChat, chatId);
-      SocketService.socket.on(ServerStrings.returningChat, (data) {
+      SocketService.socket.on(ServerStrings.returningChat, (data) async {
         try {
           final chat = Chat.fromJson(data);
           debugPrint("recieved chat id: ${chat.id}");
+          for (var message in chat.messages) {
+            if (message.picture != null) {
+              message.picture = await TypeDecoder.saveImageAsAsset(message.picture!);
+            }
+          }
           SocketService.hiveService.updateChat(chat);
         } catch (err) {
           debugPrint(err.toString());

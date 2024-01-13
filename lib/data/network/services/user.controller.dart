@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/socket.service.dart';
 import 'package:get/get.dart';
@@ -44,14 +42,14 @@ class UserController extends GetxController {
     }
   }
 
-  Future<void> updateProfilePic(File selectedImage) async {
+  Future<void> updateUser(User user) async {
     try {
-      final formData = FormData({"image": selectedImage});
-      final response = await connect.put(ServerStrings.updateProfilePicture, formData,
+      final response = await connect.put(ServerStrings.updateUser, user.toJson(),
           headers: {"Authorization": "Bearer ${SocketService.currentAccount.token}"});
       if (response.isOk) {
-        debugPrint("image updated successfully");
-        // TODO: update user data
+        final user = User.fromJson(response.body);
+        SocketService.currentAccount.user = user;
+        await SocketService.currentAccount.save();
       }
       if (response.hasError) {
         debugPrint("server error: ${response.statusText}");

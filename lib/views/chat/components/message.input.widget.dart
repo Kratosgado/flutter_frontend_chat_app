@@ -12,7 +12,7 @@ class MessageInputWidget extends StatelessWidget {
   final String chatId;
   MessageInputWidget({super.key, required this.chatId});
 
-  final messageController = TextEditingController();
+  final messageController = TextEditingController(text: "");
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +85,7 @@ class MessageInputWidget extends StatelessWidget {
                               ..chatId = chatId
                               ..picture = picBase64
                               ..senderId = SocketService.currentAccount.id
-                              ..text = messageController.text.trim();
+                              ..text = messageController.text;
                             SocketService.hiveService.sendMessage(message);
 
                             messageController.clear();
