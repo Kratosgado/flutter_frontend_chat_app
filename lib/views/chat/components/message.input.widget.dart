@@ -77,9 +77,9 @@ class MessageInputWidget extends StatelessWidget {
                       suffixIcon: IconButton(
                           icon: const Icon(Icons.send_rounded),
                           color: Colors.teal,
-                          onPressed: () async {
+                          onPressed: () {
                             final picBase64 = selectedImage.value.path.isNotEmpty
-                                ? await TypeDecoder.imageToBase64(selectedImage.value)
+                                ?  TypeDecoder.imageToBase64(selectedImage.value)
                                 : null;
                             final message = Message()
                               ..chatId = chatId

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/socket.service.dart';
 import 'package:flutter_frontend_chat_app/resources/route_manager.dart';
+import 'package:flutter_frontend_chat_app/resources/utils.dart';
 import 'package:get/get.dart';
 
-import '../../../resources/assets_manager.dart';
 import '../../../resources/styles_manager.dart';
 import '../../../resources/values_manager.dart';
 
 GestureDetector leadingTile() {
-  final profilePic = SocketService.currentAccount.user.profilePic ?? ImageAssets.image;
+  final profilePic = SocketService.currentAccount.user.profilePic;
   return GestureDetector(
     onTap: () => Get.toNamed(Routes.userProfile),
     child: Container(
@@ -25,7 +25,7 @@ GestureDetector leadingTile() {
         ],
       ),
       child: CircleAvatar(
-        backgroundImage: AssetImage(profilePic),
+        backgroundImage: MemoryImage(profilePic != null ? TypeDecoder.toBytes(profilePic) : TypeDecoder.defaultPic),
       ),
     ),
   );

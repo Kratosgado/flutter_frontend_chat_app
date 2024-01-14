@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/socket.service.dart';
+import 'package:flutter_frontend_chat_app/resources/utils.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
@@ -21,7 +22,10 @@ void viewProfileImage(User user) {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             const SizedBox(),
-            Center(child: Image.asset(user.profilePic ?? ImageAssets.image)),
+            Center(
+                child: Image.memory(user.profilePic != null
+                    ? TypeDecoder.toBytes(user.profilePic!)
+                    : TypeDecoder.defaultPic)),
             if (isCurrentUser)
               ElevatedButton(
                 style: ButtonStyle(

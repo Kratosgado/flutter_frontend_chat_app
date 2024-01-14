@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -23,8 +24,7 @@ class UserProfileView extends StatelessWidget {
     final email = SocketService.currentAccount.user.email.obs;
     final username = SocketService.currentAccount.user.username.obs;
     final currentUser = SocketService.currentAccount.user;
-    final profilePic = currentUser.profilePic ?? ImageAssets.image;
-    File? selectedImage;
+    Rx<String?> selectedImage = currentUser.profilePic.obs;
 
     TextField field(String type, TextEditingController controller) {
       return TextField(
@@ -93,7 +93,15 @@ class UserProfileView extends StatelessWidget {
                     ),
                     child: Hero(
                       tag: 'profile_pic${currentUser.id}',
-                      child: Image.asset(profilePic),
+                      child: CircleAvatar(
+                        radius: Spacing.s60 - 2,
+                        backgroundImage: MemoryImage(
+                          selectedImage.value != null
+                              ? TypeDecoder.toBytes(selectedImage.value!)
+                              : TypeDecoder.defaultPic,
+                          // filterQuality: FilterQuality.medium,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -102,7 +110,10 @@ class UserProfileView extends StatelessWidget {
                       foregroundColor:
                           MaterialStateColor.resolveWith((states) => Colors.blue.shade100)),
                   onPressed: () async {
-                    selectedImage = await selectImage();
+                    File? pickedFile = await selectImage();
+                    if (pickedFile != null) {
+                      selectedImage.value = TypeDecoder.imageToBase64(pickedFile);
+                    }
                   },
                   child: const Text("Change Profile Pic"),
                 ),
@@ -125,10 +136,9 @@ class UserProfileView extends StatelessWidget {
                         id: currentUser.id,
                         email: email.value,
                         username: username.value,
+                        profilePic: selectedImage.value,
                       );
-                      if (selectedImage != null) {
-                        user.profilePic = await TypeDecoder.imageToBase64(selectedImage!);
-                      }
+
                       await UserController().updateUser(user);
                     },
                   ),

@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/auth.controller.dart';
-import 'package:flutter_frontend_chat_app/resources/assets_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 
 import '../../data/models/models.dart';
+import '../../resources/utils.dart';
 
 ListTile accountTile(Account account) {
   return ListTile(
     contentPadding: const EdgeInsets.symmetric(horizontal: Spacing.s4),
     leading: CircleAvatar(
-      backgroundImage: AssetImage(account.user.profilePic ?? ImageAssets.image),
+      backgroundImage: MemoryImage(account.user.profilePic != null
+          ? TypeDecoder.toBytes(account.user.profilePic!)
+          : TypeDecoder.defaultPic),
     ),
     title: Text(account.user.username!),
     trailing: Row(

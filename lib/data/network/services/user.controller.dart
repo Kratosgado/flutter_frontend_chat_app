@@ -44,12 +44,13 @@ class UserController extends GetxController {
 
   Future<void> updateUser(User user) async {
     try {
-      final response = await connect.put(ServerStrings.updateUser, user.toJson(),
+      final response = await connect.patch(ServerStrings.updateUser, user.toJson(),
           headers: {"Authorization": "Bearer ${SocketService.currentAccount.token}"});
       if (response.isOk) {
         final user = User.fromJson(response.body);
         SocketService.currentAccount.user = user;
         await SocketService.currentAccount.save();
+        debugPrint("user updated");
       }
       if (response.hasError) {
         debugPrint("server error: ${response.statusText}");

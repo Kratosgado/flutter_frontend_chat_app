@@ -5,6 +5,7 @@ import 'package:flutter_frontend_chat_app/data/network/services/socket.service.d
 import 'package:flutter_frontend_chat_app/resources/assets_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/color_manager.dart';
 import 'package:flutter_frontend_chat_app/resources/styles_manager.dart';
+import 'package:flutter_frontend_chat_app/resources/utils.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 import 'package:get/get.dart';
 
@@ -15,7 +16,7 @@ import '../chat.view.dart';
 OpenContainer chatTile(Chat chat) {
   final notCurrentUser =
       chat.users.firstWhere((user) => user.id != SocketService.currentAccount.id);
-  final profilePic = notCurrentUser.profilePic ?? ImageAssets.image;
+  final profilePic = notCurrentUser.profilePic;
   final lastMessage = chat.messages.lastOrNull.obs;
   return OpenContainer(
     transitionDuration: const Duration(milliseconds: 500),
@@ -54,23 +55,19 @@ OpenContainer chatTile(Chat chat) {
             child: Hero(
                 tag: 'profile_pic${chat.id}',
                 child: CircleAvatar(
-                  backgroundImage: AssetImage(profilePic),
+                  backgroundImage: MemoryImage(profilePic != null
+                      ? TypeDecoder.toBytes(profilePic)
+                      : TypeDecoder.defaultPic),
                 )),
           ),
         ),
-        title: ShaderMask(
-          shaderCallback: ((bounds) => const LinearGradient(colors: [
-                Colors.pink,
-                Colors.blue,
-              ]).createShader(bounds)),
-          child: Text(
-            chat.convoName,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-              color: Colors.white,
-              shadows: [Shadow(blurRadius: 2, offset: Offset(1, 1))],
-            ),
+        title: Text(
+          chat.convoName,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+            color: Colors.white,
+            shadows: [Shadow(blurRadius: 2, offset: Offset(1, 1))],
           ),
         ),
         subtitle: Obx(() => Text(
@@ -80,7 +77,7 @@ OpenContainer chatTile(Chat chat) {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.white.withOpacity(0.8),
+                color: Colors.grey.shade400,
               ),
             )),
         trailing: IconButton(

@@ -13,7 +13,6 @@ class MessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isCurrentUser = message.senderId == SocketService.currentAccount.id;
-
     return isCurrentUser ? senderBubble() : recieverBubble();
   }
 
@@ -24,7 +23,7 @@ class MessageWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (message.picture != null) Image.asset(message.picture!),
+            if (message.picture != null) Image.memory(TypeDecoder.toBytes(message.picture!)),
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -64,7 +63,16 @@ class MessageWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (message.picture != null) Image.asset(message.picture!),
+            if (message.picture != null)
+              Image.memory(
+                TypeDecoder.toBytes(message.picture!),
+                frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+                  return Padding(
+                    padding: const EdgeInsets.only(left: Spacing.s10),
+                    child: child,
+                  );
+                },
+              ),
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [

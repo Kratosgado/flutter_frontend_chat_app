@@ -17,15 +17,6 @@ class ChatController {
         debugPrint("chats recieved: ${source.length}");
 
         final chats = TypeDecoder.fromMapList<Chat>(source);
-
-        for (var chat in chats) {
-          for (var user in chat.users) {
-            if (user.profilePic != null) {
-              user.profilePic = await TypeDecoder.saveImageAsAsset(user.profilePic!);
-            }
-          }
-        }
-
         SocketService.hiveService.addChats(chats);
       });
     } catch (err) {
@@ -43,11 +34,6 @@ class ChatController {
         try {
           final chat = Chat.fromJson(data);
           debugPrint("recieved chat id: ${chat.id}");
-          for (var message in chat.messages) {
-            if (message.picture != null) {
-              message.picture = await TypeDecoder.saveImageAsAsset(message.picture!);
-            }
-          }
           SocketService.hiveService.updateChat(chat);
         } catch (err) {
           debugPrint(err.toString());
