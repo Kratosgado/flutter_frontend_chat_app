@@ -99,9 +99,24 @@ class ChatController {
     }
   }
 
+  Future<void> deleteMessage(String id) async {
+    try {
+      SocketService.socket.emit(ServerStrings.deleteMessage, id);
+      SocketService.socket.on(ServerStrings.messageDeleted, (data) {
+        // TODO: delete message
+      });
+    } catch (e) {
+      debugPrint(e.toString());
+
+    }
+  }
+
   Future<void> deleteChat(String chatId) async {
     try {
       SocketService.socket.emit(ServerStrings.deleteChat, chatId);
+      SocketService.socket.on(ServerStrings.chatDeleted, (id) async {
+        await SocketService.hiveService.deleteChat(id);
+      });
     } catch (e) {
       debugPrint(e.toString());
     }

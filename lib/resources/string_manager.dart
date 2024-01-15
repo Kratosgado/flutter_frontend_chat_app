@@ -85,6 +85,8 @@ class ServerStrings {
   static const String messageDelivered = 'messageDelivered';
 
   static const String sendMessage = 'sendMessage';
+  static const String deleteMessage = 'deleteMessage';
+  static const String messageDeleted = 'messageDeleted';
 
   static const String deleteSocketMessage = 'deleteSocketMessage';
 }

@@ -59,7 +59,6 @@ class User extends HiveObject {
 class Message extends HiveObject {
   @HiveField(0)
   String id = const uuid.UuidV1().generate();
-  // Id get messageId => fastHash(id);
 
   //  DateTime createdAt;
   //  DateTime updatedAt;
@@ -70,9 +69,7 @@ class Message extends HiveObject {
   @HiveField(3)
   MessageStatus status = MessageStatus.SENDING;
 
-  // final chat = IsarLinks<Chat>();
   String? chatId;
-  //  chat = IsarLink<Chat>();
   String? senderId;
 
   Message({
@@ -135,7 +132,6 @@ class JsonToHiveList implements JsonConverter<HiveList<Message>, List<dynamic>> 
     final box = Hive.box<Message>(HiveService.messageBoxName);
     var messages = HiveList<Message>(box);
 
-    // messages.box.putAll({for (var message in source) message.id: message});
     () async => {
           await messages.box.putAll({for (var message in source) message.id: message}),
         };

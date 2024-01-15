@@ -3,6 +3,7 @@ import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/socket.service.dart';
 import 'package:flutter_frontend_chat_app/resources/utils.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
+import 'package:flutter_frontend_chat_app/views/chat/components/message.status_icon.dart';
 
 import '../../../data/models/models.dart';
 
@@ -20,39 +21,36 @@ class MessageWidget extends StatelessWidget {
         alignment: Alignment.centerRight,
         clipper: ChatBubbleClipper10(type: BubbleType.sendBubble),
         backGroundColor: Colors.blue.shade700,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (message.picture != null) Image.memory(TypeDecoder.toBytes(message.picture!)),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (message.text.isNotEmpty)
-                  Text(
-                    message.text,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14.0,
+        child: GestureDetector(
+          onLongPress: () {
+            debugPrint("long Pressed");
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (message.picture != null) Image.memory(TypeDecoder.toBytes(message.picture!)),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (message.text.isNotEmpty)
+                    Text(
+                      message.text,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.0,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 5,
+                      softWrap: true,
                     ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 5,
-                    softWrap: true,
+                  const SizedBox(
+                    width: Spacing.s4,
                   ),
-                const SizedBox(
-                  width: Spacing.s4,
-                ),
-                Icon(
-                  switch (message.status) {
-                    MessageStatus.SENDING => Icons.lock_clock,
-                    MessageStatus.SENT => Icons.waves_rounded,
-                    MessageStatus.DELIVERED => Icons.add_location_alt,
-                    MessageStatus.SEEN => Icons.remove_red_eye,
-                  },
-                  size: 10,
-                ),
-              ],
-            ),
-          ],
+                  messageStatusIcon(message.status)
+                ],
+              ),
+            ],
+          ),
         ),
       );
 
@@ -87,15 +85,7 @@ class MessageWidget extends StatelessWidget {
                 const SizedBox(
                   width: Spacing.s4,
                 ),
-                Icon(
-                  switch (message.status) {
-                    MessageStatus.SENDING => Icons.lock_clock,
-                    MessageStatus.SENT => Icons.waves_rounded,
-                    MessageStatus.DELIVERED => Icons.add_location_alt,
-                    MessageStatus.SEEN => Icons.remove_red_eye,
-                  },
-                  size: 10,
-                ),
+                messageStatusIcon(message.status),
               ],
             ),
           ],

@@ -71,7 +71,6 @@ class ChatListView extends StatelessWidget {
         tooltip: "Add new Chat",
         mini: true,
         enableFeedback: true,
-        shape: const StadiumBorder(),
         child: const Icon(Icons.add),
       ),
     );

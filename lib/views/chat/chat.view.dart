@@ -31,11 +31,8 @@ class ChatView extends StatelessWidget {
           final chat = box.values.firstWhere((element) => element.id == chatId);
           return Scaffold(
             appBar: AppBar(
-                leading: IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Get.back();
-                  },
+                leading: BackButton(
+                  onPressed: () => Get.back(),
                 ),
                 title: Text(chat.convoName)),
             body: Column(

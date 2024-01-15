@@ -4,7 +4,6 @@ import 'package:flutter_frontend_chat_app/resources/utils.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
-import '../../resources/assets_manager.dart';
 
 void viewProfileImage(User user) {
   final isCurrentUser = user.id == SocketService.currentAccount.id;

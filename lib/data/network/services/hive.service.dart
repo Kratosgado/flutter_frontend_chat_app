@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_frontend_chat_app/data/network/services/chat.controller.dart';
+import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart' as path;
 import 'package:path/path.dart';
@@ -26,24 +27,28 @@ class HiveService {
     await box.putAll({for (var chat in chats) chat.id: chat});
   }
 
-  Stream<Chat> streamChat(String chatId) {
-    ChatController().findOneChat(chatId);
-    final box = Hive.box<Chat>(chatsBoxName);
-    var chat = box.get(chatId);
-    return Stream.value(chat!);
-  }
-
   Future<void> sendMessage(Message message) async {
     try {
       final box = Hive.box<Chat>(chatsBoxName);
       var chat = box.get(message.chatId);
 
-      // chat?.messages.box.put(message.id, message);
+      chat?.messages.add(message);
       ChatController().sendMessage(message);
-      chat?.save();
+      await chat?.save();
       debugPrint("sending message: ${message.text}");
     } catch (e) {
       debugPrint("error sending message: ${e.toString()}");
+    }
+  }
+
+  Future<void> deleteMessage({required String chatId, required String messageId}) async {
+    try {
+      final box = Hive.box<Chat>(chatsBoxName);
+      var chat = box.get(chatId);
+      chat?.messages.removeWhere((element) => element.id == messageId);
+      await chat?.save();
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 
@@ -51,11 +56,15 @@ class HiveService {
     try {
       final box = Hive.box<Chat>(chatsBoxName);
       var chat = box.get(message.chatId);
-      chat?.messages.map((mess) {
-        mess = mess.id == message.id ? message : mess;
-      });
-      debugPrint("new message id: ${message.id}");
-      chat?.save();
+      chat?.messages.map((mess) => {
+            debugPrint("lsdfjl"),
+            if (mess.id == message.id)
+              {
+                debugPrint("message status: ${mess.status}"),
+              }
+          });
+      debugPrint("new message id: ${message.status}");
+      await chat?.save();
     } catch (e) {
       debugPrint("error with database: ${e.toString()}");
     }
