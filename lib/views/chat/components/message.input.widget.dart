@@ -17,9 +17,6 @@ class MessageInputWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final selectedImage = Rx<File>(File(""));
-
-    // selectedImage.change(selectedImage.value, status: RxStatus.empty());
-
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Column(
@@ -56,8 +53,6 @@ class MessageInputWidget extends StatelessWidget {
                               File? image = await selectImage();
                               if (image != null) {
                                 selectedImage.value = image;
-                                // selectedImage.change(selectedImage.value,
-                                //     status: RxStatus.success());
                               }
                             },
                           ),
@@ -79,7 +74,7 @@ class MessageInputWidget extends StatelessWidget {
                           color: Colors.teal,
                           onPressed: () {
                             final picBase64 = selectedImage.value.path.isNotEmpty
-                                ?  TypeDecoder.imageToBase64(selectedImage.value)
+                                ? TypeDecoder.imageToBase64(selectedImage.value)
                                 : null;
                             final message = Message()
                               ..chatId = chatId
@@ -90,11 +85,6 @@ class MessageInputWidget extends StatelessWidget {
 
                             messageController.clear();
                             selectedImage.value = File("");
-                            // await widget.chatService.sendMessage(widget.conversation, message);
-
-                            // Clear the selected image and text input
-                            // selectedImage = null;
-                            // textEditingController.clear();
                           }),
                     ),
                   ),

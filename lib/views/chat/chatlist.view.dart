@@ -48,18 +48,16 @@ class ChatListView extends StatelessWidget {
                 );
               }
 
-              return ListView.builder(
+              return ListView.separated(
+                separatorBuilder: (_, index) => const SizedBox(
+                  height: 1,
+                ),
                 itemCount: chats.length,
                 itemBuilder: (context, index) {
                   final chat = chats[index];
                   return Column(
                     children: [
                       chatTile(chat),
-                      const Divider(
-                        height: 0.1,
-                        thickness: 0.5,
-                        color: Colors.black,
-                      ),
                     ],
                   );
                 },

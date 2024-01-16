@@ -19,15 +19,6 @@ class ChatView extends StatelessWidget {
     return ValueListenableBuilder(
         valueListenable: Hive.box<Chat>(HiveService.chatsBoxName).listenable(keys: [chatId]),
         builder: (context, box, _) {
-          // if (!snapshot.hasData) {
-          //   return const Center(
-          //     child: CircularProgressIndicator(),
-          //   );
-          // } else if (snapshot.hasError) {
-          //   return Center(
-          //     child: Text(snapshot.error.toString()),
-          //   );
-          // }
           final chat = box.values.firstWhere((element) => element.id == chatId);
           return Scaffold(
             appBar: AppBar(
@@ -41,7 +32,7 @@ class ChatView extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: chat.messages.length,
                     itemBuilder: (context, index) {
-                      final message = chat.messages[index].obs;
+                      final message = chat.messages[index];
                       return MessageWidget(message: message);
                     },
                   ),
