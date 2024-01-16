@@ -4,16 +4,17 @@ import 'package:flutter_frontend_chat_app/data/network/services/socket.service.d
 import 'package:flutter_frontend_chat_app/resources/utils.dart';
 import 'package:flutter_frontend_chat_app/resources/values_manager.dart';
 import 'package:flutter_frontend_chat_app/views/chat/components/message.status_icon.dart';
+import 'package:get/get.dart';
 
 import '../../../data/models/models.dart';
 
 class MessageWidget extends StatelessWidget {
-  final Message message;
+  final Rx<Message> message;
   const MessageWidget({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {
-    final isCurrentUser = message.senderId == SocketService.currentAccount.id;
+    final isCurrentUser = message.value.senderId == SocketService.currentAccount.id;
     return isCurrentUser ? senderBubble() : recieverBubble();
   }
 
@@ -25,32 +26,32 @@ class MessageWidget extends StatelessWidget {
           onLongPress: () {
             debugPrint("long Pressed");
           },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (message.picture != null) Image.memory(TypeDecoder.toBytes(message.picture!)),
-              Row(
-                mainAxisSize: MainAxisSize.min,
+          child: Obx(() => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (message.text.isNotEmpty)
-                    Text(
-                      message.text,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.0,
+                  if (message.value.picture != null) Image.memory(TypeDecoder.toBytes(message.value.picture!)),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (message.value.text.isNotEmpty)
+                        Text(
+                          message.value.text,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.0,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 5,
+                          softWrap: true,
+                        ),
+                      const SizedBox(
+                        width: Spacing.s4,
                       ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 5,
-                      softWrap: true,
-                    ),
-                  const SizedBox(
-                    width: Spacing.s4,
+                      messageStatusIcon(message.value.status)
+                    ],
                   ),
-                  messageStatusIcon(message.status)
                 ],
-              ),
-            ],
-          ),
+              )),
         ),
       );
 
@@ -61,9 +62,9 @@ class MessageWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (message.picture != null)
+            if (message.value.picture != null)
               Image.memory(
-                TypeDecoder.toBytes(message.picture!),
+                TypeDecoder.toBytes(message.value.picture!),
                 frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
                   return Padding(
                     padding: const EdgeInsets.only(left: Spacing.s10),
@@ -74,9 +75,9 @@ class MessageWidget extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (message.text.isNotEmpty)
+                if (message.value.text.isNotEmpty)
                   Text(
-                    message.text,
+                    message.value.text,
                     style: const TextStyle(
                       color: Colors.black,
                       fontSize: 14.0,
@@ -85,15 +86,10 @@ class MessageWidget extends StatelessWidget {
                 const SizedBox(
                   width: Spacing.s4,
                 ),
-                messageStatusIcon(message.status),
+                messageStatusIcon(message.value.status),
               ],
             ),
           ],
         ),
       );
 }
-
-// decoration: BoxDecoration(
-      //   color: isCurrentUser ? Colors.blue.shade700 : Colors.teal.shade300,
-      //   borderRadius: BorderRadius.circular(12.0),
-      // ),

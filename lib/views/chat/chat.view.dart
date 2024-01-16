@@ -41,7 +41,7 @@ class ChatView extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: chat.messages.length,
                     itemBuilder: (context, index) {
-                      final message = chat.messages[index];
+                      final message = chat.messages[index].obs;
                       return MessageWidget(message: message);
                     },
                   ),
