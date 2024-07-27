@@ -2,14 +2,23 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_frontend_chat_app/resources/assets_manager.dart';
 
 class TypeDecoder {
+  static late final Uint8List pic;
+
   static List<T> fromMapList<T>(dynamic source) {
     return Iterable.castFrom<dynamic, T>(source).toList();
   }
 
-  static Uint8List get defaultPic => File(ImageAssets.image).readAsBytesSync();
+  static Uint8List get defaultPic => pic;
+
+  static Future<void> setDefaultPic() async {
+    final ByteData data = await rootBundle.load(ImageAssets.image);
+    pic = data.buffer.asUint8List();
+  }
+
   static Uint8List toBytes(String image) => base64Decode(image);
   // static Future<String> saveImageAsAsset(String base64) async {
   //   Uint8List imageData = base64Decode(base64);

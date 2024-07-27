@@ -27,7 +27,7 @@ ListTile accountTile(Account account) {
             account.isActive = value;
           },
           splashRadius: Spacing.s10,
-          trackColor: MaterialStateProperty.resolveWith((states) {
+          trackColor: WidgetStateProperty.resolveWith((states) {
             return Colors.teal;
           }),
         ),

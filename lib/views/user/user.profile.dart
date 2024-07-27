@@ -106,7 +106,7 @@ class UserProfileView extends StatelessWidget {
                 TextButton(
                   style: ButtonStyle(
                       foregroundColor:
-                          MaterialStateColor.resolveWith((states) => Colors.blue.shade100)),
+                          WidgetStateColor.resolveWith((states) => Colors.blue.shade100)),
                   onPressed: () async {
                     File? pickedFile = await selectImage();
                     if (pickedFile != null) {

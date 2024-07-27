@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
-const BASEURL = 'http://localhost:4000';
+// const BASEURL = String.fromEnvironment("HOST_URL", defaultValue: "http://localhost:4000");
+const BASEURL = "https://chatbackend-6gm7.onrender.com";
 
 class AppStrings {
   static const String noRouteFound = "no_route_found";

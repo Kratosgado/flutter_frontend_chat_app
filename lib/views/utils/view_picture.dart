@@ -29,7 +29,7 @@ void viewProfileImage(User user) {
               ElevatedButton(
                 style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateColor.resolveWith((states) => Colors.transparent)),
+                        WidgetStateColor.resolveWith((states) => Colors.transparent)),
                 onPressed: () {},
                 child: const Text("change profile picture"),
               ),
