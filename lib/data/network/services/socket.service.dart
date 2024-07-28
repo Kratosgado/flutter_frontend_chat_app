@@ -12,7 +12,7 @@ class SocketService extends GetxService {
   final connect = GetConnect();
 
   // for socket
-  static io.Socket socket = io.io(BASEURL);
+  static io.Socket socket = io.io(baseUrl);
   static late Account currentAccount;
 
   static SocketService get to => Get.find();
@@ -30,7 +30,7 @@ class SocketService extends GetxService {
 
   Future<void> connectToSocket() async {
     socket = io.io(
-      BASEURL,
+      baseUrl,
       io.OptionBuilder()
           .setTransports(['websocket'])
           .setExtraHeaders({"authorization": "Bearer ${currentAccount.token}"})

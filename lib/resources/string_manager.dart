@@ -1,7 +1,9 @@
 // ignore_for_file: constant_identifier_names
 
-// const BASEURL = String.fromEnvironment("HOST_URL", defaultValue: "http://localhost:4000");
-const BASEURL = "https://chatbackend-6gm7.onrender.com";
+// const baseUrl = String.fromEnvironment("HOST_URL", defaultValue: "http://localhost:4000");
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+final baseUrl = dotenv.env["HOST_URL"];
 
 class AppStrings {
   static const String noRouteFound = "no_route_found";
@@ -58,16 +60,16 @@ class AppStrings {
 
 class ServerStrings {
   // Auth
-  static const String signup = '$BASEURL/auth/signup';
-  static const String login = '$BASEURL/auth/login';
+  static  String signup = '$baseUrl/auth/signup';
+  static  String login = '$baseUrl/auth/login';
 
   // User
-  static const String getUsers = '$BASEURL/user/findall';
-  static const String getMe = '$BASEURL/user/me';
-  static const String getUser = '$BASEURL/user/find';
-  static const String updateUser = '$BASEURL/user/update';
-  static const String getProfilePic = '$BASEURL/user/getProfilePic';
-  static const String deleteUser = '$BASEURL/user/delete';
+  static  String getUsers = '$baseUrl/user/findall';
+  static  String getMe = '$baseUrl/user/me';
+  static  String getUser = '$baseUrl/user/find';
+  static  String updateUser = '$baseUrl/user/update';
+  static  String getProfilePic = '$baseUrl/user/getProfilePic';
+  static  String deleteUser = '$baseUrl/user/delete';
 
   // Chat
   static const String findAllChats = 'findAllChats';
