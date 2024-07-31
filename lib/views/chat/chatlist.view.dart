@@ -67,7 +67,6 @@ class ChatListView extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () => Get.toNamed(Routes.userList),
         tooltip: "Add new Chat",
-        mini: true,
         enableFeedback: true,
         child: const Icon(Icons.add),
       ),

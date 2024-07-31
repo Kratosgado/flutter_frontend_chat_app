@@ -54,6 +54,7 @@ class AuthController extends GetConnect {
       );
 
       if (response.isOk) {
+        debugPrint(response.bodyString);
         await me(response.body).then((user) async {
           if (user != null) {
             final currentAccount = Account(id: user.id, user: user, isActive: true)

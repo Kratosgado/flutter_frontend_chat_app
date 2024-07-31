@@ -74,7 +74,7 @@ class UserProfileView extends StatelessWidget {
                 GestureDetector(
                   onTap: () => viewProfileImage(currentUser),
                   child: Container(
-                    height: Spacing.s120,
+                    height: Spacing.s190,
                     // padding: const EdgeInsets.all(Spacing.s5),
                     margin: const EdgeInsets.all(3),
                     alignment: Alignment.center,
@@ -92,7 +92,7 @@ class UserProfileView extends StatelessWidget {
                     child: Hero(
                       tag: 'profile_pic${currentUser.id}',
                       child: CircleAvatar(
-                        radius: Spacing.s60 - 2,
+                        radius: Spacing.s90 + 2,
                         backgroundImage: MemoryImage(
                           selectedImage.value != null
                               ? TypeDecoder.toBytes(selectedImage.value!)
@@ -103,18 +103,22 @@ class UserProfileView extends StatelessWidget {
                     ),
                   ),
                 ),
-                TextButton(
-                  style: ButtonStyle(
-                      foregroundColor:
-                          WidgetStateColor.resolveWith((states) => Colors.blue.shade100)),
-                  onPressed: () async {
-                    File? pickedFile = await selectImage();
-                    if (pickedFile != null) {
-                      selectedImage.value = TypeDecoder.imageToBase64(pickedFile);
-                    }
-                  },
-                  child: const Text("Change Profile Pic"),
-                ),
+                enabled.value
+                    ? TextButton(
+                        style: ButtonStyle(
+                            foregroundColor:
+                                WidgetStateColor.resolveWith((states) => Colors.blue.shade100)),
+                        onPressed: () async {
+                          File? pickedFile = await selectImage();
+                          if (pickedFile != null) {
+                            selectedImage.value = TypeDecoder.imageToBase64(pickedFile);
+                          }
+                        },
+                        child: const Text("Change Profile Pic"),
+                      )
+                    : const SizedBox(
+                        height: Spacing.s8,
+                      ),
                 field("username", TextEditingController(text: username.value)),
                 const SizedBox(
                   height: Spacing.s8,
