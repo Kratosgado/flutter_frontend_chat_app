@@ -12,7 +12,7 @@ ThemeData getApplicationTheme() {
       // primaryColorDark: ColorManager.darkPrimary,
       disabledColor: ColorManager.grey1,
       colorScheme: ColorScheme.dark(
-        background: ColorManager.bgColor,
+        surface: ColorManager.bgColor,
         primary: Colors.blue.shade700,
         onPrimary: ColorManager.lightGrey,
         secondary: ColorManager.secondaryColor,
